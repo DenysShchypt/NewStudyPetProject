@@ -1,0 +1,9 @@
+
+.env
+/package.json
+/package-lock.json
+
+#history
+.history
+.lh
+.settings.json
