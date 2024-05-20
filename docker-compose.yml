@@ -22,7 +22,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Denys7227221
-      - POSTGRES_DB=postgres-nest
+      - POSTGRES_DB=postgresPet
     restart: always
 
   redis:
