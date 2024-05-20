@@ -11,11 +11,33 @@ export class UsersService {
   ) {}
 
   async hashPassword(password) {
-    return await bcrypt.hash(password, 10);
+    try {
+      return await bcrypt.hash(password, 10);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
-  async createUser(dto): Promise<CreateUserDTO> {
-    dto.password = await this.hashPassword(dto.password);
-    await this.userRepository.create(dto);
-    return dto;
+  async findByEmail(email: string): Promise<User> {
+    try {
+      return await this.userRepository.findOne({ where: { email } });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
+    const hashPassword = await this.hashPassword(dto.password);
+    console.log('hashPassword: ', hashPassword);
+
+    try {
+      await this.userRepository.create({
+        firstName: dto.firstName,
+        lastName: dto.lastName,
+        email: dto.email,
+        password: hashPassword,
+      });
+      return dto;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

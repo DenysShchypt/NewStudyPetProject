@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from '../users/users.module';
 import configurations from '../../configurations';
 import { User } from '../users/models/user.model';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { User } from '../users/models/user.model';
       isGlobal: true,
       load: [configurations],
     }),
-    UsersModule,
+
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -29,6 +30,8 @@ import { User } from '../users/models/user.model';
         models: [User],
       }),
     }),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
