@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import configurations from '../../configurations';
 import { User } from '../users/models/user.model';
 import { AuthModule } from '../auth/auth.module';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from '../auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,4 +9,6 @@ export class AuthUserResponse {
   email: string;
   @IsString()
   password: string;
+  @IsString()
+  token: string;
 }
