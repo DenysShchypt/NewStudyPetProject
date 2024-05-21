@@ -69,7 +69,7 @@ export class UsersService {
     }
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise<void> {
     const user = await this.userRepository.findByPk(id);
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
     try {
