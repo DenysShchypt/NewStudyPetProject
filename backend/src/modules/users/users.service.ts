@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
+import { plainToInstance } from 'class-transformer';
 import { User } from './models/user.model';
-import { CreateUserDTO } from './dto';
+import { CreateUserDTO, UpdateUserDTO } from './dto';
+import { UpdateUserResponse } from './responses';
+import { AppError } from '../../common/constants/errors';
 
 @Injectable()
 export class UsersService {
@@ -26,8 +29,6 @@ export class UsersService {
   }
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     const hashPassword = await this.hashPassword(dto.password);
-    console.log('hashPassword: ', hashPassword);
-
     try {
       await this.userRepository.create({
         firstName: dto.firstName,
@@ -47,6 +48,32 @@ export class UsersService {
         where: { email },
         attributes: { exclude: ['password'] },
       });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async updateUser(
+    id: string,
+    dto: UpdateUserDTO,
+  ): Promise<UpdateUserResponse> {
+    const user = await this.userRepository.findByPk(id);
+    if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    try {
+      await this.userRepository.update(dto, {
+        where: { id },
+      });
+      return plainToInstance(UpdateUserResponse, dto);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async deleteUser(id: string) {
+    const user = await this.userRepository.findByPk(id);
+    if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    try {
+      await this.userRepository.destroy({ where: { id } });
     } catch (error) {
       throw new Error(error);
     }
