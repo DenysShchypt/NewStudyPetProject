@@ -40,4 +40,15 @@ export class UsersService {
       throw new Error(error);
     }
   }
+
+  async publicUser(email: string) {
+    try {
+      return await this.userRepository.findOne({
+        where: { email },
+        attributes: { exclude: ['password'] },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
