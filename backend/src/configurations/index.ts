@@ -5,8 +5,8 @@ export default (): {
   db_name: string | undefined;
   db_user: string | undefined;
   db_password: string | undefined;
-  // secret_jwt: string | undefined;
-  // expire_jwt: string | undefined;
+  secret_jwt: string | undefined;
+  expire_jwt: string | undefined;
 } => ({
   port: process.env.PORT,
   db_port: parseInt(process.env.POSTGRES_DB_PORT, 10),
@@ -14,6 +14,6 @@ export default (): {
   db_name: process.env.POSTGRES_DB,
   db_user: process.env.POSTGRES_USER,
   db_password: process.env.POSTGRES_PASSWORD,
-  // secret_jwt: process.env.SECRET_KEY,
-  // expire_jwt: process.env.EXPIRE_JWT,
+  secret_jwt: process.env.SECRET_KEY,
+  expire_jwt: process.env.EXPIRE_JWT,
 });

@@ -16,17 +16,17 @@ services:
 
   postgres:
     image: postgres
-    container_name: template
+    container_name: petProjectBD
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Denys7227221
-      - POSTGRES_DB=postgres-nest
+      - POSTGRES_DB=postgresPet
     restart: always
 
   redis:
     image: redis:alpine3.14
-    container_name: redis-template
+    container_name: redis-petProject
     ports:
       - "6379:6379"

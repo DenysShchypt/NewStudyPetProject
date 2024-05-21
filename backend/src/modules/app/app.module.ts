@@ -4,7 +4,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from '../users/users.module';
-import configurations from '../configurations';
+import configurations from '../../configurations';
+import { User } from '../users/models/user.model';
+import { AuthModule } from '../auth/auth.module';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
@@ -12,7 +15,7 @@ import configurations from '../configurations';
       isGlobal: true,
       load: [configurations],
     }),
-    UsersModule,
+
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,9 +28,12 @@ import configurations from '../configurations';
         database: configService.get<string>('db_name'),
         synchronize: true,
         autoLoadModels: true,
-        models: [],
+        models: [User],
       }),
     }),
+    UsersModule,
+    AuthModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
