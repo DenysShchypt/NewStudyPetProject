@@ -6,6 +6,8 @@ import { User } from './models/user.model';
 import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
+import { WatchList } from '../watch-list/models/watchList.model';
+import { UserResponse } from '../auth/responses';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +15,7 @@ export class UsersService {
     @InjectModel(User) private readonly userRepository: typeof User,
   ) {}
 
-  async hashPassword(password) {
+  async hashPassword(password: string): Promise<string> {
     try {
       return await bcrypt.hash(password, 10);
     } catch (error) {
@@ -22,7 +24,13 @@ export class UsersService {
   }
   async findByEmail(email: string): Promise<User> {
     try {
-      return await this.userRepository.findOne({ where: { email } });
+      return await this.userRepository.findOne({
+        where: { email },
+        include: {
+          model: WatchList,
+          required: false,
+        },
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -42,11 +50,15 @@ export class UsersService {
     }
   }
 
-  async publicUser(email: string) {
+  async publicUser(email: string): Promise<UserResponse> {
     try {
       return await this.userRepository.findOne({
         where: { email },
         attributes: { exclude: ['password'] },
+        include: {
+          model: WatchList,
+          required: false,
+        },
       });
     } catch (error) {
       throw new Error(error);

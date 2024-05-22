@@ -5,4 +5,5 @@ export const AppError = {
   INVALID_TOKEN: 'Invalid token',
   USER_NOT_FOUND: 'User not found',
   WRONG_DATA: 'Wrong data',
+  ASSET_NOT_FOUND: 'Asset not found',
 };
