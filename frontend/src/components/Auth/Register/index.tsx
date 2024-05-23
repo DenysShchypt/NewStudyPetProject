@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   return (
     <>
       <Typography
@@ -9,7 +9,7 @@ const LoginPage = () => {
         fontFamily="Popins"
         textAlign="center"
       >
-        Authorization
+        Registration
       </Typography>
       <Typography
         variant="body1"
@@ -17,14 +17,36 @@ const LoginPage = () => {
         textAlign="center"
         marginBottom={3}
       >
-        Write down your login and password
+        Write down your details
       </Typography>
+      <TextField
+        fullWidth={true}
+        margin="normal"
+        label="Your first name"
+        variant="outlined"
+        placeholder="Input your first name"
+      />
+      <TextField
+        fullWidth={true}
+        margin="normal"
+        label="Last name"
+        variant="outlined"
+        placeholder="Input your last name"
+      />
       <TextField
         fullWidth={true}
         margin="normal"
         label="Email Address"
         variant="outlined"
         placeholder="Input your email"
+      />
+      <TextField
+        type="password"
+        fullWidth={true}
+        margin="normal"
+        label="Password"
+        variant="outlined"
+        placeholder="Input your password"
       />
       <TextField
         type="password"
@@ -43,14 +65,13 @@ const LoginPage = () => {
         }}
         variant="contained"
       >
-        Enter
+        Registration
       </Button>
       <Typography variant="body1" sx={{ fontFamily: 'Popins' }}>
-        Do you have an account?{' '}
-        <span className="registrationText">Registration</span>
+        If you have an account? <span className="registrationText">Enter</span>
       </Typography>
     </>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

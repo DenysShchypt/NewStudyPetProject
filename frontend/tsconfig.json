@@ -18,7 +18,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./**/*", "./types.d.ts"],
+  "include": ["./**/*", "./types.d.ts", "src/declaration.d.ts"],
   "exclude": ["node_modules", "./dist"],
   "paths": {
     "*": ["src/*"]
