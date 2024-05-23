@@ -1,6 +1,7 @@
 import { Button, TextField, Typography } from '@mui/material';
 
-const LoginPage = () => {
+const LoginPage = (props: any) => {
+  const { setEmail, setPassword } = props;
   return (
     <>
       <Typography
@@ -25,6 +26,7 @@ const LoginPage = () => {
         label="Email Address"
         variant="outlined"
         placeholder="Input your email"
+        onChange={e => setEmail(e.target.value)}
       />
       <TextField
         type="password"
@@ -33,8 +35,10 @@ const LoginPage = () => {
         label="Password"
         variant="outlined"
         placeholder="Input your password"
+        onChange={e => setPassword(e.target.value)}
       />
       <Button
+        type="submit"
         sx={{
           fontFamily: 'Popins',
           marginTop: 2,
