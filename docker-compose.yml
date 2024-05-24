@@ -1,16 +1,16 @@
 version: "3.8"
 services:
   frontend:
-    image: my-frontend
+    build: ./frontend
     restart: always
     ports:
       - 5173:5173
 
   backend:
-    image: my-backend
+    build: ./backend
     restart: always
     ports:
-      - 3030:3030
+      - 4001:4000
     depends_on:
       - postgres
 
