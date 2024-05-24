@@ -1,5 +1,5 @@
 # Base image
-FROM node:14-alpine
+FROM node:16-alpine
 
 # Set working directory
 WORKDIR /app
@@ -12,8 +12,9 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 4000
 
 # Start the application
 CMD ["npm", "run", "start:dev"]
+
 
