@@ -1,20 +1,21 @@
 import { Button, TextField, Typography } from '@mui/material';
+import { IPropsLogin } from '../../../common/types/auth';
 
-const LoginPage = (props: any) => {
+const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { setEmail, setPassword } = props;
   return (
     <>
       <Typography
         variant="h2"
         padding={2}
-        fontFamily="Popins"
+        fontFamily="Poppins"
         textAlign="center"
       >
         Authorization
       </Typography>
       <Typography
         variant="body1"
-        fontFamily="Popins"
+        fontFamily="Poppins"
         textAlign="center"
         marginBottom={3}
       >
@@ -40,7 +41,7 @@ const LoginPage = (props: any) => {
       <Button
         type="submit"
         sx={{
-          fontFamily: 'Popins',
+          fontFamily: 'Poppins',
           marginTop: 2,
           width: '50%',
           marginBottom: 2,
@@ -49,7 +50,7 @@ const LoginPage = (props: any) => {
       >
         Enter
       </Button>
-      <Typography variant="body1" sx={{ fontFamily: 'Popins' }}>
+      <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
         Do you have an account?{' '}
         <span className="registrationText">Registration</span>
       </Typography>

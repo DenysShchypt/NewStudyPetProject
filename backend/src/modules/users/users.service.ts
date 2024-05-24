@@ -35,7 +35,7 @@ export class UsersService {
       throw new Error(error);
     }
   }
-  async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
+  async createUser(dto: CreateUserDTO): Promise<UserResponse> {
     const hashPassword = await this.hashPassword(dto.password);
     try {
       await this.userRepository.create({
@@ -44,7 +44,7 @@ export class UsersService {
         email: dto.email,
         password: hashPassword,
       });
-      return dto;
+      return plainToInstance(UserResponse, dto);
     } catch (error) {
       throw new Error(error);
     }

@@ -3,15 +3,15 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from '../users/dto';
 import { LoginUserDTO } from './dto';
-import { AuthUserResponse } from './responses';
+import { AuthUserResponse, UserResponse } from './responses';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @ApiTags('API')
-  @ApiResponse({ status: 201, type: CreateUserDTO })
+  @ApiResponse({ status: 201, type: UserResponse })
   @Post('register')
-  register(@Body() dto: CreateUserDTO): Promise<CreateUserDTO> {
+  register(@Body() dto: CreateUserDTO): Promise<UserResponse> {
     return this.authService.registerUsers(dto);
   }
   @ApiTags('API')
