@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { IPropsLogin } from '../../../common/types/auth';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-  const { setEmail, setPassword } = props;
+  const { setEmail, setPassword, navigate } = props;
   return (
     <>
       <Typography
@@ -52,7 +52,12 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
       </Button>
       <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
         Do you have an account?{' '}
-        <span className="registrationText">Registration</span>
+        <span
+          className="registrationText"
+          onClick={() => navigate('/register')}
+        >
+          Registration
+        </span>
       </Typography>
     </>
   );
