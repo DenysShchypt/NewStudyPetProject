@@ -10,6 +10,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
     setRepeatPassword,
     setFirstName,
     setLastName,
+    navigate,
   } = props;
   return (
     <>
@@ -84,7 +85,10 @@ const RegisterPage: React.FC<IPropsRegister> = (
         Registration
       </Button>
       <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
-        If you have an account? <span className="registrationText">Enter</span>
+        If you have an account?{' '}
+        <span className="registrationText" onClick={() => navigate('/login')}>
+          Enter
+        </span>
       </Typography>
     </>
   );

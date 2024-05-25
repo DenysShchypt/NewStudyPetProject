@@ -7,12 +7,14 @@ import { CreateUserDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
 import { WatchList } from '../watch-list/models/watchList.model';
-import { UserResponse } from '../auth/responses';
+import { AuthUserResponse, UserResponse } from '../auth/responses';
+import { TokenService } from '../token/token.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
+    private readonly tokenService: TokenService,
   ) {}
 
   async hashPassword(password: string): Promise<string> {
@@ -50,9 +52,9 @@ export class UsersService {
     }
   }
 
-  async publicUser(email: string): Promise<UserResponse> {
+  async publicUser(email: string): Promise<AuthUserResponse> {
     try {
-      return await this.userRepository.findOne({
+      const user = await this.userRepository.findOne({
         where: { email },
         attributes: { exclude: ['password'] },
         include: {
@@ -60,6 +62,8 @@ export class UsersService {
           required: false,
         },
       });
+      const token = await this.tokenService.generateJwtToken(user);
+      return { user, token };
     } catch (error) {
       throw new Error(error);
     }

@@ -1,13 +1,14 @@
 # Base image
 FROM node:16-alpine
 
+
+
 # Set working directory
 WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json ./
-RUN npm install
-
+RUN npm install 
 # Copy all files
 COPY . .
 
