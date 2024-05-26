@@ -2,19 +2,27 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import PrivateRoute from '../utils/router/privateRoute';
 import AuthRootComponent from './Auth';
+import { ColorModeContext, useMode } from '../theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 function App() {
-  return (
-    <div className="app">
-      <Routes>
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
-        </Route>
+  const [theme, colorMode] = useMode();
 
-        <Route path="login" element={<AuthRootComponent />} />
-        <Route path="register" element={<AuthRootComponent />} />
-      </Routes>
-    </div>
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <Routes>
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+            <Route path="login" element={<AuthRootComponent />} />
+            <Route path="register" element={<AuthRootComponent />} />
+          </Routes>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
