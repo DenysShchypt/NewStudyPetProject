@@ -14,17 +14,17 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LayoutComponent>
-        <div className="app">
-          <Routes>
-            <Route element={<PrivateRoute />}>
-              <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="login" element={<AuthRootComponent />} />
-            <Route path="register" element={<AuthRootComponent />} />
-          </Routes>
-        </div>
+          <div className="app">
+            <Routes>
+              <Route element={<PrivateRoute />}>
+                <Route path="/" element={<Home />} />
+              </Route>
+              <Route path="login" element={<AuthRootComponent />} />
+              <Route path="register" element={<AuthRootComponent />} />
+            </Routes>
+          </div>
+        </LayoutComponent>
       </ThemeProvider>
-      </LayoutComponent>
     </ColorModeContext.Provider>
   );
 }
