@@ -8,7 +8,7 @@ import { useAppSelector } from '../../utils/hook';
 import { ColorModeContext, tokens } from '../../theme';
 import { useStyles } from './styles';
 
-const TopBarComponent = () => {
+const TopBarComponent: React.FC = (): JSX.Element => {
   const { user } = useAppSelector(state => state.auth.user);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

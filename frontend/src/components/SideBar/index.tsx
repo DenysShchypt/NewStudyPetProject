@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useStyles } from '../TopBar/styles';
 import {
-  HomeOutlined,
   ChevronLeftOutlined,
   ChevronRightOutlined,
-  TimelineOutlined,
-  MenuBookOutlined,
-  SettingsOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Drawer, IconButton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import FlexBetween from '../FlexBetween';
+import { navMenu } from '../../common/moks/navigate';
 
-const SideBarComponent = (props: any) => {
+const SideBarComponent = (props: any): JSX.Element => {
   const [active, setActive] = useState<string>('');
   const { isNonMobile, drawerWidth, isOpen, setIsOpen } = props;
   const classes = useStyles();
@@ -56,6 +64,20 @@ const SideBarComponent = (props: any) => {
                 )}
               </FlexBetween>
             </Box>
+            <List>
+              {navMenu.map(element => {
+                return (
+                  <ListItem key={element.id}>
+                    <ListItemButton onClick={() => navigate(`${element.path}`)}>
+                      <ListItemIcon>{element.icon}</ListItemIcon>
+                      <ListItemText>
+                        <Typography>{element.name}</Typography>
+                      </ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </List>
           </Box>
         </Drawer>
       )}
