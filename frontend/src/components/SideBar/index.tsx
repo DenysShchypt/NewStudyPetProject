@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useStyles } from '../TopBar/styles';
+import { useEffect, useState } from 'react';
 import {
   ChevronLeftOutlined,
   ChevronRightOutlined,
   LogoutOutlined,
+  PortraitOutlined,
 } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -20,6 +20,8 @@ import {
 } from '@mui/material';
 import FlexBetween from '../FlexBetween';
 import { navMenu } from '../../common/moks/navigate';
+import { useStyles } from './styles';
+import Logo from '../../assets/images/sideBar/Logo.svg';
 
 const SideBarComponent = (props: any): JSX.Element => {
   const [active, setActive] = useState<string>('');
@@ -40,22 +42,16 @@ const SideBarComponent = (props: any): JSX.Element => {
           onClose={() => setIsOpen(false)}
           variant="persistent"
           anchor="left"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '&.MuiDrawer-paper': {
-              color: theme.palette.secondary.main,
-              backgroundColor: theme.palette.primary.main,
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
+          className={classes.navItem}
         >
-          <Box width="100%">
+          <Box className={classes.navBlock}>
             <Box>
               <FlexBetween>
-                <Box display="flex" alignItems="center" gap="10px">
-                  <Typography>Demo</Typography>
+                <Box className={classes.brand}>
+                  <img src={Logo} alt="Logo app" />
+                  <Typography variant="h1" className={classes.brandTitle}>
+                    Demo
+                  </Typography>
                 </Box>
                 {!isNonMobile && (
                   <IconButton onClick={() => setIsOpen(!isOpen)}>
@@ -64,11 +60,14 @@ const SideBarComponent = (props: any): JSX.Element => {
                 )}
               </FlexBetween>
             </Box>
-            <List>
+            <List className={classes.navList}>
               {navMenu.map(element => {
                 return (
                   <ListItem key={element.id}>
-                    <ListItemButton onClick={() => navigate(`${element.path}`)}>
+                    <ListItemButton
+                      onClick={() => navigate(`${element.path}`)}
+                      className={classes.navItem}
+                    >
                       <ListItemIcon>{element.icon}</ListItemIcon>
                       <ListItemText>
                         <Typography>{element.name}</Typography>
@@ -77,6 +76,33 @@ const SideBarComponent = (props: any): JSX.Element => {
                   </ListItem>
                 );
               })}
+            </List>
+          </Box>
+          <Box>
+            <List>
+              <ListItem>
+                <ListItemButton onClick={() => {}} className={classes.navItem}>
+                  <ListItemIcon>
+                    <PortraitOutlined />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography>User</Typography>
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  onClick={() => navigate('/login')}
+                  className={classes.navItem}
+                >
+                  <ListItemIcon>
+                    <LogoutOutlined />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography>Logout</Typography>
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
             </List>
           </Box>
         </Drawer>
