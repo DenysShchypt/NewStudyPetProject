@@ -3,19 +3,18 @@ import { Outlet, useLocation } from 'react-router-dom';
 import TopBarComponent from '../TopBar';
 import { Box, useMediaQuery } from '@mui/material';
 import SideBarComponent from '../SideBar';
-import { useStyles } from './styles';
+import { MainSection, RootBox } from './styles';
 
 const LayoutComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isNonMobile = useMediaQuery('(min-width:600px)');
-  const classes = useStyles();
   return location.pathname === '/login' || location.pathname === '/register' ? (
     <>
       <Outlet />
     </>
   ) : (
-    <Box
+    <RootBox
       display={isNonMobile ? 'flex' : 'block'}
       width="100%"
       height="100%"
@@ -27,11 +26,11 @@ const LayoutComponent: React.FC = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
-      <Box className={classes.mainSection}>
+      <MainSection>
         <TopBarComponent isOpen={isOpen} setIsOpen={setIsOpen} />
         <Outlet />
-      </Box>
-    </Box>
+      </MainSection>
+    </RootBox>
   );
 };
 

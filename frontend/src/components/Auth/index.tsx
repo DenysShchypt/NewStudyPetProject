@@ -8,6 +8,8 @@ import { instance } from '../../utils/axios';
 import { useAppDispatch } from '../../utils/hook';
 import { login } from '../../store/slice/auth';
 import { AppError } from '../../common/errors';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { IFormData } from '../../common/types/auth';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState<string>('');
@@ -18,15 +20,21 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>();
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
+  const handleSubmitForm: SubmitHandler<IFormData> = async (data: {
+    email: string;
+    password: string;
+  }) => {
     if (location.pathname === '/login') {
       try {
         const userData = {
-          email,
-          password,
+          email: data.email,
+          password: data.password,
         };
         const user = await instance.post('auth/login', userData);
         dispatch(login(user.data));
@@ -57,7 +65,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
 
   return (
     <div className="root">
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit(handleSubmitForm)}>
         <Box
           display="flex"
           justifyContent="center"
@@ -71,9 +79,9 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
         >
           {location.pathname === '/login' ? (
             <LoginPage
-              setEmail={setEmail}
-              setPassword={setPassword}
               navigate={navigate}
+              register={register}
+              errors={errors}
             />
           ) : location.pathname === '/register' ? (
             <RegisterPage

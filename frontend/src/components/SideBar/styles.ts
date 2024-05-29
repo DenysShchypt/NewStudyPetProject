@@ -1,8 +1,9 @@
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+import { Box, Theme, makeStyles } from '@mui/material';
 import { tokens } from '../../theme';
+import styled from '@emotion/styled';
+import { StyledProps } from '../../common/types/theme';
 
-export const useStyles = makeStyles((theme: Theme) => {
+export const BoxStyled = styled(Box)<StyledProps>(({ theme }) => {
   const colors = tokens(theme.palette.mode);
 
   return {
