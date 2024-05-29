@@ -18,13 +18,16 @@ export interface IAuthState {
 }
 
 export interface IPublicUser {
-  id: number | null;
-  firstName: string;
-  lastName: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-  watchList: [IWatchList];
+  user: {
+    id: number | null;
+    firstName: string;
+    lastName: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+    watchList: [IWatchList];
+  };
+  token: string;
 }
 
 export interface IWatchList {

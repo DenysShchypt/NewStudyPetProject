@@ -3,22 +3,25 @@ import { IAuthState } from '../../../common/types/auth';
 
 const initialState: IAuthState = {
   user: {
-    id: null,
-    firstName: '',
-    lastName: '',
-    email: '',
-    createdAt: '',
-    updatedAt: '',
-    watchList: [
-      {
-        id: null,
-        user: null,
-        name: '',
-        assetId: '',
-        createdAt: '',
-        updatedAt: '',
-      },
-    ],
+    user: {
+      id: null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      createdAt: '',
+      updatedAt: '',
+      watchList: [
+        {
+          id: null,
+          user: null,
+          name: '',
+          assetId: '',
+          createdAt: '',
+          updatedAt: '',
+        },
+      ],
+    },
+    token: '',
   },
   isLoggedIn: false,
 };
