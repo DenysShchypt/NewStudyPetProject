@@ -1,8 +1,4 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
   "extends": [
     "react-app",
     "eslint:recommended",
@@ -39,7 +35,6 @@
     "react-hooks/rules-of-hooks": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "react-hooks/exhaustive-deps": "off",
-
     "react-refresh/only-export-components": "warn",
     "react/prop-types": "off",
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
@@ -49,5 +44,11 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.js", "src/**/*.jsx"],
+      "extends": ["eslint-config-react-app"]
+    }
+  ]
 }
