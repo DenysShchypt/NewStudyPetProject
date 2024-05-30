@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import { Box } from '@mui/material';
-import { styled } from '@mui/styles';
 
 const FlexBetween = styled(Box)({
   display: 'flex',

@@ -1,8 +1,9 @@
+/* eslint-disable no-useless-escape */
 import { Button, TextField, Typography } from '@mui/material';
 import { IPropsLogin } from '../../../common/types/auth';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-  const { setEmail, setPassword, navigate } = props;
+  const { navigate, register, errors } = props;
   return (
     <>
       <Typography
@@ -22,21 +23,29 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
         Write down your login and password
       </Typography>
       <TextField
+        error={!!errors.email}
         fullWidth={true}
         margin="normal"
         label="Email Address"
         variant="outlined"
         placeholder="Input your email"
-        onChange={e => setEmail(e.target.value)}
+        helperText={errors.email ? `${errors.email.message}` : ''}
+        {...register('email', {
+          required: 'Enter your email',
+        })}
       />
       <TextField
+        error={!!errors.password}
         type="password"
         fullWidth={true}
         margin="normal"
         label="Password"
         variant="outlined"
         placeholder="Input your password"
-        onChange={e => setPassword(e.target.value)}
+        helperText={errors.password ? `${errors.password.message}` : ''}
+        {...register('password', {
+          required: 'Enter your password',
+        })}
       />
       <Button
         type="submit"

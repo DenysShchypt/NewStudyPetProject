@@ -20,13 +20,12 @@ import {
 } from '@mui/material';
 import FlexBetween from '../FlexBetween';
 import { navMenu } from '../../common/moks/navigate';
-import { useStyles } from './styles';
+import { BoxStyled } from './styles';
 import Logo from '../../assets/images/sideBar/Logo.svg';
 
 const SideBarComponent = (props: any): JSX.Element => {
   const [active, setActive] = useState<string>('');
   const { isNonMobile, drawerWidth, isOpen, setIsOpen } = props;
-  const classes = useStyles();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -35,21 +34,21 @@ const SideBarComponent = (props: any): JSX.Element => {
     setActive(pathname.substring(1));
   }, [pathname]);
   return (
-    <Box component="nav">
+    <BoxStyled theme={theme} component="nav">
       {isOpen && (
         <Drawer
           open={isOpen}
           onClose={() => setIsOpen(false)}
           variant="persistent"
           anchor="left"
-          className={classes.navItem}
+          className="navItem"
         >
-          <Box className={classes.navBlock}>
+          <Box className="navBlock">
             <Box>
               <FlexBetween>
-                <Box className={classes.brand}>
+                <Box className="brand">
                   <img src={Logo} alt="Logo app" />
-                  <Typography variant="h1" className={classes.brandTitle}>
+                  <Typography variant="h1" className="brandTitle">
                     Demo
                   </Typography>
                 </Box>
@@ -60,13 +59,13 @@ const SideBarComponent = (props: any): JSX.Element => {
                 )}
               </FlexBetween>
             </Box>
-            <List className={classes.navList}>
+            <List className="navList">
               {navMenu.map(element => {
                 return (
                   <ListItem key={element.id}>
                     <ListItemButton
                       onClick={() => navigate(`${element.path}`)}
-                      className={classes.navItem}
+                      className="navItem"
                     >
                       <ListItemIcon>{element.icon}</ListItemIcon>
                       <ListItemText>
@@ -81,7 +80,7 @@ const SideBarComponent = (props: any): JSX.Element => {
           <Box>
             <List>
               <ListItem>
-                <ListItemButton onClick={() => {}} className={classes.navItem}>
+                <ListItemButton onClick={() => {}} className="navItem">
                   <ListItemIcon>
                     <PortraitOutlined />
                   </ListItemIcon>
@@ -93,7 +92,7 @@ const SideBarComponent = (props: any): JSX.Element => {
               <ListItem>
                 <ListItemButton
                   onClick={() => navigate('/login')}
-                  className={classes.navItem}
+                  className="navItem"
                 >
                   <ListItemIcon>
                     <LogoutOutlined />
@@ -107,7 +106,7 @@ const SideBarComponent = (props: any): JSX.Element => {
           </Box>
         </Drawer>
       )}
-    </Box>
+    </BoxStyled>
   );
 };
 

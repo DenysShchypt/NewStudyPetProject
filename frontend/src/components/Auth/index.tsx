@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
 import './style.css';
 import LoginPage from './Login';
 import RegisterPage from './Register';
@@ -8,25 +9,32 @@ import { instance } from '../../utils/axios';
 import { useAppDispatch } from '../../utils/hook';
 import { login } from '../../store/slice/auth';
 import { AppError } from '../../common/errors';
+import { IFormData, IFormDataRegister } from '../../common/types/auth';
+import { LoginSchema, RegisterSchema } from '../../utils/yup';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [repeatPassword, setRepeatPassword] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData | IFormDataRegister>({
+    resolver: yupResolver(
+      location.pathname === '/login' ? LoginSchema : RegisterSchema,
+    ),
+  });
 
+  const handleSubmitForm: SubmitHandler<
+    IFormData | IFormDataRegister
+  > = async data => {
     if (location.pathname === '/login') {
       try {
         const userData = {
-          email,
-          password,
+          email: (data as IFormData).email,
+          password: (data as IFormData).password,
         };
         const user = await instance.post('auth/login', userData);
         dispatch(login(user.data));
@@ -35,13 +43,13 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
         return error;
       }
     } else {
-      if (password === repeatPassword) {
+      if (data.password === data.repeatPassword) {
         try {
           const userData = {
-            firstName,
-            lastName,
-            email,
-            password,
+            firstName: (data as IFormDataRegister).firstName,
+            lastName: (data as IFormDataRegister).lastName,
+            email: (data as IFormDataRegister).email,
+            password: (data as IFormDataRegister).password,
           };
           const newUser = await instance.post('auth/register', userData);
           dispatch(login(newUser.data));
@@ -57,7 +65,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
 
   return (
     <div className="root">
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit(handleSubmitForm)}>
         <Box
           display="flex"
           justifyContent="center"
@@ -71,18 +79,15 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
         >
           {location.pathname === '/login' ? (
             <LoginPage
-              setEmail={setEmail}
-              setPassword={setPassword}
               navigate={navigate}
+              register={register}
+              errors={errors}
             />
           ) : location.pathname === '/register' ? (
             <RegisterPage
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setRepeatPassword={setRepeatPassword}
-              setFirstName={setFirstName}
-              setLastName={setLastName}
               navigate={navigate}
+              register={register}
+              errors={errors}
             />
           ) : null}
         </Box>
