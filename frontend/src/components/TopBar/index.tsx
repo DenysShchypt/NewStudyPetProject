@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 import {
   Box,
   Grid,
@@ -16,11 +16,14 @@ import {
   MenuOutlined,
 } from '@mui/icons-material';
 import { useAppSelector } from '../../utils/hook';
-import { ColorModeContext } from '../../theme';
-import FlexBetween from '../FlexBetween';
 import { AppBarStyled } from './styles';
+import { ITopBarProps } from '../../common/types/topBar';
+import { FlexBetween } from '../GeneralComponentsStyles';
+import { ColorModeContext } from '../../theme';
 
-const TopBarComponent = (props: any) => {
+const TopBarComponent: FC<ITopBarProps> = (
+  props: ITopBarProps,
+): JSX.Element => {
   const { user } = useAppSelector(state => state.auth.user);
   const theme = useTheme();
   const colorMode: any = useContext(ColorModeContext);

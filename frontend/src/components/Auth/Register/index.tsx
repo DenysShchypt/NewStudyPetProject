@@ -1,5 +1,9 @@
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { IPropsRegister } from '../../../common/types/auth';
+import {
+  ButtonAuthNavStyled,
+  ButtonStyled,
+} from '../../GeneralComponentsStyles';
 
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister,
@@ -7,20 +11,10 @@ const RegisterPage: React.FC<IPropsRegister> = (
   const { navigate, register, errors } = props;
   return (
     <>
-      <Typography
-        variant="h2"
-        padding={2}
-        fontFamily="Poppins"
-        textAlign="center"
-      >
+      <Typography variant="h2" padding={2} textAlign="center">
         Registration
       </Typography>
-      <Typography
-        variant="body1"
-        fontFamily="Poppins"
-        textAlign="center"
-        marginBottom={3}
-      >
+      <Typography variant="body1" textAlign="center" marginBottom={3}>
         Write down your details
       </Typography>
       <TextField
@@ -87,23 +81,14 @@ const RegisterPage: React.FC<IPropsRegister> = (
           required: 'Enter your repeat password',
         })}
       />
-      <Button
-        type="submit"
-        sx={{
-          fontFamily: 'Poppins',
-          marginTop: 2,
-          width: '50%',
-          marginBottom: 2,
-        }}
-        variant="contained"
-      >
+      <ButtonStyled type="submit" variant="contained">
         Registration
-      </Button>
+      </ButtonStyled>
       <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
         If you have an account?{' '}
-        <span className="registrationText" onClick={() => navigate('/login')}>
+        <ButtonAuthNavStyled onClick={() => navigate('/login')}>
           Enter
-        </span>
+        </ButtonAuthNavStyled>
       </Typography>
     </>
   );

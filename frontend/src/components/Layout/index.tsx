@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import TopBarComponent from '../TopBar';
 import { Box, useMediaQuery } from '@mui/material';
 import SideBarComponent from '../SideBar';
 import { MainSection, RootBox } from './styles';
 
-const LayoutComponent: React.FC = () => {
+const LayoutComponent: FC = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -22,7 +22,7 @@ const LayoutComponent: React.FC = () => {
     >
       <SideBarComponent
         isNonMobile={isNonMobile}
-        drawerWidth="250px"
+        drawerWidth={'250px'}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />

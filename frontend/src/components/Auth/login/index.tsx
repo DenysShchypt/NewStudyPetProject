@@ -1,25 +1,18 @@
-/* eslint-disable no-useless-escape */
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { IPropsLogin } from '../../../common/types/auth';
+import {
+  ButtonAuthNavStyled,
+  ButtonStyled,
+} from '../../GeneralComponentsStyles';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors } = props;
   return (
     <>
-      <Typography
-        variant="h2"
-        padding={2}
-        fontFamily="Poppins"
-        textAlign="center"
-      >
+      <Typography variant="h2" padding={2} textAlign="center">
         Authorization
       </Typography>
-      <Typography
-        variant="body1"
-        fontFamily="Poppins"
-        textAlign="center"
-        marginBottom={3}
-      >
+      <Typography variant="body1" textAlign="center" marginBottom={3}>
         Write down your login and password
       </Typography>
       <TextField
@@ -47,26 +40,14 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
           required: 'Enter your password',
         })}
       />
-      <Button
-        type="submit"
-        sx={{
-          fontFamily: 'Poppins',
-          marginTop: 2,
-          width: '50%',
-          marginBottom: 2,
-        }}
-        variant="contained"
-      >
+      <ButtonStyled type="submit" variant="contained">
         Enter
-      </Button>
-      <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
-        Do you have an account?{' '}
-        <span
-          className="registrationText"
-          onClick={() => navigate('/register')}
-        >
+      </ButtonStyled>
+      <Typography variant="body1">
+        Do you have an account?
+        <ButtonAuthNavStyled onClick={() => navigate('/register')}>
           Registration
-        </span>
+        </ButtonAuthNavStyled>
       </Typography>
     </>
   );
