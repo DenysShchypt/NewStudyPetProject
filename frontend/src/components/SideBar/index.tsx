@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   ChevronLeftOutlined,
   ChevronRightOutlined,
@@ -18,12 +18,15 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import FlexBetween from '../FlexBetween';
 import { navMenu } from '../../common/moks/navigate';
 import { BoxStyled } from './styles';
 import Logo from '../../assets/images/sideBar/Logo.svg';
+import { ISideBarProps } from '../../common/types/sideBar';
+import { FlexBetween } from '../GeneralComponentsStyles';
 
-const SideBarComponent = (props: any): JSX.Element => {
+const SideBarComponent: FC<ISideBarProps> = (
+  props: ISideBarProps,
+): JSX.Element => {
   const [active, setActive] = useState<string>('');
   const { isNonMobile, drawerWidth, isOpen, setIsOpen } = props;
   const { pathname } = useLocation();
@@ -31,17 +34,17 @@ const SideBarComponent = (props: any): JSX.Element => {
   const theme = useTheme();
 
   useEffect(() => {
-    setActive(pathname.substring(1));
+    setActive(pathname);
   }, [pathname]);
   return (
-    <BoxStyled theme={theme} component="nav">
+    <BoxStyled theme={theme} component="nav" drawerWidth={drawerWidth}>
       {isOpen && (
         <Drawer
           open={isOpen}
           onClose={() => setIsOpen(false)}
           variant="persistent"
           anchor="left"
-          className="navItem"
+          className="navMenu"
         >
           <Box className="navBlock">
             <Box>
@@ -65,7 +68,9 @@ const SideBarComponent = (props: any): JSX.Element => {
                   <ListItem key={element.id}>
                     <ListItemButton
                       onClick={() => navigate(`${element.path}`)}
-                      className="navItem"
+                      className={
+                        active === element.path ? 'navItem active' : 'navItem'
+                      }
                     >
                       <ListItemIcon>{element.icon}</ListItemIcon>
                       <ListItemText>

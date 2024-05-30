@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import './style.css';
 import LoginPage from './Login';
 import RegisterPage from './Register';
 import { instance } from '../../utils/axios';
@@ -11,6 +10,7 @@ import { login } from '../../store/slice/auth';
 import { AppError } from '../../common/errors';
 import { IFormData, IFormDataRegister } from '../../common/types/auth';
 import { LoginSchema, RegisterSchema } from '../../utils/yup';
+import { BoxFormStyled, RootStyled } from './styles';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
@@ -64,19 +64,9 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div className="root">
+    <RootStyled>
       <form className="form" onSubmit={handleSubmit(handleSubmitForm)}>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-          maxWidth={640}
-          margin="auto"
-          padding={5}
-          borderRadius={5}
-          boxShadow="5px 5px 10px rgb(109, 108, 108)"
-        >
+        <BoxFormStyled>
           {location.pathname === '/login' ? (
             <LoginPage
               navigate={navigate}
@@ -90,9 +80,9 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               errors={errors}
             />
           ) : null}
-        </Box>
+        </BoxFormStyled>
       </form>
-    </div>
+    </RootStyled>
   );
 };
 

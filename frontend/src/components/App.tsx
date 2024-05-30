@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import Home from './Home';
+import Home from '../pages/Home';
 import PrivateRoute from '../utils/router/privateRoute';
 import AuthRootComponent from './Auth';
 import { ColorModeContext, useMode } from '../theme';
 import LayoutComponent from './Layout';
-import WatchListComponent from './WatchList';
-import NewsComponent from './News';
-import SettingsComponent from './Settings';
+import WatchListComponent from '../pages/WatchList';
+import NewsComponent from '../pages/News';
+import SettingsComponent from '../pages/Settings';
 
 function App() {
   const [theme, colorMode] = useMode();

@@ -1,6 +1,6 @@
-import React from 'react';
+import { FC } from 'react';
 
-const WatchListComponent: React.FC = (): JSX.Element => {
+const WatchListComponent: FC = (): JSX.Element => {
   return (
     <div>
       <h1>This is WatchList</h1>
