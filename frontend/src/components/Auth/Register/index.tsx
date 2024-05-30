@@ -4,14 +4,7 @@ import { IPropsRegister } from '../../../common/types/auth';
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister,
 ): JSX.Element => {
-  const {
-    setEmail,
-    setPassword,
-    setRepeatPassword,
-    setFirstName,
-    setLastName,
-    navigate,
-  } = props;
+  const { navigate, register, errors } = props;
   return (
     <>
       <Typography
@@ -31,46 +24,68 @@ const RegisterPage: React.FC<IPropsRegister> = (
         Write down your details
       </Typography>
       <TextField
+        error={!!errors.firstName}
         fullWidth={true}
         margin="normal"
         label="Your first name"
         variant="outlined"
         placeholder="Input your first name"
-        onChange={e => setFirstName(e.target.value)}
+        helperText={errors.firstName ? `${errors.firstName.message}` : ''}
+        {...register('firstName', {
+          required: 'Enter your firstName',
+        })}
       />
       <TextField
+        error={!!errors.lastName}
         fullWidth={true}
         margin="normal"
         label="Last name"
         variant="outlined"
         placeholder="Input your last name"
-        onChange={e => setLastName(e.target.value)}
+        helperText={errors.lastName ? `${errors.lastName.message}` : ''}
+        {...register('lastName', {
+          required: 'Enter your lastName',
+        })}
       />
       <TextField
+        error={!!errors.email}
         fullWidth={true}
         margin="normal"
         label="Email Address"
         variant="outlined"
         placeholder="Input your email"
-        onChange={e => setEmail(e.target.value)}
+        helperText={errors.email ? `${errors.email.message}` : ''}
+        {...register('email', {
+          required: 'Enter your email',
+        })}
       />
       <TextField
+        error={!!errors.password}
         type="password"
         fullWidth={true}
         margin="normal"
         label="Password"
         variant="outlined"
         placeholder="Input your password"
-        onChange={e => setPassword(e.target.value)}
+        helperText={errors.password ? `${errors.password.message}` : ''}
+        {...register('password', {
+          required: 'Enter your password',
+        })}
       />
       <TextField
+        error={!!errors.repeatPassword}
         type="password"
         fullWidth={true}
         margin="normal"
         label="Password"
         variant="outlined"
         placeholder="Input your password"
-        onChange={e => setRepeatPassword(e.target.value)}
+        helperText={
+          errors.repeatPassword ? `${errors.repeatPassword.message}` : ''
+        }
+        {...register('repeatPassword', {
+          required: 'Enter your repeat password',
+        })}
       />
       <Button
         type="submit"
