@@ -1,21 +1,20 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Box } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoginPage from './Login';
 import RegisterPage from './Register';
-import { instance } from '../../utils/axios';
-import { useAppDispatch } from '../../utils/hook';
-import { login } from '../../store/slice/auth';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { AppError } from '../../common/errors';
 import { IFormData, IFormDataRegister } from '../../common/types/auth';
 import { LoginSchema, RegisterSchema } from '../../utils/yup';
 import { BoxFormStyled, RootStyled } from './styles';
+import { loginUsers, registerUsers } from '../../store/thunks/auth';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loading = useAppSelector(state => state.auth.isLoading);
 
   const {
     register,
@@ -32,12 +31,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   > = async data => {
     if (location.pathname === '/login') {
       try {
-        const userData = {
-          email: (data as IFormData).email,
-          password: (data as IFormData).password,
-        };
-        const user = await instance.post('auth/login', userData);
-        dispatch(login(user.data));
+        dispatch(loginUsers(data));
         navigate('/');
       } catch (error) {
         return error;
@@ -50,9 +44,10 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
             lastName: (data as IFormDataRegister).lastName,
             email: (data as IFormDataRegister).email,
             password: (data as IFormDataRegister).password,
+            repeatPassword: (data as IFormDataRegister).repeatPassword,
           };
-          const newUser = await instance.post('auth/register', userData);
-          dispatch(login(newUser.data));
+
+          dispatch(registerUsers(userData));
           navigate('/');
         } catch (error) {
           return error;
@@ -72,6 +67,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               navigate={navigate}
               register={register}
               errors={errors}
+              loading={loading}
             />
           ) : location.pathname === '/register' ? (
             <RegisterPage

@@ -3,10 +3,11 @@ import { IPropsLogin } from '../../../common/types/auth';
 import {
   ButtonAuthNavStyled,
   ButtonStyled,
+  LoadingButtonStyled,
 } from '../../GeneralComponentsStyles';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
-  const { navigate, register, errors } = props;
+  const { navigate, register, errors, loading } = props;
   return (
     <>
       <Typography variant="h2" padding={2} textAlign="center">
