@@ -2,13 +2,13 @@ import { TextField, Typography } from '@mui/material';
 import { IPropsRegister } from '../../../common/types/auth';
 import {
   ButtonAuthNavStyled,
-  ButtonStyled,
+  LoadingButtonStyled,
 } from '../../GeneralComponentsStyles';
 
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister,
 ): JSX.Element => {
-  const { navigate, register, errors } = props;
+  const { navigate, register, errors, loading } = props;
   return (
     <>
       <Typography variant="h2" padding={2} textAlign="center">
@@ -81,9 +81,9 @@ const RegisterPage: React.FC<IPropsRegister> = (
           required: 'Enter your repeat password',
         })}
       />
-      <ButtonStyled type="submit" variant="contained">
+      <LoadingButtonStyled loading={loading} type="submit" variant="contained">
         Registration
-      </ButtonStyled>
+      </LoadingButtonStyled>
       <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
         If you have an account?{' '}
         <ButtonAuthNavStyled onClick={() => navigate('/login')}>
