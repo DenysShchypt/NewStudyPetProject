@@ -16,6 +16,7 @@ export interface IPropsRegister<
   register: UseFormRegister<IFormDataRegister | IFormData>;
   navigate: (to: string) => void;
   errors: FieldErrors<TFieldValues>;
+  loading: boolean;
 }
 
 export interface IAuthState {

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 
 export const FlexBetween = styled(Box)({
   display: 'flex',
@@ -8,14 +8,14 @@ export const FlexBetween = styled(Box)({
   alignItems: 'center',
 });
 
-export const ButtonStyled = styled(Button)({
-  borderRadius: 4,
-  background: '#1900D5 !important',
-  padding: '10px 20px !important',
-  marginBottom: 8,
-  marginTop: 8,
-  width: '30%',
-});
+// export const ButtonStyled = styled(Button)({
+//   borderRadius: 4,
+//   background: '#1900D5 !important',
+//   padding: '10px 20px !important',
+//   marginBottom: 8,
+//   marginTop: 8,
+//   width: '30%',
+// });
 export const LoadingButtonStyled = styled(LoadingButton)({
   borderRadius: 4,
   background: '#1900D5 !important',

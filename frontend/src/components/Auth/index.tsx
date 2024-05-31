@@ -31,7 +31,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
   > = async data => {
     if (location.pathname === '/login') {
       try {
-        dispatch(loginUsers(data));
+        await dispatch(loginUsers(data));
         navigate('/');
       } catch (error) {
         return error;
@@ -47,7 +47,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
             repeatPassword: (data as IFormDataRegister).repeatPassword,
           };
 
-          dispatch(registerUsers(userData));
+          await dispatch(registerUsers(userData));
           navigate('/');
         } catch (error) {
           return error;
@@ -74,6 +74,7 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
               navigate={navigate}
               register={register}
               errors={errors}
+              loading={loading}
             />
           ) : null}
         </BoxFormStyled>

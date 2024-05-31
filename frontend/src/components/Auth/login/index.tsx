@@ -2,7 +2,6 @@ import { TextField, Typography } from '@mui/material';
 import { IPropsLogin } from '../../../common/types/auth';
 import {
   ButtonAuthNavStyled,
-  ButtonStyled,
   LoadingButtonStyled,
 } from '../../GeneralComponentsStyles';
 
@@ -41,9 +40,9 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
           required: 'Enter your password',
         })}
       />
-      <ButtonStyled type="submit" variant="contained">
+      <LoadingButtonStyled loading={loading} type="submit" variant="contained">
         Enter
-      </ButtonStyled>
+      </LoadingButtonStyled>
       <Typography variant="body1">
         Do you have an account?
         <ButtonAuthNavStyled onClick={() => navigate('/register')}>
