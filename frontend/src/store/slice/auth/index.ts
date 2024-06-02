@@ -28,37 +28,38 @@ const initialState: IAuthState = {
   isLoading: false,
 };
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(loginUsers.pending, state => {
-      state.isLoggedIn = false;
-      state.isLoading = true;
-    });
-    builder.addCase(loginUsers.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoggedIn = true;
-      state.isLoading = false;
-    });
-    builder.addCase(loginUsers.rejected, (state, action) => {
-      state.isLoggedIn = false;
-      state.isLoading = false;
-    });
-    builder.addCase(registerUsers.pending, state => {
-      state.isLoggedIn = false;
-      state.isLoading = true;
-    });
-    builder.addCase(registerUsers.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.isLoggedIn = true;
-    });
-    builder.addCase(registerUsers.rejected, (state, action) => {
-      state.isLoggedIn = false;
-      state.isLoading = false;
-    });
+    builder
+      .addCase(loginUsers.pending, state => {
+        state.isLoggedIn = false;
+        state.isLoading = true;
+      })
+      .addCase(loginUsers.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+      })
+      .addCase(loginUsers.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+      })
+      .addCase(registerUsers.pending, state => {
+        state.isLoggedIn = false;
+        state.isLoading = true;
+      })
+      .addCase(registerUsers.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+      })
+      .addCase(registerUsers.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.isLoading = false;
+      });
   },
 });
 
-export default authSlice.reducer;
+export const authSliceReducer = authSlice.reducer;
