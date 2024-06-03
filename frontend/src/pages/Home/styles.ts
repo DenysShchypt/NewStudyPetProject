@@ -19,5 +19,28 @@ export const BoxStyled = styled(Box)<StyledProps>(({ theme }) => {
       border: `1px solid ${colors.borderColor}`,
       borderRadius: 12,
     },
+    '& .assetName': {
+      fontSize: 25,
+      fontWeight: 600,
+      lineHeight: '30px',
+    },
+    '& .itemDetails': {
+      display: 'flex',
+      height: '100%',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      paddingBottom: '20px',
+    },
+    '& .cardPrice': {
+      fontSize: 32,
+      fontWeight: 700,
+      lineHeight: '48px',
+    },
+    '& .cardCapitalize': {
+      color: `${colors.secondary.DEFAULT}`,
+      fontSize: 18,
+      fontWeight: 400,
+      lineHeight: '22px',
+    },
   };
 });
