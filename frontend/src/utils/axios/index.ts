@@ -5,11 +5,21 @@ export const instance = axios.create({
   timeout: 1000,
   headers: { 'X-Custom-Header': 'foobar' },
 });
-export const getDataCoinMarket = axios.create({
-  baseURL: 'https://rest.coinapi.io',
+export const instanceAssets = axios.create({
+  baseURL: 'https://data-api.cryptocompare.com',
   timeout: 5000,
   headers: {
-    'X-CoinAPI-Key': '904F960C-9C32-4B2E-B643-1F461BFDF54F',
+    authorization:
+      'c486f48338229247d2c810410a4021ed92f17525f0d01ebc450f04230160f7be',
+    Accept: 'application/json',
+  },
+});
+export const instanceHistory = axios.create({
+  baseURL: 'https://min-api.cryptocompare.com',
+  timeout: 5000,
+  headers: {
+    authorization:
+      'c486f48338229247d2c810410a4021ed92f17525f0d01ebc450f04230160f7be',
     Accept: 'application/json',
   },
 });

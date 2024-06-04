@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
   ChevronLeftOutlined,
-  ChevronRightOutlined,
   LogoutOutlined,
   PortraitOutlined,
 } from '@mui/icons-material';

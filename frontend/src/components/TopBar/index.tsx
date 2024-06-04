@@ -25,6 +25,7 @@ const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
   const { user } = useAppSelector(state => state.auth.user);
+  console.log(user);
   const theme = useTheme();
   const colorMode: any = useContext(ColorModeContext);
   const { isOpen, setIsOpen } = props;
