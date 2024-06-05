@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { getFavoriteAssets, getPricePeriod } from '../../store/thunks/assets';
 import {
   IAssetFavoriteResponses,
-  IAssetPriceData,
   IAssetPriceResponses,
 } from '../../common/types/assets';
 import { BoxStyled } from './styles';
@@ -38,7 +37,7 @@ const Home: FC = (): JSX.Element => {
     fetchDataAsset(favoriteAssetsName);
   }, [dispatch, favoriteAssetsName]);
 
-  const filterFavoriteArray = favoriteAssets.filter(
+  const filterFavoriteArray: IAssetFavoriteResponses[] = favoriteAssets.filter(
     (value, index, self) =>
       index === self.findIndex(t => t.name === value.name),
   );

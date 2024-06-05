@@ -27,10 +27,12 @@ ChartJS.register(
 interface IAreaChartProps {
   data: IAssetPriceData[];
 }
+
 const options: ChartOptions<'line'> = {
   responsive: true,
   scales: {
     x: {
+      display: false,
       grid: {
         display: false,
       },
@@ -46,13 +48,28 @@ const options: ChartOptions<'line'> = {
     legend: {
       display: false,
     },
+    title: {
+      display: true,
+      text: new Date().toLocaleDateString('en-us', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }),
+    },
   },
 };
 
 const AreaChart: FC<IAreaChartProps> = ({ data }) => {
-  console.log(data);
   const values: ChartData<'line'> = {
-    labels: data.map(el => new Date(el.time).getUTCDate()),
+    labels: data.map(el => {
+      const timeDay = Number(`${el.time}000`);
+      return new Date(timeDay).toLocaleDateString('en-us', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+    }),
     datasets: [
       {
         label: 'Price',
@@ -60,7 +77,7 @@ const AreaChart: FC<IAreaChartProps> = ({ data }) => {
         fill: 'start',
         backgroundColor: (context: ScriptableContext<'line'>) => {
           const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+          const gradient = ctx.createLinearGradient(0, 50, 0, 180);
           gradient.addColorStop(0, '#C1EF00');
           gradient.addColorStop(1, '#232323');
           return gradient;
@@ -68,7 +85,7 @@ const AreaChart: FC<IAreaChartProps> = ({ data }) => {
       },
     ],
   };
-  return <Line options={options} data={values} width={300} height={100} />;
+  return <Line options={options} data={values} width={300} height={125} />;
 };
 
 export default AreaChart;

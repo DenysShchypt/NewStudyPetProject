@@ -37,7 +37,9 @@ const TopBarComponent: FC<ITopBarProps> = (
             className="menuIcon"
             onClick={() => setIsOpen(!isOpen)}
           />
-          <Typography variant="h3">Welcome {user.firstName}</Typography>
+          <Typography variant="h3">
+            Welcome {sessionStorage.getItem('name')}
+          </Typography>
         </FlexBetween>
         <Box display="flex">
           <Grid onClick={colorMode.toggleColorMode} className="iconBlock">

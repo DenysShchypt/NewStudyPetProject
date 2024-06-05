@@ -11,6 +11,8 @@ export const loginUsers = createAsyncThunk<
   try {
     const user = await instance.post('auth/login', data);
     sessionStorage.setItem('token', user.data.token);
+    sessionStorage.setItem('name', user.data.user.firstName);
+    console.log(user.data);
     return user.data;
   } catch (error) {
     const typedError = error as IError;
@@ -29,6 +31,7 @@ export const registerUsers = createAsyncThunk<
   try {
     const newUser = await instance.post('auth/register', data);
     sessionStorage.setItem('token', newUser.data.token);
+    sessionStorage.setItem('name', newUser.data.user.firstName);
     return newUser.data;
   } catch (error) {
     const typedError = error as IError;
