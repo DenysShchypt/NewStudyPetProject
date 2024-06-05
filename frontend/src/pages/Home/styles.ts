@@ -36,11 +36,27 @@ export const BoxStyled = styled(Box)<StyledProps>(({ theme }) => {
       fontWeight: 700,
       lineHeight: '48px',
     },
-    '& .cardCapitalize': {
-      color: `${colors.secondary.DEFAULT}`,
-      fontSize: 18,
-      fontWeight: 400,
-      lineHeight: '22px',
+    // '& .cardCapitalize': {
+    //   color: `${colors.secondary.DEFAULT}`,
+    //   fontSize: 18,
+    //   fontWeight: 400,
+    //   lineHeight: '22px',
+    // },
+    '& .priceTrend': {
+      width: '28%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '2px 6px 2px 6px',
+      borderRadius: 4,
+    },
+    '& .trendUp': {
+      backgroundColor: '#A9FFA7',
+      color: '#037400',
+    },
+    '& .trendDown': {
+      backgroundColor: '#FFA7A7',
+      color: '#740000',
     },
   };
 });
