@@ -7,9 +7,9 @@ export interface IAsset {
     PRICE_USD: number;
     SEO_TITLE: string;
     TOTAL_MKT_CAP_USD: number;
-    CIRCULATING_MKT_CAP_USD: number;
     SEO_DESCRIPTION: string;
     PRICE_USD_LAST_UPDATE_TS: number;
+    SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD: number;
   };
 }
 

@@ -25,7 +25,6 @@ const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
   const { user } = useAppSelector(state => state.auth.user);
-  console.log(user);
   const theme = useTheme();
   const colorMode: any = useContext(ColorModeContext);
   const { isOpen, setIsOpen } = props;
@@ -59,29 +58,6 @@ const TopBarComponent: FC<ITopBarProps> = (
         </Grid>
       </Toolbar>
     </AppBarStyled>
-    // <Box className={classes.root} position="static">
-    //   {user && <Grid>Welcome {user.firstName}</Grid>}
-    //   <Box display="flex">
-    //     <Grid onClick={colorMode.toggleColorMode} className={classes.iconBlock}>
-    //       <IconButton className={classes.themeIcon}>
-    //         {theme.palette.mode === 'dark' ? (
-    //           <DarkModeSharpIcon />
-    //         ) : (
-    //           <LightModeSharpIcon />
-    //         )}
-    //       </IconButton>
-    //       <IconButton>
-    //         <NotificationsNoneSharpIcon />
-    //       </IconButton>
-    //     </Grid>
-    //     <Grid className={classes.searchBlock}>
-    //       <IconButton className={classes.searchIcon}>
-    //         <SearchSharpIcon />
-    //       </IconButton>
-    //       <InputBase className={classes.searchInput} placeholder="Search" />
-    //     </Grid>
-    //   </Box>
-    // </Box>
   );
 };
 

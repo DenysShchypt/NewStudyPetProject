@@ -1,5 +1,6 @@
-import { Grid, useTheme } from '@mui/material';
+import { Box, Grid, useTheme } from '@mui/material';
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import { TrendingUpOutlined, TrendingDownOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { getFavoriteAssets, getPricePeriod } from '../../store/thunks/assets';
 import {
@@ -20,7 +21,6 @@ const Home: FC = (): JSX.Element => {
   );
   const dispatch = useAppDispatch();
   const favoriteAssetsName = useMemo(() => ['BTC', 'ETH'], []);
-
   const fetchDataAsset = useCallback(
     (data: string[]) => {
       data.forEach((element: string) => {
@@ -47,8 +47,13 @@ const Home: FC = (): JSX.Element => {
   );
   const renderFavoriteBlok = filterFavoriteArray.map(
     (element: IAssetFavoriteResponses) => {
-      const { ID, NAME, PRICE_USD, CIRCULATING_MKT_CAP_USD } =
-        element.data.Data;
+      const {
+        ID,
+        NAME,
+        PRICE_USD,
+        TOTAL_MKT_CAP_USD,
+        SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD,
+      } = element.data.Data;
       const history: IAssetPriceResponses[] = filterHistoryPrice.filter(
         elem => elem.name === element.name,
       );
@@ -59,10 +64,26 @@ const Home: FC = (): JSX.Element => {
             <Grid item xs={12} sm={6} lg={6}>
               <h3 className="assetName">{NAME}</h3>
               <div className="itemDetails">
-                <h3 className="cardPrice">${PRICE_USD.toFixed(4)}</h3>
-                <p className="cardCapitalize">
-                  ${CIRCULATING_MKT_CAP_USD.toFixed(0)}
-                </p>
+                <h3 className="cardPrice">${PRICE_USD.toFixed(2)}</h3>
+                <Box
+                  className={
+                    SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD > 0
+                      ? 'priceTrend trendUp'
+                      : 'priceTrend trendDown'
+                  }
+                >
+                  {SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD > 0 ? (
+                    <TrendingUpOutlined fontSize="small" />
+                  ) : (
+                    <TrendingDownOutlined fontSize="small" />
+                  )}
+                  <span>
+                    {SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD.toFixed(2)} %
+                  </span>
+                </Box>
+                {/* <p className="cardCapitalize">
+                  ${TOTAL_MKT_CAP_USD.toFixed(0)}
+                </p> */}
               </div>
             </Grid>
             <Grid item xs={12} sm={6} lg={6}>
