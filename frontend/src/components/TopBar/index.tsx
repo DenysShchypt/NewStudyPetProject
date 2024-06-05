@@ -25,6 +25,7 @@ const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
   const { user } = useAppSelector(state => state.auth.user);
+  console.log(user);
   const theme = useTheme();
   const colorMode: any = useContext(ColorModeContext);
   const { isOpen, setIsOpen } = props;
@@ -36,7 +37,9 @@ const TopBarComponent: FC<ITopBarProps> = (
             className="menuIcon"
             onClick={() => setIsOpen(!isOpen)}
           />
-          <Typography variant="h3">Welcome {user.firstName}</Typography>
+          <Typography variant="h3">
+            Welcome {sessionStorage.getItem('name')}
+          </Typography>
         </FlexBetween>
         <Box display="flex">
           <Grid onClick={colorMode.toggleColorMode} className="iconBlock">
