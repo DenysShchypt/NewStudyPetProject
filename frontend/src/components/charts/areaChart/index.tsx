@@ -56,6 +56,7 @@ const options: ChartOptions<'line'> = {
         month: 'short',
         day: 'numeric',
       }),
+      color: 'white',
     },
   },
 };
@@ -63,7 +64,7 @@ const options: ChartOptions<'line'> = {
 const AreaChart: FC<IAreaChartProps> = ({ data }) => {
   const values: ChartData<'line'> = {
     labels: data.map(el => {
-      const timeDay = Number(`${el.time}000`);
+      const timeDay = el.time * 1000;
       return new Date(timeDay).toLocaleDateString('en-us', {
         year: 'numeric',
         month: 'short',

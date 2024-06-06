@@ -35,7 +35,7 @@ export const getPricePeriod = createAsyncThunk<IAssetPriceResponses, string>(
         params: {
           fsym: data,
           tsym: 'USD',
-          limit: 10,
+          limit: 30,
           aggregate: 24,
         },
       });
