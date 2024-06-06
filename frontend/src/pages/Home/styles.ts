@@ -58,5 +58,19 @@ export const BoxStyled = styled(Box)<StyledProps>(({ theme }) => {
       backgroundColor: '#FFA7A7',
       color: '#740000',
     },
+    '& .lineChartBlok': {
+      backgroundColor: `${
+        theme.palette.mode === 'light'
+          ? colors.primary.DEFAULT
+          : colors.primary[600]
+      }`,
+      padding: '20px 16px',
+      minHeight: 270,
+      border: `1px solid ${colors.borderColor}`,
+      borderRadius: 12,
+    },
+    '& .areaChart': {
+      marginBottom: 32,
+    },
   };
 });

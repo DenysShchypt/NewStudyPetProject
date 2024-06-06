@@ -8,7 +8,8 @@ import {
   IAssetPriceResponses,
 } from '../../common/types/assets';
 import { BoxStyled } from './styles';
-import AreaChart from '../../components/charts/areaChart';
+import AreaChart from '../../components/charts/AreaChart';
+import LineChart from '../../components/charts/LineChart';
 
 const Home: FC = (): JSX.Element => {
   const useFavoriteRef = useRef(false);
@@ -47,13 +48,8 @@ const Home: FC = (): JSX.Element => {
   );
   const renderFavoriteBlok = filterFavoriteArray.map(
     (element: IAssetFavoriteResponses) => {
-      const {
-        ID,
-        NAME,
-        PRICE_USD,
-        TOTAL_MKT_CAP_USD,
-        SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD,
-      } = element.data.Data;
+      const { ID, NAME, PRICE_USD, SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD } =
+        element.data.Data;
       const history: IAssetPriceResponses[] = filterHistoryPrice.filter(
         elem => elem.name === element.name,
       );
@@ -98,8 +94,19 @@ const Home: FC = (): JSX.Element => {
   );
   return (
     <BoxStyled theme={theme}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="areaChart">
         {renderFavoriteBlok}
+      </Grid>
+      <Grid container className="lineChartBlok">
+        <Grid item xs={12} sm={12} lg={12}>
+          {filterHistoryPrice.length !== 0 && (
+            <LineChart
+              data={filterHistoryPrice.filter(
+                element => element.name === 'BTC',
+              )}
+            />
+          )}
+        </Grid>
       </Grid>
     </BoxStyled>
   );
