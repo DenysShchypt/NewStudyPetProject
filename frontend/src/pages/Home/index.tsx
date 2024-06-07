@@ -91,9 +91,6 @@ const Home: FC = (): JSX.Element => {
                     {SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD.toFixed(2)} %
                   </span>
                 </Box>
-                {/* <p className="cardCapitalize">
-                  ${TOTAL_MKT_CAP_USD.toFixed(0)}
-                </p> */}
               </div>
             </Grid>
             <Grid item xs={12} sm={6} lg={6}>

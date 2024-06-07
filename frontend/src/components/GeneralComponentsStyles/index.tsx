@@ -4,18 +4,10 @@ import { Box } from '@mui/material';
 
 export const FlexBetween = styled(Box)({
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   alignItems: 'center',
 });
 
-// export const ButtonStyled = styled(Button)({
-//   borderRadius: 4,
-//   background: '#1900D5 !important',
-//   padding: '10px 20px !important',
-//   marginBottom: 8,
-//   marginTop: 8,
-//   width: '30%',
-// });
 export const LoadingButtonStyled = styled(LoadingButton)({
   borderRadius: 4,
   background: '#1900D5 !important',

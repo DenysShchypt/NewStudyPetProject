@@ -8,7 +8,7 @@ import { MainSection, RootBox } from './styles';
 const LayoutComponent: FC = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const isNonMobile = useMediaQuery('(min-width:600px)');
+  const isNonMobile = useMediaQuery('(min-width:760px)');
   return location.pathname === '/login' || location.pathname === '/register' ? (
     <>
       <Outlet />
@@ -27,7 +27,11 @@ const LayoutComponent: FC = (): JSX.Element => {
         setIsOpen={setIsOpen}
       />
       <MainSection>
-        <TopBarComponent isOpen={isOpen} setIsOpen={setIsOpen} />
+        <TopBarComponent
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          isNonMobile={isNonMobile}
+        />
         <Outlet />
       </MainSection>
     </RootBox>
