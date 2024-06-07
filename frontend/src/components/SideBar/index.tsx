@@ -22,6 +22,8 @@ import { BoxStyled } from './styles';
 import Logo from '../../assets/images/sideBar/Logo.svg';
 import { ISideBarProps } from '../../common/types/sideBar';
 import { FlexBetween } from '../GeneralComponentsStyles';
+import ThemeSwitcher from '../ThemeSwitcher';
+import SearchBar from '../SearchBar';
 
 const SideBarComponent: FC<ISideBarProps> = (
   props: ISideBarProps,
@@ -61,6 +63,13 @@ const SideBarComponent: FC<ISideBarProps> = (
                 )}
               </FlexBetween>
             </Box>
+            {!isNonMobile && (
+              <ListItem>
+                <Box>
+                  <SearchBar />
+                </Box>
+              </ListItem>
+            )}
             <List className="navList">
               {navMenu.map(element => {
                 return (
@@ -93,6 +102,7 @@ const SideBarComponent: FC<ISideBarProps> = (
                   </ListItemText>
                 </ListItemButton>
               </ListItem>
+
               <ListItem>
                 <ListItemButton
                   onClick={() => navigate('/login')}
@@ -106,6 +116,13 @@ const SideBarComponent: FC<ISideBarProps> = (
                   </ListItemText>
                 </ListItemButton>
               </ListItem>
+              {!isNonMobile && (
+                <ListItem>
+                  <Box paddingLeft="6px">
+                    <ThemeSwitcher />
+                  </Box>
+                </ListItem>
+              )}
             </List>
           </Box>
         </Drawer>

@@ -18,28 +18,5 @@ export const AppBarStyled = styled(AppBar)<StyledProps>(({ theme }) => {
       marginRight: '10px',
       cursor: 'pointer',
     },
-    '& .iconBlock': {
-      paddingRight: '35px',
-      paddingTop: '10px',
-      borderRight: `1px solid ${colors.borderColor}`,
-    },
-    '& .themeIcon': {
-      marginRight: '45px',
-    },
-    '& .searchBlock': {
-      display: 'flex',
-      maxHeight: '45px',
-      borderRadius: '8px',
-      marginLeft: '28px',
-      backgroundColor: `${colors.primary[600]}`,
-    },
-    '& .searchIcon': {
-      '&:hover': {
-        backgroundColor: 'transparent',
-      },
-    },
-    '& .searchInput': {
-      padding: '18px 12px',
-    },
   };
 });

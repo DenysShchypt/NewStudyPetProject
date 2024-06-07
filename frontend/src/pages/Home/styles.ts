@@ -36,14 +36,8 @@ export const BoxStyled = styled(Box)<StyledProps>(({ theme }) => {
       fontWeight: 700,
       lineHeight: '48px',
     },
-    // '& .cardCapitalize': {
-    //   color: `${colors.secondary.DEFAULT}`,
-    //   fontSize: 18,
-    //   fontWeight: 400,
-    //   lineHeight: '22px',
-    // },
     '& .priceTrend': {
-      width: '28%',
+      width: 100,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
