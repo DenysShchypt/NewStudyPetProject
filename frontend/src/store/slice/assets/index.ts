@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getFavoriteAssets, getPricePeriod } from '../../thunks/assets';
+import {
+  getAllInfoAssets,
+  getFavoriteAssets,
+  getPricePeriod,
+} from '../../thunks/assets';
 import { IAssetsState } from '../../../common/types/assets';
 
 const initialState: IAssetsState = {
   assets: [],
   favoriteAssets: [],
   historyPrice: [],
+  allAssets: [],
 };
 
 const assetsSlice = createSlice({
@@ -19,6 +24,9 @@ const assetsSlice = createSlice({
       })
       .addCase(getPricePeriod.fulfilled, (state, action) => {
         state.historyPrice.push(action.payload);
+      })
+      .addCase(getAllInfoAssets.fulfilled, (state, action) => {
+        state.allAssets = action.payload;
       });
   },
 });

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { instanceAssets, instanceHistory } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 import {
+  IAllAsset,
   IAssetFavoriteResponses,
   IAssetPriceResponses,
 } from '../../../common/types/assets';
@@ -41,6 +42,27 @@ export const getPricePeriod = createAsyncThunk<IAssetPriceResponses, string>(
       });
 
       return { name: data, data: response.data.Data };
+    } catch (error) {
+      const typedError = error as IError;
+      if (typedError.response && typedError.response.data?.message) {
+        return rejectWithValue(typedError.response.data.message);
+      } else {
+        return rejectWithValue(typedError.message);
+      }
+    }
+  },
+);
+export const getAllInfoAssets = createAsyncThunk<IAllAsset[]>(
+  'assets/getAllInfoAssets',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await instanceAssets.get(`/asset/v1/top/list`, {
+        params: {
+          page: 1,
+          page_size: 10,
+        },
+      });
+      return response.data.Data.LIST;
     } catch (error) {
       const typedError = error as IError;
       if (typedError.response && typedError.response.data?.message) {

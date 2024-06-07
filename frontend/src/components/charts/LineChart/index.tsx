@@ -25,7 +25,7 @@ ChartJS.register(
   Legend,
 );
 interface IAreaChartProps {
-  data: IAssetPriceResponses[];
+  data: IAssetPriceResponses;
 }
 
 const LineChart: FC<IAreaChartProps> = ({ data }) => {
@@ -65,19 +65,16 @@ const LineChart: FC<IAreaChartProps> = ({ data }) => {
   };
 
   const value: ChartData<'line'> = {
-    labels: data.flatMap(el =>
-      el.data.Data.map(el =>
-        moment(new Date(el.time * 1000)).format(' DD.MM.YY'),
-      ),
+    labels: data.data.Data.map(el =>
+      moment(new Date(el.time * 1000)).format(' DD.MM.YY'),
     ),
+
     datasets: [
       {
-        label: data[0].name,
-        data: data.flatMap(el =>
-          el.data.Data.map(el => parseFloat(el.close.toFixed(2))),
-        ),
+        label: data.name ?? 'Error',
+        data: data.data.Data.map(el => parseFloat(el.close.toFixed(2))),
         borderColor:
-          data[0].name === 'BTC' ? 'rgb(255, 153, 0)' : 'rgb(53, 162, 235)',
+          data.name === 'BTC' ? 'rgb(255, 153, 0)' : 'rgb(53, 162, 235)',
         backgroundColor: 'rgb(255, 255, 255)',
       },
     ],
