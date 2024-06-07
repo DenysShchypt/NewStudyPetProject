@@ -3,7 +3,7 @@ import { IPropsLogin } from '../../../common/types/auth';
 import {
   ButtonAuthNavStyled,
   LoadingButtonStyled,
-} from '../../GeneralComponentsStyles';
+} from '../../../components/GeneralComponentsStyles';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;

@@ -32,8 +32,22 @@ const TopPriceComponent: FC<ITopPriceComponentProps> = ({
               key={element.ID}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {element.NAME}
+              <TableCell
+                component="th"
+                scope="row"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'start',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <img
+                  width={30}
+                  src={element.LOGO_URL}
+                  alt={element.ASSET_DESCRIPTION_SNIPPET}
+                />
+                <p>{element.NAME}</p>
               </TableCell>
               <TableCell align="right">
                 {element.PRICE_USD.toFixed(2)}

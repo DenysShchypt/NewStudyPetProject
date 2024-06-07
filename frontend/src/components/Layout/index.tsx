@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import TopBarComponent from '../TopBar';
-import { Box, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import SideBarComponent from '../SideBar';
 import { MainSection, RootBox } from './styles';
 

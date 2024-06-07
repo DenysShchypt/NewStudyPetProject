@@ -32,12 +32,12 @@ export const getPricePeriod = createAsyncThunk<IAssetPriceResponses, string>(
   'assets/getPricePeriod',
   async (data: string, { rejectWithValue }) => {
     try {
-      const response = await instanceHistory.get(`data/v2/histohour`, {
+      const response = await instanceHistory.get(`data/v2/histoday`, {
         params: {
           fsym: data,
           tsym: 'USD',
           limit: 30,
-          aggregate: 24,
+          aggregate: 1,
         },
       });
 

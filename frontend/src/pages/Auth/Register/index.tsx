@@ -3,7 +3,7 @@ import { IPropsRegister } from '../../../common/types/auth';
 import {
   ButtonAuthNavStyled,
   LoadingButtonStyled,
-} from '../../GeneralComponentsStyles';
+} from '../../../components/GeneralComponentsStyles';
 
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister,

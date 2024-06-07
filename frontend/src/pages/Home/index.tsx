@@ -17,7 +17,7 @@ import AreaChart from '../../components/charts/AreaChart';
 import LineChart from '../../components/charts/LineChart';
 import TopPriceComponent from '../../components/TopPrice';
 
-const Home: FC = (): JSX.Element => {
+const HomePage: FC = (): JSX.Element => {
   const useFavoriteRef = useRef(false);
   const theme = useTheme();
   const favoriteAssets: IAssetFavoriteResponses[] = useAppSelector(
@@ -127,4 +127,4 @@ const Home: FC = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default HomePage;
