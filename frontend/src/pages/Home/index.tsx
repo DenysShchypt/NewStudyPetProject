@@ -1,15 +1,21 @@
 import { Box, Grid, useTheme } from '@mui/material';
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { TrendingUpOutlined, TrendingDownOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
-import { getFavoriteAssets, getPricePeriod } from '../../store/thunks/assets';
 import {
+  getAllInfoAssets,
+  getFavoriteAssets,
+  getPricePeriod,
+} from '../../store/thunks/assets';
+import {
+  IAllAsset,
   IAssetFavoriteResponses,
   IAssetPriceResponses,
 } from '../../common/types/assets';
 import { BoxStyled } from './styles';
 import AreaChart from '../../components/charts/AreaChart';
 import LineChart from '../../components/charts/LineChart';
+import TopPriceComponent from '../../components/TopPrice';
 
 const Home: FC = (): JSX.Element => {
   const useFavoriteRef = useRef(false);
@@ -20,8 +26,15 @@ const Home: FC = (): JSX.Element => {
   const historyPrice: IAssetPriceResponses[] = useAppSelector(
     state => state.assets.historyPrice,
   );
+
+  const allAssetsDescriptions: IAllAsset[] = useAppSelector(
+    state => state.assets.allAssets,
+  )
+    .slice()
+    .sort((a, b) => b.PRICE_USD - a.PRICE_USD);
+
   const dispatch = useAppDispatch();
-  const favoriteAssetsName = useMemo(() => ['BTC', 'ETH'], []);
+  const favoriteAssetsName = ['BTC', 'ETH'];
   const fetchDataAsset = useCallback(
     (data: string[]) => {
       data.forEach((element: string) => {
@@ -36,7 +49,8 @@ const Home: FC = (): JSX.Element => {
     if (useFavoriteRef.current) return;
     useFavoriteRef.current = true;
     fetchDataAsset(favoriteAssetsName);
-  }, [dispatch, favoriteAssetsName]);
+    dispatch(getAllInfoAssets());
+  }, [fetchDataAsset, favoriteAssetsName, dispatch]);
 
   const filterFavoriteArray: IAssetFavoriteResponses[] = favoriteAssets.filter(
     (value, index, self) =>
@@ -99,12 +113,16 @@ const Home: FC = (): JSX.Element => {
       </Grid>
       <Grid container className="lineChartBlok">
         <Grid item xs={12} sm={12} lg={12}>
-          {filterHistoryPrice.length !== 0 && (
-            <LineChart
-              data={filterHistoryPrice.filter(
-                element => element.name === 'BTC',
-              )}
-            />
+          {filterHistoryPrice.length !== 0 &&
+            filterHistoryPrice[0].name === 'BTC' && (
+              <LineChart data={filterHistoryPrice[0]} />
+            )}
+        </Grid>
+      </Grid>
+      <Grid container className="topPriceRoot">
+        <Grid item xs={12} sm={12} lg={12}>
+          {allAssetsDescriptions.length !== 0 && (
+            <TopPriceComponent data={allAssetsDescriptions} />
           )}
         </Grid>
       </Grid>

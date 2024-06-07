@@ -12,6 +12,15 @@ export interface IAsset {
     SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD: number;
   };
 }
+export interface IAllAsset {
+  ID: number;
+  LOGO_URL: string;
+  NAME: string;
+  ASSET_DESCRIPTION_SNIPPET: string;
+  PRICE_USD: number;
+  SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD: number;
+  SPOT_MOVING_24_HOUR_CHANGE_USD: number;
+}
 
 export interface IAssetPriceData {
   close: number;
@@ -32,6 +41,7 @@ export interface IAssetsState {
   assets: IAssetFavoriteResponses[];
   favoriteAssets: IAssetFavoriteResponses[];
   historyPrice: IAssetPriceResponses[];
+  allAssets: IAllAsset[];
 }
 
 export interface IAssetFavoriteResponses {
