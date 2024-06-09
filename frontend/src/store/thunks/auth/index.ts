@@ -12,7 +12,6 @@ export const loginUsers = createAsyncThunk<
     const user = await instance.post('auth/login', data);
     sessionStorage.setItem('token', user.data.token);
     sessionStorage.setItem('name', user.data.user.firstName);
-    console.log(user.data);
     return user.data;
   } catch (error) {
     const typedError = error as IError;

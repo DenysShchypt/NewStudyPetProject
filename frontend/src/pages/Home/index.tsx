@@ -94,9 +94,7 @@ const HomePage: FC = (): JSX.Element => {
               </div>
             </Grid>
             <Grid item xs={12} sm={6} lg={6}>
-              {history.length !== 0 && (
-                <AreaChart data={history[0].data.Data} />
-              )}
+              {history[0] && <AreaChart data={history[0].data.Data} />}
             </Grid>
           </Grid>
         </Grid>
@@ -110,10 +108,7 @@ const HomePage: FC = (): JSX.Element => {
       </Grid>
       <Grid container className="lineChartBlok">
         <Grid item xs={12} sm={12} lg={12}>
-          {filterHistoryPrice.length !== 0 &&
-            filterHistoryPrice[0].name === 'BTC' && (
-              <LineChart data={filterHistoryPrice[0]} />
-            )}
+          {filterHistoryPrice[0] && <LineChart data={filterHistoryPrice[0]} />}
         </Grid>
       </Grid>
       <Grid container className="topPriceRoot">
