@@ -13,6 +13,7 @@ export interface IData {
   SEO_DESCRIPTION: string;
   PRICE_USD_LAST_UPDATE_TS: number;
   SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD: number;
+  SYMBOL: string;
 }
 export interface IAllAsset {
   ID: number;

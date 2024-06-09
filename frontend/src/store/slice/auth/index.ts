@@ -13,10 +13,10 @@ const initialState: IAuthState = {
       updatedAt: '',
       watchList: [
         {
-          id: null,
-          user: null,
+          id: 0,
+          user: 0,
           name: '',
-          assetId: '',
+          assetId: 0,
           createdAt: '',
           updatedAt: '',
         },

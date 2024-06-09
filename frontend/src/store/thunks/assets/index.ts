@@ -87,7 +87,7 @@ export const getAllInfoAssets = createAsyncThunk<IAllAsset[]>(
       const response = await instanceAssets.get(`/asset/v1/top/list`, {
         params: {
           page: 1,
-          page_size: 10,
+          page_size: 20,
         },
       });
       return response.data.Data.LIST;

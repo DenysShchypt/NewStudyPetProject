@@ -18,6 +18,14 @@ export class WatchListResponseGetOneAsset {
   name: string;
   @ApiProperty()
   @Expose()
+  @IsString()
+  createdAt: string;
+  @ApiProperty()
+  @Expose()
+  @IsString()
+  updatedAt: string;
+  @ApiProperty()
+  @Expose()
   @IsNumber()
   assetId: number;
 }

@@ -6,4 +6,5 @@ export const AppError = {
   USER_NOT_FOUND: 'User not found',
   WRONG_DATA: 'Wrong data',
   ASSET_NOT_FOUND: 'Asset not found',
+  ASSETS_NOT_FOUND: 'Assets not found',
 };

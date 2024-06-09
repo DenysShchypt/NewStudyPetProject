@@ -24,7 +24,7 @@ const SingleAssetPage: FC = (): JSX.Element => {
   );
   const handleCreateRecord = () => {
     const data = {
-      name: searchAssetsDescriptions?.NAME,
+      name: searchAssetsDescriptions?.SYMBOL,
       assetId: searchAssetsDescriptions?.ID,
     };
     dispatch(createWatchListRecord(data));

@@ -33,18 +33,33 @@ export class WatchListService {
     userId: number,
     assetId: string,
   ): Promise<WatchListResponseGetOneAsset> {
-    const asset = await this.watchListRepository.findByPk(assetId);
-    if (!asset) throw new BadRequestException(AppError.ASSET_NOT_FOUND);
     try {
-      const watchList = await this.watchListRepository.findOne({
+      const asset = await this.watchListRepository.findOne({
         where: { user: userId, id: assetId },
       });
+
+      if (!asset) throw new BadRequestException(AppError.ASSET_NOT_FOUND);
       return {
-        name: watchList.name,
-        assetId: watchList.assetId,
+        name: asset.name,
+        assetId: asset.assetId,
         user: userId,
-        id: watchList.id,
+        id: asset.id,
+
+        updatedAt: asset.updatedAt,
+        createdAt: asset.createdAt,
       };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async getAllAssets(userId: number): Promise<WatchList[]> {
+    try {
+      const watchList = await this.watchListRepository.findAll({
+        where: { user: userId },
+      });
+      if (watchList.length === 0)
+        throw new BadRequestException(AppError.ASSETS_NOT_FOUND);
+      return watchList;
     } catch (error) {
       throw new Error(error);
     }

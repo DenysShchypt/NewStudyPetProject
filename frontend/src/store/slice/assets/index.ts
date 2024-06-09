@@ -23,6 +23,7 @@ const initialState: IAssetsState = {
     SEO_DESCRIPTION: '',
     PRICE_USD_LAST_UPDATE_TS: 0,
     SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD: 0,
+    SYMBOL: '',
   },
 };
 
