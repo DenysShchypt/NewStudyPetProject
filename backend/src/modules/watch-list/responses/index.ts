@@ -18,8 +18,8 @@ export class WatchListResponseGetOneAsset {
   name: string;
   @ApiProperty()
   @Expose()
-  @IsString()
-  assetId: string;
+  @IsNumber()
+  assetId: number;
 }
 @Exclude()
 export class WatchListResponse {
@@ -33,6 +33,6 @@ export class WatchListResponse {
   name: string;
   @ApiProperty()
   @Expose()
-  @IsString()
-  assetId: string;
+  @IsNumber()
+  assetId: number;
 }

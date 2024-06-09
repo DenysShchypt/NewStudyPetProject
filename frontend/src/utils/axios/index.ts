@@ -1,9 +1,20 @@
 import axios from 'axios';
 
+const token = sessionStorage.getItem('token');
+console.log(token);
+
 export const instance = axios.create({
   baseURL: 'http://localhost:4000',
   timeout: 1000,
   headers: { 'X-Custom-Header': 'foobar' },
+});
+export const instanceAuth = axios.create({
+  baseURL: 'http://localhost:4000',
+  timeout: 1000,
+  headers: {
+    'X-Custom-Header': 'foobar',
+    Authorization: 'Bearer ' + token,
+  },
 });
 export const instanceAssets = axios.create({
   baseURL: 'https://data-api.cryptocompare.com',

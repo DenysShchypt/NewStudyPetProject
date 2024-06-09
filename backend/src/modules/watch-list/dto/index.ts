@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class WatchListDTO {
   @ApiProperty()
@@ -8,6 +8,6 @@ export class WatchListDTO {
   name: string;
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  assetId: string;
+  @IsNumber()
+  assetId: number;
 }

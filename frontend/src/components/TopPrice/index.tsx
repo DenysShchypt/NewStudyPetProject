@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IAllAsset } from '../../common/types/assets';
+import { Avatar, Typography } from '@mui/material';
 
 interface ITopPriceComponentProps {
   data: IAllAsset[];
@@ -42,12 +43,14 @@ const TopPriceComponent: FC<ITopPriceComponentProps> = ({
                   gap: '8px',
                 }}
               >
-                <img
-                  width={30}
+                <Avatar
+                  sx={{
+                    width: 30,
+                    height: 30,
+                  }}
                   src={element.LOGO_URL}
-                  alt={element.ASSET_DESCRIPTION_SNIPPET}
                 />
-                <p>{element.NAME}</p>
+                <Typography>{element.NAME}</Typography>
               </TableCell>
               <TableCell align="right">
                 {element.PRICE_USD.toFixed(2)}
