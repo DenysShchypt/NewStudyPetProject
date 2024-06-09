@@ -1,4 +1,5 @@
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import { IWatchList } from '../watchList';
 
 export interface IPropsLogin<
   TFieldValues extends IFormData = IFormData,
@@ -36,15 +37,6 @@ export interface IPublicUser {
     watchList: [IWatchList];
   };
   token: string;
-}
-
-export interface IWatchList {
-  id: number | null;
-  user: number | null;
-  name: string;
-  assetId: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IFormData extends FieldValues {
