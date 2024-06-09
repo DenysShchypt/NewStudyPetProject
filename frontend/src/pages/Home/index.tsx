@@ -1,5 +1,5 @@
 import { Box, Grid, useTheme } from '@mui/material';
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
 import { TrendingUpOutlined, TrendingDownOutlined } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import {
@@ -17,7 +17,7 @@ import AreaChart from '../../components/charts/AreaChart';
 import LineChart from '../../components/charts/LineChart';
 import TopPriceComponent from '../../components/TopPrice';
 
-const Home: FC = (): JSX.Element => {
+const HomePage: FC = (): JSX.Element => {
   const useFavoriteRef = useRef(false);
   const theme = useTheme();
   const favoriteAssets: IAssetFavoriteResponses[] = useAppSelector(
@@ -34,7 +34,7 @@ const Home: FC = (): JSX.Element => {
     .sort((a, b) => b.PRICE_USD - a.PRICE_USD);
 
   const dispatch = useAppDispatch();
-  const favoriteAssetsName = ['BTC', 'ETH'];
+  const favoriteAssetsName = useMemo(() => ['BTC', 'ETH'], []);
   const fetchDataAsset = useCallback(
     (data: string[]) => {
       data.forEach((element: string) => {
@@ -127,4 +127,4 @@ const Home: FC = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default HomePage;

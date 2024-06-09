@@ -1,18 +1,12 @@
 import { FC } from 'react';
 import { Search } from '@mui/icons-material';
-import {
-  Autocomplete,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  Stack,
-  TextField,
-} from '@mui/material';
-import { SearchStyles } from './styles';
+import { Autocomplete, InputAdornment, Stack, TextField } from '@mui/material';
 import { useAppSelector } from '../../utils/hook';
 import { IAllAsset } from '../../common/types/assets';
+import { useNavigate } from 'react-router-dom';
 
-const SearchBar: FC = (): JSX.Element => {
+const SearchBarComponent: FC = (): JSX.Element => {
+  const navigate = useNavigate();
   const allAssetsDescriptions: IAllAsset[] = useAppSelector(
     state => state.assets.allAssets,
   );
@@ -20,22 +14,21 @@ const SearchBar: FC = (): JSX.Element => {
     <Stack spacing={2} sx={{ width: '300px' }}>
       <Autocomplete
         freeSolo
+        onChange={(e: any, value: string | null) => navigate(`single/${value}`)}
         renderInput={element => (
-          <>
-            <TextField
-              {...element}
-              label="Search"
-              InputProps={{
-                ...element.InputProps,
-                type: 'search',
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </>
+          <TextField
+            {...element}
+            label="Search"
+            InputProps={{
+              ...element.InputProps,
+              type: 'search',
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
         )}
         options={allAssetsDescriptions.map(
           (element: { NAME: string }) => element.NAME,
@@ -45,4 +38,4 @@ const SearchBar: FC = (): JSX.Element => {
   );
 };
 
-export default SearchBar;
+export default SearchBarComponent;

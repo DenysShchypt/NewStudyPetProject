@@ -1,10 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { instanceAssets, instanceHistory } from '../../../utils/axios';
+import {
+  instanceAssets,
+  instanceAuth,
+  instanceHistory,
+} from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 import {
   IAllAsset,
   IAssetFavoriteResponses,
   IAssetPriceResponses,
+  IAssetsWatchList,
+  IData,
 } from '../../../common/types/assets';
 
 export const getFavoriteAssets = createAsyncThunk<
@@ -28,16 +34,38 @@ export const getFavoriteAssets = createAsyncThunk<
   }
 });
 
+export const getSearchAssets = createAsyncThunk<IData, string>(
+  'assets/getSearchAssets',
+  async (data: string, { rejectWithValue }) => {
+    try {
+      const response = await instanceAssets.get('/asset/v1/data/by/symbol', {
+        params: {
+          asset_symbol: data,
+        },
+      });
+
+      return response.data.Data;
+    } catch (error) {
+      const typedError = error as IError;
+      if (typedError.response && typedError.response.data?.message) {
+        return rejectWithValue(typedError.response.data.message);
+      } else {
+        return rejectWithValue(typedError.message);
+      }
+    }
+  },
+);
+
 export const getPricePeriod = createAsyncThunk<IAssetPriceResponses, string>(
   'assets/getPricePeriod',
   async (data: string, { rejectWithValue }) => {
     try {
-      const response = await instanceHistory.get(`data/v2/histohour`, {
+      const response = await instanceHistory.get(`data/v2/histoday`, {
         params: {
           fsym: data,
           tsym: 'USD',
           limit: 30,
-          aggregate: 24,
+          aggregate: 1,
         },
       });
 
@@ -63,6 +91,28 @@ export const getAllInfoAssets = createAsyncThunk<IAllAsset[]>(
         },
       });
       return response.data.Data.LIST;
+    } catch (error) {
+      const typedError = error as IError;
+      if (typedError.response && typedError.response.data?.message) {
+        return rejectWithValue(typedError.response.data.message);
+      } else {
+        return rejectWithValue(typedError.message);
+      }
+    }
+  },
+);
+export const createWatchListRecord = createAsyncThunk<
+  IAssetsWatchList,
+  IAssetsWatchList
+>(
+  'assets/createWatchListRecord',
+  async (data: IAssetsWatchList, { rejectWithValue }) => {
+    try {
+      const response = await instanceAuth.post(
+        `/watch-list/create-asset`,
+        data,
+      );
+      return { name: response.data.name, assetId: response.data.assetId };
     } catch (error) {
       const typedError = error as IError;
       if (typedError.response && typedError.response.data?.message) {

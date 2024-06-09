@@ -10,5 +10,5 @@ export class WatchList extends Model {
   name: string;
 
   @Column
-  assetId: string;
+  assetId: number;
 }
