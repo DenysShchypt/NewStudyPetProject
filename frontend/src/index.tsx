@@ -8,9 +8,8 @@ import './index.css';
 import store from './store';
 import { useMode } from './theme';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
+const container = document.getElementById('root') as HTMLElement;
+const root = ReactDOM.createRoot(container);
 export const Main: React.FC = () => {
   const [theme, colorMode] = useMode(); // Використовуємо хук useMode для отримання теми та функції зміни кольорової схеми
 

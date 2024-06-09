@@ -71,7 +71,7 @@ const LineChart: FC<IAreaChartProps> = ({ data }) => {
 
     datasets: [
       {
-        label: data.name ?? 'Error',
+        label: data.name,
         data: data.data.Data.map(el => parseFloat(el.close.toFixed(2))),
         borderColor:
           data.name === 'BTC' ? 'rgb(255, 153, 0)' : 'rgb(53, 162, 235)',
