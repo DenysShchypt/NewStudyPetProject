@@ -1,15 +1,25 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Alert,
+  AlertColor,
+  Avatar,
+  Button,
+  Grid,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import {
   createWatchListRecord,
   getSearchAssets,
 } from '../../store/thunks/assets';
-import { IAllAsset, IData } from '../../common/types/assets';
-import { Avatar, Button, Grid, Typography } from '@mui/material';
+import { IAllAsset, IAssetsWatchList, IData } from '../../common/types/assets';
 import { FlexBetween } from '../../components/GeneralComponentsStyles';
 
 const SingleAssetPage: FC = (): JSX.Element => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [severity, setSeverity] = useState<AlertColor>('success');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -23,11 +33,20 @@ const SingleAssetPage: FC = (): JSX.Element => {
     element => element.NAME === (id as string),
   );
   const handleCreateRecord = () => {
-    const data = {
-      name: searchAssetsDescriptions?.SYMBOL,
-      assetId: searchAssetsDescriptions?.ID,
-    };
-    dispatch(createWatchListRecord(data));
+    try {
+      const data: IAssetsWatchList = {
+        name: searchAssetsDescriptions?.SYMBOL,
+        assetId: searchAssetsDescriptions?.ID,
+      };
+      dispatch(createWatchListRecord(data));
+      setSeverity('success');
+      setOpen(true);
+      setTimeout(() => setOpen(false), 2000);
+    } catch (error) {
+      setSeverity('error');
+      setOpen(true);
+      setTimeout(() => setOpen(false), 2000);
+    }
   };
   useEffect(() => {
     dispatch(getSearchAssets(`${currentSymbol?.SYMBOL}`));
@@ -97,6 +116,11 @@ const SingleAssetPage: FC = (): JSX.Element => {
               Favorite
             </Button>
           </Grid>
+          <Snackbar open={open} autoHideDuration={6}>
+            <Alert severity="success" variant="filled" sx={{ width: '100%' }}>
+              This is a success Alert inside a Snackbar!
+            </Alert>
+          </Snackbar>
         </Grid>
       )}
     </>
