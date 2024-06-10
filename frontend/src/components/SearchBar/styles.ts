@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { StyledProps } from '../../common/types/theme';
 import { Grid, useTheme } from '@mui/material';
 import { tokens } from '../../theme';
 

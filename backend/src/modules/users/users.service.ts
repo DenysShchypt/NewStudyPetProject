@@ -62,7 +62,7 @@ export class UsersService {
           required: false,
         },
       });
-      const token = await this.tokenService.generateJwtToken(user);
+      const token = this.tokenService.generateJwtToken(user);
       return { user, token };
     } catch (error) {
       throw new Error(error);
