@@ -22,7 +22,8 @@ const WatchListPage: FC = (): JSX.Element => {
     (element: IAllAsset) =>
       watchList.some((el: IWatchList) => element.ID === el.assetId),
   );
-
+  // console.log(watchList);
+  // console.log(allAssets);
   return (
     <>
       <RootGrid theme={theme}>
