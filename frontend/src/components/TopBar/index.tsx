@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Grid, Toolbar, Typography, useTheme } from '@mui/material';
 import { MenuOutlined } from '@mui/icons-material';
 
@@ -7,13 +7,19 @@ import { ITopBarProps } from '../../common/types/topBar';
 import { FlexBetween } from '../GeneralComponentsStyles';
 import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
+import { infoUser } from '../../store/thunks/settings';
 
 const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
-  const theme = useTheme();
-
   const { isOpen, setIsOpen, isNonMobile } = props;
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const firstNameUser = useAppSelector(state => state.settings.user.firstName);
+  useEffect(() => {
+    dispatch(infoUser());
+  }, [firstNameUser]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
@@ -24,9 +30,7 @@ const TopBarComponent: FC<ITopBarProps> = (
                 className="menuIcon"
                 onClick={() => setIsOpen(!isOpen)}
               />
-              <Typography variant="h3">
-                Welcome {sessionStorage.getItem('name')}
-              </Typography>
+              <Typography variant="h3">Welcome {firstNameUser}</Typography>
             </FlexBetween>
           </Grid>
           {isNonMobile && (
