@@ -3,6 +3,7 @@ import { authSliceReducer } from './slice/auth';
 import { assetsSliceReducer } from './slice/assets';
 import { watchListSliceReducer } from './slice/watchList';
 import { newsSliceReducer } from './slice/news';
+import { settingsSliceReducer } from './slice/settings';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     assets: assetsSliceReducer,
     watchList: watchListSliceReducer,
     news: newsSliceReducer,
+    settings: settingsSliceReducer,
   },
 });
 

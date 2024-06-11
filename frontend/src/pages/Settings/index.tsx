@@ -1,18 +1,25 @@
-import { Box, Grid, Tab, Tabs, useTheme } from '@mui/material';
-import React, { FC } from 'react';
+import { Box, Tab, Tabs, useTheme } from '@mui/material';
+import React, { FC, useEffect } from 'react';
 import { CustomTabPanel } from '../../components/TabPanel';
 import a11yProps from '../../utils/helpers';
 import { RootStylesSettings } from './styles';
 import { tokens } from '../../theme';
+import { infoUser } from '../../store/thunks/settings';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import SettingsPersonalInfoComponent from '../../components/SettingsPersonalInfo';
 
 const SettingsPage: FC = (): JSX.Element => {
   const [value, setValue] = React.useState<number>(0);
+  // const dispatch = useAppDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode as 'light' | 'dark');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  // useEffect(() => {
+  //   dispatch(infoUser());
+  // }, [dispatch]);
   return (
     <RootStylesSettings theme={theme}>
       <Box className="tabsWrapper">

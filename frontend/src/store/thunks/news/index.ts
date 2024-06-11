@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { instanceHistory } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
+import { IListNews, INews } from '../../../common/types/news';
 
-export const getNews = createAsyncThunk(
+export const getNews = createAsyncThunk<INews[], void, { rejectValue: string }>(
   'news/getNews',
   async (_, { rejectWithValue }) => {
     try {
