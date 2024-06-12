@@ -15,7 +15,7 @@ export interface IUpdateUser {
 export interface IInfoUserState {
   user: ICurrentUser;
   token: string;
-  userUpdate: IUpdateUser;
+  // userUpdate: IUpdateUser;
 }
 
 export interface ICurrentUser {

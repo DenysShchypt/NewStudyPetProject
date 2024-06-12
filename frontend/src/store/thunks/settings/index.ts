@@ -27,6 +27,7 @@ export const updateUser = createAsyncThunk<
 >('users/update', async (data: IUpdateUser, { rejectWithValue }) => {
   try {
     const user = await instanceAuth.patch('users/update-user', data);
+    console.log(user.data);
     return user.data;
   } catch (error) {
     const typedError = error as IError;

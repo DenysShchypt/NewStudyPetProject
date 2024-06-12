@@ -16,10 +16,15 @@ const TopBarComponent: FC<ITopBarProps> = (
   const { isOpen, setIsOpen, isNonMobile } = props;
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const firstNameUser = useAppSelector(state => state.settings.user.firstName);
+  const firstNameUserAuth = useAppSelector(
+    state => state.auth.user.user.firstName,
+  );
+  const firstNameUserInfo = useAppSelector(
+    state => state.settings.user.firstName,
+  );
   useEffect(() => {
     dispatch(infoUser());
-  }, [firstNameUser]);
+  }, [firstNameUserInfo, dispatch]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
@@ -30,7 +35,10 @@ const TopBarComponent: FC<ITopBarProps> = (
                 className="menuIcon"
                 onClick={() => setIsOpen(!isOpen)}
               />
-              <Typography variant="h3">Welcome {firstNameUser}</Typography>
+              <Typography variant="h3">
+                Welcome{' '}
+                {firstNameUserAuth ? firstNameUserAuth : firstNameUserInfo}
+              </Typography>
             </FlexBetween>
           </Grid>
           {isNonMobile && (

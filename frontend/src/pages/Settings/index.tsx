@@ -9,17 +9,18 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import SettingsPersonalInfoComponent from '../../components/SettingsPersonalInfo';
 
 const SettingsPage: FC = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const [value, setValue] = React.useState<number>(0);
-  // const dispatch = useAppDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode as 'light' | 'dark');
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  // useEffect(() => {
-  //   dispatch(infoUser());
-  // }, [dispatch]);
+  const currentUser = useAppSelector(state => state.settings.user);
+  console.log(currentUser);
+  useEffect(() => {
+    dispatch(infoUser());
+  }, []);
   return (
     <RootStylesSettings theme={theme}>
       <Box className="tabsWrapper">

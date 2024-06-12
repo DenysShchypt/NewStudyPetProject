@@ -13,11 +13,6 @@ const initialState: IInfoUserState = {
     watchList: [],
   },
   token: '',
-  userUpdate: {
-    email: '',
-    firstName: '',
-    lastName: '',
-  },
 };
 
 const settingsSlice = createSlice({
@@ -31,7 +26,7 @@ const settingsSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.userUpdate = action.payload;
+        state.user = action.payload;
       });
   },
 });

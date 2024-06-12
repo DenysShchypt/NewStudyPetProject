@@ -5,7 +5,7 @@ import { loginUsers, registerUsers } from '../../thunks/auth';
 const initialState: IAuthState = {
   user: {
     user: {
-      id: null,
+      id: 0,
       firstName: '',
       lastName: '',
       email: '',

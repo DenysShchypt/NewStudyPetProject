@@ -11,7 +11,6 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const currentUser = useAppSelector(state => state.settings.user);
-
   const [userData, setUserData] = useState<IUpdateUser>({
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
@@ -40,7 +39,6 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
 
     try {
       await dispatch(updateUser(userData));
-      await dispatch(infoUser());
     } catch (error) {
       return error as IError;
     }

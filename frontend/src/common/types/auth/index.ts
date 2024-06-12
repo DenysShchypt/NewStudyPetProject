@@ -28,7 +28,7 @@ export interface IAuthState {
 
 export interface IPublicUser {
   user: {
-    id: number | null;
+    id: number;
     firstName: string;
     lastName: string;
     email: string;
