@@ -16,8 +16,6 @@ const SettingsPage: FC = (): JSX.Element => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const currentUser = useAppSelector(state => state.settings.user);
-  console.log(currentUser);
   useEffect(() => {
     dispatch(infoUser());
   }, []);

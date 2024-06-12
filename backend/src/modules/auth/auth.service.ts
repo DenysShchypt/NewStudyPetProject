@@ -14,7 +14,9 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async registerUsers(dto: CreateUserDTO): Promise<AuthUserResponse> {
+  async registerUsers(
+    dto: CreateUserDTO,
+  ): Promise<AuthUserResponse | BadRequestException> {
     const existUser = await this.userService.findByEmail(dto.email);
     if (existUser) throw new BadRequestException(AppError.USER_EXIST);
     try {
@@ -24,7 +26,9 @@ export class AuthService {
       throw new Error(error);
     }
   }
-  async loginUsers(dto: LoginUserDTO): Promise<AuthUserResponse> {
+  async loginUsers(
+    dto: LoginUserDTO,
+  ): Promise<AuthUserResponse | BadRequestException> {
     const existUser = await this.userService.findByEmail(dto.email);
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
     const validatePassword = await bcrypt.compare(

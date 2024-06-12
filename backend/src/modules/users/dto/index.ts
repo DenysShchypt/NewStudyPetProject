@@ -68,3 +68,18 @@ export class UpdateUserDTO {
   @IsEmail()
   readonly email?: string;
 }
+
+export class UpdatePasswordDTO {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Length(10, 20)
+  @Matches(/^.*$/, { message: 'Field must contain any characters' })
+  password: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Length(10, 20)
+  @Matches(/^.*$/, { message: 'Field must contain any characters' })
+  newPassword: string;
+}
