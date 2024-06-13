@@ -59,7 +59,7 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
             onChange={handleChange}
             name="firstName"
             type="text"
-            label="first Name"
+            label="firstName"
             variant="outlined"
           />
           <TextField

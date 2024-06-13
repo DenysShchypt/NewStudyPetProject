@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IError } from '../../../common/types/errors';
 import { instanceAuth } from '../../../utils/axios';
-import { IInfoUserState, IUpdateUser } from '../../../common/types/tabs';
+import {
+  IInfoUserState,
+  IUpdateUser,
+  IUpdateUserPassword,
+} from '../../../common/types/tabs';
 
 export const infoUser = createAsyncThunk<
   IInfoUserState,
@@ -27,8 +31,42 @@ export const updateUser = createAsyncThunk<
 >('users/update', async (data: IUpdateUser, { rejectWithValue }) => {
   try {
     const user = await instanceAuth.patch('users/update-user', data);
-    console.log(user.data);
     return user.data;
+  } catch (error) {
+    const typedError = error as IError;
+    if (typedError.response && typedError.response.data?.message) {
+      return rejectWithValue(typedError.response.data.message);
+    } else {
+      return rejectWithValue(typedError.message);
+    }
+  }
+});
+export const updateUserPassword = createAsyncThunk<
+  void,
+  IUpdateUserPassword,
+  { rejectValue: string }
+>(
+  'users/updatePassword',
+  async (data: IUpdateUserPassword, { rejectWithValue }) => {
+    try {
+      await instanceAuth.patch('users/update-user-password', data);
+    } catch (error) {
+      const typedError = error as IError;
+      if (typedError.response && typedError.response.data?.message) {
+        return rejectWithValue(typedError.response.data.message);
+      } else {
+        return rejectWithValue(typedError.message);
+      }
+    }
+  },
+);
+export const removeUserAccount = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('users/removeUser', async (_, { rejectWithValue }) => {
+  try {
+    return instanceAuth.delete('users/delete-user');
   } catch (error) {
     const typedError = error as IError;
     if (typedError.response && typedError.response.data?.message) {

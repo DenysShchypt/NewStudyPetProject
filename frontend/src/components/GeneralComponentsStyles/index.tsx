@@ -14,6 +14,7 @@ export const LoadingButtonStyled = styled(LoadingButton)({
   padding: '10px 20px !important',
   marginTop: 12,
   width: '30%',
+  color: 'white',
 });
 export const ButtonAuthNavStyled = styled.span`
   color: #1900d5;

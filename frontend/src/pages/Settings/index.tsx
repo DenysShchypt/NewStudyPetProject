@@ -7,6 +7,8 @@ import { tokens } from '../../theme';
 import { infoUser } from '../../store/thunks/settings';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import SettingsPersonalInfoComponent from '../../components/SettingsPersonalInfo';
+import ChangePasswordUser from '../../components/changePassword';
+import RemoveUser from '../../components/deleteUser';
 
 const SettingsPage: FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -43,10 +45,10 @@ const SettingsPage: FC = (): JSX.Element => {
         <SettingsPersonalInfoComponent />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Change password
+        <ChangePasswordUser />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Remove account
+        <RemoveUser />
       </CustomTabPanel>
     </RootStylesSettings>
   );

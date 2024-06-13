@@ -13,6 +13,19 @@ const store = configureStore({
     news: newsSliceReducer,
     settings: settingsSliceReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActionPaths: [
+          'payload.headers',
+          'payload.config',
+          'payload.request',
+          'payload.config.transformRequest',
+          'payload.config.transformResponse',
+        ],
+        ignoredPaths: ['auth.token', 'auth.user'],
+      },
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;

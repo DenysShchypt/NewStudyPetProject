@@ -15,7 +15,6 @@ export interface IUpdateUser {
 export interface IInfoUserState {
   user: ICurrentUser;
   token: string;
-  // userUpdate: IUpdateUser;
 }
 
 export interface ICurrentUser {
@@ -26,4 +25,8 @@ export interface ICurrentUser {
   lastName: string;
   updatedAt?: string;
   watchList?: IWatchList[];
+}
+export interface IUpdateUserPassword {
+  password: string;
+  newPassword: string;
 }
