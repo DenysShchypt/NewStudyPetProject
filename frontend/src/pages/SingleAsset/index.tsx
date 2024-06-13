@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import {
   Alert,
   AlertColor,
@@ -20,19 +20,19 @@ import { FlexBetween } from '../../components/GeneralComponentsStyles';
 const SingleAssetPage: FC = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [severity, setSeverity] = useState<AlertColor>('success');
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const dispatch = useAppDispatch();
-  const { id } = useParams();
+  const { id } = useParams<string>();
   const allAssetsDescriptions: IAllAsset[] = useAppSelector(
     state => state.assets.allAssets,
   );
   const searchAssetsDescriptions: IData = useAppSelector(
     state => state.assets.searchAsset,
   );
-  const currentSymbol = allAssetsDescriptions.find(
+  const currentSymbol: IAllAsset | undefined = allAssetsDescriptions.find(
     element => element.NAME === (id as string),
   );
-  const handleCreateRecord = () => {
+  const handleCreateRecord = (): void => {
     try {
       const data: IAssetsWatchList = {
         name: searchAssetsDescriptions?.SYMBOL,

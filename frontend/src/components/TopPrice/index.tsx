@@ -28,7 +28,7 @@ const TopPriceComponent: FC<ITopPriceComponentProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(element => (
+          {data.map((element: IAllAsset) => (
             <TableRow
               key={element.ID}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

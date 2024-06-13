@@ -23,7 +23,7 @@ const ChangePasswordUser: FC = (): JSX.Element => {
   };
 
   const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.SyntheticEvent,
   ): Promise<void | IError> => {
     event.preventDefault();
     try {

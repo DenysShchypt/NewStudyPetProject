@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Location, Outlet, useLocation } from 'react-router-dom';
 import TopBarComponent from '../TopBar';
 import { useMediaQuery } from '@mui/material';
 import SideBarComponent from '../SideBar';
 import { MainSection, RootBox } from './styles';
 
 const LayoutComponent: FC = (): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const location: Location = useLocation();
   const isNonMobile = useMediaQuery('(min-width:760px)');
   return location.pathname === '/login' || location.pathname === '/register' ? (
     <>

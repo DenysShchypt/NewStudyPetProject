@@ -1,4 +1,9 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoginPage from './Login';
@@ -11,10 +16,10 @@ import { BoxFormStyled, RootStyled } from './styles';
 import { loginUsers, registerUsers } from '../../store/thunks/auth';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
-  const location = useLocation();
+  const location: Location = useLocation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const loading = useAppSelector(state => state.auth.isLoading);
+  const navigate: NavigateFunction = useNavigate();
+  const loading: boolean = useAppSelector(state => state.auth.isLoading);
 
   const {
     register,

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { RootStylesPersonalInfo } from './styles';
 import { Box, Grid, TextField, useTheme } from '@mui/material';
 import { LoadingButtonStyled } from '../GeneralComponentsStyles';
-import { infoUser, updateUser } from '../../store/thunks/settings';
+import { updateUser } from '../../store/thunks/settings';
 import { IError } from '../../common/types/errors';
 
 const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
@@ -33,7 +33,7 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
     }));
   };
   const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.SyntheticEvent,
   ): Promise<void | IError> => {
     event.preventDefault();
 
