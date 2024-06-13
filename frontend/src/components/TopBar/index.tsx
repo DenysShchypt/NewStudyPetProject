@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Grid, Toolbar, Typography, useTheme } from '@mui/material';
 import { MenuOutlined } from '@mui/icons-material';
 
@@ -7,13 +7,24 @@ import { ITopBarProps } from '../../common/types/topBar';
 import { FlexBetween } from '../GeneralComponentsStyles';
 import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
+import { infoUser } from '../../store/thunks/settings';
 
 const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
-  const theme = useTheme();
-
   const { isOpen, setIsOpen, isNonMobile } = props;
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const firstNameUserAuth = useAppSelector(
+    state => state.auth.user.user.firstName,
+  );
+  const firstNameUserInfo = useAppSelector(
+    state => state.settings.user.firstName,
+  );
+  useEffect(() => {
+    dispatch(infoUser());
+  }, [firstNameUserInfo, dispatch]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
@@ -25,7 +36,8 @@ const TopBarComponent: FC<ITopBarProps> = (
                 onClick={() => setIsOpen(!isOpen)}
               />
               <Typography variant="h3">
-                Welcome {sessionStorage.getItem('name')}
+                Welcome{' '}
+                {firstNameUserAuth ? firstNameUserAuth : firstNameUserInfo}
               </Typography>
             </FlexBetween>
           </Grid>

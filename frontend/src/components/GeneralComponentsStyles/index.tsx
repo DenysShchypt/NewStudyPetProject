@@ -12,9 +12,9 @@ export const LoadingButtonStyled = styled(LoadingButton)({
   borderRadius: 4,
   background: '#1900D5 !important',
   padding: '10px 20px !important',
-  marginBottom: 8,
-  marginTop: 8,
+  marginTop: 12,
   width: '30%',
+  color: 'white',
 });
 export const ButtonAuthNavStyled = styled.span`
   color: #1900d5;

@@ -32,7 +32,7 @@ const NewsPage: FC = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(getNews());
-  }, []);
+  }, [dispatch]);
 
   return (
     <RootStylesNews theme={theme}>

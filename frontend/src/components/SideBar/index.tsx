@@ -105,7 +105,10 @@ const SideBarComponent: FC<ISideBarProps> = (
 
               <ListItem>
                 <ListItemButton
-                  onClick={() => navigate('/login')}
+                  onClick={() => {
+                    navigate('/login');
+                    sessionStorage.removeItem('token');
+                  }}
                   className="navItem"
                 >
                   <ListItemIcon>

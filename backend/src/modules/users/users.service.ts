@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { User } from './models/user.model';
-import { CreateUserDTO, UpdateUserDTO } from './dto';
+import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
 import { WatchList } from '../watch-list/models/watchList.model';
@@ -28,6 +28,19 @@ export class UsersService {
     try {
       return await this.userRepository.findOne({
         where: { email },
+        include: {
+          model: WatchList,
+          required: false,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async findById(id: number): Promise<User> {
+    try {
+      return await this.userRepository.findOne({
+        where: { id },
         include: {
           model: WatchList,
           required: false,
@@ -62,7 +75,7 @@ export class UsersService {
           required: false,
         },
       });
-      const token = await this.tokenService.generateJwtToken(user);
+      const token = this.tokenService.generateJwtToken(user);
       return { user, token };
     } catch (error) {
       throw new Error(error);
@@ -75,11 +88,28 @@ export class UsersService {
   ): Promise<UpdateUserResponse> {
     const user = await this.userRepository.findByPk(id);
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+
     try {
       await this.userRepository.update(dto, {
         where: { id },
       });
       return plainToInstance(UpdateUserResponse, dto);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async updateUserPassword(id: number, dto: UpdatePasswordDTO): Promise<any> {
+    const user = await this.userRepository.findByPk(id);
+    if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    try {
+      const { password } = await this.findById(id);
+      const currentPassword = await bcrypt.compare(dto.password, password);
+      if (!currentPassword) throw new BadRequestException(AppError.WRONG_DATA);
+
+      const data = { password: await this.hashPassword(dto.newPassword) };
+      return await this.userRepository.update(data, {
+        where: { id },
+      });
     } catch (error) {
       throw new Error(error);
     }

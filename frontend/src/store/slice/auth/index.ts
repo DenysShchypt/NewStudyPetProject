@@ -5,7 +5,7 @@ import { loginUsers, registerUsers } from '../../thunks/auth';
 const initialState: IAuthState = {
   user: {
     user: {
-      id: null,
+      id: 0,
       firstName: '',
       lastName: '',
       email: '',
@@ -31,7 +31,11 @@ const initialState: IAuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(loginUsers.pending, state => {
@@ -61,5 +65,5 @@ const authSlice = createSlice({
       });
   },
 });
-
+export const { setLoading } = authSlice.actions;
 export const authSliceReducer = authSlice.reducer;

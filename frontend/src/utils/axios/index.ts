@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const token = sessionStorage.getItem('token');
-
 export const instance = axios.create({
   baseURL: 'http://localhost:4000',
   timeout: 1000,
@@ -9,12 +7,20 @@ export const instance = axios.create({
 });
 export const instanceAuth = axios.create({
   baseURL: 'http://localhost:4000',
-  timeout: 1000,
-  headers: {
-    'X-Custom-Header': 'foobar',
-    Authorization: 'Bearer ' + token,
-  },
 });
+instanceAuth.interceptors.request.use(
+  config => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers['Content-Type'] = 'application/json';
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
 export const instanceAssets = axios.create({
   baseURL: 'https://data-api.cryptocompare.com',
   timeout: 5000,
