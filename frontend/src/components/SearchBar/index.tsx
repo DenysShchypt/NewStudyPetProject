@@ -3,10 +3,10 @@ import { Search } from '@mui/icons-material';
 import { Autocomplete, InputAdornment, Stack, TextField } from '@mui/material';
 import { useAppSelector } from '../../utils/hook';
 import { IAllAsset } from '../../common/types/assets';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const SearchBarComponent: FC = (): JSX.Element => {
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const allAssetsDescriptions: IAllAsset[] = useAppSelector(
     state => state.assets.allAssets,
   );

@@ -5,7 +5,7 @@ import a11yProps from '../../utils/helpers';
 import { RootStylesSettings } from './styles';
 import { tokens } from '../../theme';
 import { infoUser } from '../../store/thunks/settings';
-import { useAppDispatch, useAppSelector } from '../../utils/hook';
+import { useAppDispatch } from '../../utils/hook';
 import SettingsPersonalInfoComponent from '../../components/SettingsPersonalInfo';
 import ChangePasswordUser from '../../components/changePassword';
 import RemoveUser from '../../components/deleteUser';

@@ -18,7 +18,7 @@ import LineChart from '../../components/charts/LineChart';
 import TopPriceComponent from '../../components/TopPrice';
 
 const HomePage: FC = (): JSX.Element => {
-  const useFavoriteRef = useRef(false);
+  const useFavoriteRef = useRef<boolean>(false);
   const theme = useTheme();
   const favoriteAssets: IAssetFavoriteResponses[] = useAppSelector(
     state => state.assets.favoriteAssets,
@@ -60,7 +60,7 @@ const HomePage: FC = (): JSX.Element => {
     (value, index, self) =>
       index === self.findIndex(t => t.name === value.name),
   );
-  const renderFavoriteBlok = filterFavoriteArray.map(
+  const renderFavoriteBlok: JSX.Element[] = filterFavoriteArray.map(
     (element: IAssetFavoriteResponses) => {
       const { ID, NAME, PRICE_USD, SPOT_MOVING_24_HOUR_CHANGE_PERCENTAGE_USD } =
         element.data.Data;

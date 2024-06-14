@@ -16,10 +16,10 @@ const TopBarComponent: FC<ITopBarProps> = (
   const { isOpen, setIsOpen, isNonMobile } = props;
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const firstNameUserAuth = useAppSelector(
+  const firstNameUserAuth: string = useAppSelector(
     state => state.auth.user.user.firstName,
   );
-  const firstNameUserInfo = useAppSelector(
+  const firstNameUserInfo: string = useAppSelector(
     state => state.settings.user.firstName,
   );
   useEffect(() => {

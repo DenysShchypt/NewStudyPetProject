@@ -3,13 +3,14 @@ import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { getNews } from '../../store/thunks/news';
 import { Box, Grid, Link, Typography, useTheme } from '@mui/material';
 import { RootStylesNews } from './styles';
+import { INews } from '../../common/types/news';
 
 const NewsPage: FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const allNews = useAppSelector(state => state.news.listNews);
+  const allNews: INews[] = useAppSelector(state => state.news.listNews);
 
-  const renderNews = allNews.map(news => (
+  const renderNews: JSX.Element[] = allNews.map(news => (
     <Grid container key={news.id} className="newsItem">
       <Grid item xs={12} md={3}>
         <img src={news.imageurl} alt={news.title} />

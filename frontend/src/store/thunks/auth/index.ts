@@ -4,13 +4,14 @@ import { instance } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 
 export const loginUsers = createAsyncThunk<
-  any, // Можна замінити any на конкретний тип результату успішного виконання
+  any,
   IFormData,
   { rejectValue: string }
 >('auth/login', async (data: IFormData, { rejectWithValue }) => {
   try {
     const user = await instance.post('auth/login', data);
     sessionStorage.setItem('token', user.data.token);
+    console.log(user.data);
     return user.data;
   } catch (error) {
     const typedError = error as IError;
@@ -22,7 +23,7 @@ export const loginUsers = createAsyncThunk<
   }
 });
 export const registerUsers = createAsyncThunk<
-  any, // Можна замінити any на конкретний тип результату успішного виконання
+  any,
   IFormDataRegister,
   { rejectValue: string }
 >('auth/register', async (data: IFormDataRegister, { rejectWithValue }) => {

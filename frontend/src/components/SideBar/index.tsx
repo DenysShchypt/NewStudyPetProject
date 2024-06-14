@@ -4,7 +4,12 @@ import {
   LogoutOutlined,
   PortraitOutlined,
 } from '@mui/icons-material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  Location,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import {
   Box,
   Drawer,
@@ -30,8 +35,9 @@ const SideBarComponent: FC<ISideBarProps> = (
 ): JSX.Element => {
   const [active, setActive] = useState<string>('');
   const { isNonMobile, drawerWidth, isOpen, setIsOpen } = props;
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const location: Location = useLocation();
+  const { pathname } = location;
+  const navigate: NavigateFunction = useNavigate();
   const theme = useTheme();
 
   useEffect(() => {

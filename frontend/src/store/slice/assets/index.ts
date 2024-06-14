@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  createWatchListRecord,
   getAllInfoAssets,
   getFavoriteAssets,
   getPricePeriod,
   getSearchAssets,
 } from '../../thunks/assets';
-import { IAssetsState, IAssetsWatchList } from '../../../common/types/assets';
+import { IAssetsState } from '../../../common/types/assets';
 
 const initialState: IAssetsState = {
   favoriteAssets: [],

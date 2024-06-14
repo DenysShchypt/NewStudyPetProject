@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAppDispatch } from '../../utils/hook';
 import {
   Box,
@@ -12,18 +12,18 @@ import {
 import { RootStyledDeleteUser } from './styles';
 import { tokens } from '../../theme';
 import { LoadingButtonStyled } from '../GeneralComponentsStyles';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { removeUserAccount } from '../../store/thunks/settings';
 import { setLoading } from '../../store/slice/auth';
 
 const RemoveUser: FC = (): JSX.Element => {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode as 'light' | 'dark');
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     await dispatch(removeUserAccount());
     sessionStorage.removeItem('token');
     dispatch(setLoading(false));

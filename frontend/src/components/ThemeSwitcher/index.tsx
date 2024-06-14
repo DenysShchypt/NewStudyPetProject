@@ -5,10 +5,10 @@ import { ColorModeContext } from '../../theme';
 import { ThemeStyles } from './styles';
 
 const ThemeSwitcherComponent: FC = (): JSX.Element => {
-  const colorMode: any = useContext(ColorModeContext);
+  const { toggleColorMode } = useContext(ColorModeContext);
   const theme = useTheme();
   return (
-    <ThemeStyles onClick={colorMode.toggleColorMode}>
+    <ThemeStyles onClick={toggleColorMode}>
       <IconButton>
         {theme.palette.mode === 'dark' ? <DarkMode /> : <LightMode />}
       </IconButton>
