@@ -9,7 +9,7 @@ export default (): {
   expire_jwt: string | undefined;
 } => ({
   port: process.env.PORT,
-  db_port: parseInt(process.env.POSTGRES_DB_PORT, 10),
+  db_port: parseInt(process.env.POSTGRES_PORT, 10),
   db_host: process.env.POSTGRES_HOST,
   db_name: process.env.POSTGRES_DB,
   db_user: process.env.POSTGRES_USER,

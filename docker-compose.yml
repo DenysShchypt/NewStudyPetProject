@@ -4,13 +4,13 @@ services:
     build: ./frontend
     restart: always
     ports:
-      - 5173:5173
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
 
   backend:
     build: ./backend
     restart: always
     ports:
-      - 4001:4000
+      - "4001:${PORT}"
     depends_on:
       - postgres
 
@@ -18,11 +18,11 @@ services:
     image: postgres
     container_name: petProjectBD
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Denys7227221
-      - POSTGRES_DB=postgresPet
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     restart: always
 
   redis:
