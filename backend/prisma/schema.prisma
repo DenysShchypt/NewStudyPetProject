@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Provider {
+  GOOGLE
+}
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique @db.VarChar(45)
+  firstName      String
+  lastName       String
+  password       String?
+  passwordRepeat String?
+  provider       Provider?
+  providerId     String?
+  wallet         Float          @default(0)
+  createAt       DateTime       @default(now()) @map("created_at")
+  updateAt       DateTime       @default(now()) @map("updated_at")
+  picture        String?
+  roles          Role[]
+  Token          Token[]
+  RefreshTokin   RefreshTokin[]
+  WatchList      WatchList[]
+
+  @@map("users")
+}
+
+model Token {
+  token     String   @unique
+  exp       DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  userAgent String   @map("user_agent")
+
+  @@map("tokens")
+}
+
+model RefreshTokin {
+  token  String   @unique
+  exp    DateTime
+  userId String
+  User   User     @relation(fields: [userId], references: [id])
+}
+
+model WatchList {
+  id      String @id @default(uuid())
+  userId  String
+  name    String
+  assetId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

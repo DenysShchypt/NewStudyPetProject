@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
@@ -10,6 +11,8 @@ async function bootstrap() {
       origin: ['http://localhost:3000'],
     },
   });
+  app.use(cookieParser());
+  app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
   const port = configService.get('port');
   app.useGlobalPipes(new ValidationPipe());
