@@ -1,28 +1,30 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { User } from './models/user.model';
 import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
-import { WatchList } from '../watch-list/models/watchList.model';
 import { AuthUserResponse, UserResponse } from '../auth/responses';
 import { TokenService } from '../token/token.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '@prisma/client';
+import { USER_SELECT_FIELDS } from '../../common/constants/select-return';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User) private readonly userRepository: typeof User,
     private readonly tokenService: TokenService,
+    private readonly prismaService: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async hashPassword(password: string): Promise<string> {
-    try {
-      return await bcrypt.hash(password, 10);
-    } catch (error) {
-      throw new Error(error);
-    }
+  private async hashPassword(
+    password: string | Buffer,
+    salt: string,
+  ): Promise<string> {
+    return bcrypt.hashSync(password, salt);
   }
   async findByEmail(email: string): Promise<User> {
     try {
@@ -50,19 +52,27 @@ export class UsersService {
       throw new Error(error);
     }
   }
-  async createUser(dto: CreateUserDTO): Promise<UserResponse> {
-    const hashPassword = await this.hashPassword(dto.password);
-    try {
-      await this.userRepository.create({
+  public async createUser(dto: CreateUserDTO): Promise<UserResponse> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (user) return;
+    const salt = await bcrypt.genSalt();
+    dto.password = await this.hashPassword(dto.password, salt);
+    const createNewUser = await this.prismaService.user.create({
+      data: {
+        email: dto.email,
         firstName: dto.firstName,
         lastName: dto.lastName,
-        email: dto.email,
-        password: hashPassword,
-      });
-      return plainToInstance(UserResponse, dto);
-    } catch (error) {
-      throw new Error(error);
-    }
+        password: dto.password,
+        passwordRepeat: dto.passwordRepeat,
+        roles: [Role.USER],
+      },
+      select: USER_SELECT_FIELDS,
+    });
+    await this.cacheManager.set(createNewUser.id, createNewUser);
+    await this.cacheManager.set(createNewUser.email, createNewUser);
+    return createNewUser;
   }
 
   async publicUser(email: string): Promise<AuthUserResponse> {

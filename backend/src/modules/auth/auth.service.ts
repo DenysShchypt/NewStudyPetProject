@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDTO } from '../users/dto';
@@ -6,9 +6,11 @@ import { AppError } from '../../common/constants/errors';
 import { LoginUserDTO } from './dto';
 import { AuthUserResponse } from './responses';
 import { TokenService } from '../token/token.service';
+import { IToken } from '../../interfaces/auth';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly userService: UsersService,
     private readonly tokenService: TokenService,
@@ -16,15 +18,25 @@ export class AuthService {
 
   async registerUsers(
     dto: CreateUserDTO,
+    agent: string,
   ): Promise<AuthUserResponse | BadRequestException> {
-    const existUser = await this.userService.findByEmail(dto.email);
-    if (existUser) throw new BadRequestException(AppError.USER_EXIST);
-    try {
-      await this.userService.createUser(dto);
-      return await this.userService.publicUser(dto.email);
-    } catch (error) {
-      throw new Error(error);
-    }
+    const newUser = await this.userService.createUser(dto).catch(error => {
+      this.logger.error(`${AppError.ERROR_REGISTRATION}:${error.message}`);
+      return null;
+    });
+    if (!newUser) throw new BadRequestException(AppError.USER_EXIST);
+    const payload = {
+      email: dto.email,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      id: newUser.id,
+      roles: newUser.roles,
+    };
+    const token: IToken = await this.tokenService.generateJwtToken(
+      payload,
+      agent,
+    );
+    return { ...newUser, token };
   }
   async loginUsers(
     dto: LoginUserDTO,

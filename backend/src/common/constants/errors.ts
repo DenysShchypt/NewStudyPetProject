@@ -7,4 +7,6 @@ export const AppError = {
   WRONG_DATA: 'Wrong data',
   ASSET_NOT_FOUND: 'Asset not found',
   ASSETS_NOT_FOUND: 'Assets not found',
+  ERROR_JWT: 'Error during validate JWT',
+  ERROR_REGISTRATION: 'Error during register user',
 };
