@@ -5,9 +5,14 @@ export const USER_SELECT_FIELDS = {
   lastName: true,
   id: true,
   roles: true,
-  provider: true,
-  providerId: true,
-  createAt: true,
-  updateAt: true,
-  picture: true,
+  // provider: true,
+  // providerId: true,
+  // createAt: true,
+  // updateAt: true,
+  // picture: true,
+};
+
+export const USER_ALL_INFO = {
+  ...USER_SELECT_FIELDS,
+  password: true,
 };

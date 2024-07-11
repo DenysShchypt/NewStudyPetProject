@@ -22,17 +22,3 @@ export interface IToken {
   token: string;
   refreshToken: IAccessToken;
 }
-
-// export interface INewUser {
-//   wallet: number;
-//   email: string;
-//   firstName: string;
-//   lastName: string;
-//   id: string;
-//   roles: $Enums.Role[];
-//   provider: string;
-//   providerId: string;
-//   createAt: Date;
-//   updateAt: Date;
-//   picture: string;
-// }

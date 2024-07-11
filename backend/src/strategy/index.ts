@@ -31,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   // Забезпечення безпеки: Якщо користувач не знайдений або токен недійсний, JwtStrategy кидає виняток UnauthorizedException, тим самим запобігаючи доступу до захищених ресурсів.
   async validate(payload: IJwtPlayLoad) {
     const user = await this.userService
-      .findByEmail(payload.user.email)
+      .getUserAllInfo(payload.user.email)
       .catch(error => {
         this.logger.error(`${AppError.ERROR_JWT}: ${error.message}`);
         // Повернення null, щоб сигналізувати про невдалу спробу отримання користувача

@@ -1,22 +1,29 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import validator from 'validator';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
+import { Role } from '@prisma/client';
 import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
 import { AuthUserResponse, UserResponse } from '../auth/responses';
 import { TokenService } from '../token/token.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { Role } from '@prisma/client';
-import { USER_SELECT_FIELDS } from '../../common/constants/select-return';
+import {
+  USER_ALL_INFO,
+  USER_SELECT_FIELDS,
+} from '../../common/constants/select-return';
+import { ConfigService } from '@nestjs/config';
+import { convertToSecondsUtil } from '../../../libs/common/utils/convert-to-seconds.util';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly tokenService: TokenService,
     private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
@@ -26,32 +33,37 @@ export class UsersService {
   ): Promise<string> {
     return bcrypt.hashSync(password, salt);
   }
-  async findByEmail(email: string): Promise<User> {
-    try {
-      return await this.userRepository.findOne({
-        where: { email },
-        include: {
-          model: WatchList,
-          required: false,
-        },
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
+  private async isValidUuid(val: string): Promise<boolean> {
+    return validator.isUUID(val);
   }
-  async findById(id: number): Promise<User> {
-    try {
-      return await this.userRepository.findOne({
-        where: { id },
-        include: {
-          model: WatchList,
-          required: false,
-        },
-      });
-    } catch (error) {
-      throw new Error(error);
+  public async getUserAllInfo(
+    idOrEmail: string,
+    isReset: boolean = false,
+  ): Promise<UserResponse> {
+    if (isReset) {
+      await this.cacheManager.del(idOrEmail);
     }
+    const user = await this.cacheManager.get<UserResponse>(idOrEmail);
+    if (!user) {
+      const userFromBD = await this.prismaService.user.findFirst({
+        where: (await this.isValidUuid(idOrEmail))
+          ? { id: idOrEmail }
+          : { email: idOrEmail },
+        select: (await this.isValidUuid(idOrEmail))
+          ? USER_SELECT_FIELDS
+          : USER_ALL_INFO,
+      });
+      if (!userFromBD) throw new BadRequestException(AppError.USER_NOT_FOUND);
+      await this.cacheManager.set(
+        idOrEmail,
+        userFromBD,
+        convertToSecondsUtil(this.configService.get('expire_jwt')),
+      );
+      return userFromBD;
+    }
+    return user;
   }
+
   public async createUser(dto: CreateUserDTO): Promise<UserResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { email: dto.email },
@@ -73,23 +85,6 @@ export class UsersService {
     await this.cacheManager.set(createNewUser.id, createNewUser);
     await this.cacheManager.set(createNewUser.email, createNewUser);
     return createNewUser;
-  }
-
-  async publicUser(email: string): Promise<AuthUserResponse> {
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email },
-        attributes: { exclude: ['password'] },
-        include: {
-          model: WatchList,
-          required: false,
-        },
-      });
-      const token = this.tokenService.generateJwtToken(user);
-      return { user, token };
-    } catch (error) {
-      throw new Error(error);
-    }
   }
 
   async updateUser(

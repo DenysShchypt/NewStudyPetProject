@@ -7,6 +7,7 @@ import { LoginUserDTO } from './dto';
 import { AuthUserResponse } from './responses';
 import { TokenService } from '../token/token.service';
 import { IToken } from '../../interfaces/auth';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +15,10 @@ export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly tokenService: TokenService,
+    private readonly prismaService: PrismaService,
   ) {}
 
-  async registerUsers(
+  public async registerUsers(
     dto: CreateUserDTO,
     agent: string,
   ): Promise<AuthUserResponse | BadRequestException> {
@@ -38,20 +40,34 @@ export class AuthService {
     );
     return { ...newUser, token };
   }
-  async loginUsers(
-    dto: LoginUserDTO,
-  ): Promise<AuthUserResponse | BadRequestException> {
-    const existUser = await this.userService.findByEmail(dto.email);
+  public async loginUsers(dto: LoginUserDTO, agent: string): Promise<IToken> {
+    const existUser = await this.userService
+      .getUserAllInfo(dto.email, true)
+      .catch(error => {
+        this.logger.error(`${AppError.USER_NOT_EXIST}${error.message}`);
+        return null;
+      });
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
     const validatePassword = await bcrypt.compare(
       dto.password,
       existUser.password,
     );
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA);
-    try {
-      return await this.userService.publicUser(dto.email);
-    } catch (error) {
-      throw new Error(error);
-    }
+    delete existUser.password;
+    const payload = {
+      email: existUser.email,
+      firstName: existUser.firstName,
+      lastName: existUser.lastName,
+      id: existUser.id,
+      roles: existUser.roles,
+    };
+    return await this.tokenService.generateJwtToken(payload, agent);
+  }
+  public async deleteRefreshToken(token: string) {
+    return await this.prismaService.token.delete({ where: { token } });
+  }
+
+  public async getRefreshTokens(refreshToken: string, agent: string) {
+    return await this.tokenService.refreshTokens(refreshToken, agent);
   }
 }

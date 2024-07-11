@@ -1,26 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Provider, Role } from '@prisma/client';
+import { Role } from '@prisma/client';
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, IsEnum, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsEnum, IsNumber } from 'class-validator';
 import { IToken } from '../../../interfaces/auth';
 @Exclude()
 export class UserResponse {
-  @ApiProperty()
-  @Expose()
+  @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
   @IsString()
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'John' })
   @Expose()
   @IsString()
   firstName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Joshua' })
   @Expose()
   @IsString()
   lastName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'john@example.com' })
   @Expose()
   @IsString()
   email: string;
@@ -29,42 +28,38 @@ export class UserResponse {
   @IsEnum(Role, { each: true })
   roles: Role[];
 
-  @ApiProperty({ enum: Provider, enumName: 'GOOGLE' })
-  @Expose()
-  @IsEnum(Provider)
-  provider: Provider;
+  // @ApiProperty({ enum: Provider, enumName: 'GOOGLE' })
+  // @IsEnum(Provider)
+  // provider: Provider;
 
-  @ApiProperty()
-  @Expose()
-  @IsString()
-  providerId: string;
+  // @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
+  // @IsString()
+  // providerId: string;
 
-  @ApiProperty()
-  @Expose()
+  @ApiProperty({ example: 1 })
   @IsNumber()
   wallet: number;
 
-  @ApiProperty()
-  @Expose()
-  @IsDate()
-  createAt: Date;
+  // @ApiProperty({ example: '2024-07-08 18:26:46.855' })
+  // @IsDate()
+  // createAt: Date;
 
-  @ApiProperty()
-  @Expose()
-  @IsDate()
-  updateAt: Date;
+  // @ApiProperty({ example: '2024-08-08 18:26:46.855' })
+  // @IsDate()
+  // updateAt: Date;
 
-  @ApiProperty()
-  @Expose()
-  @IsString()
-  picture: string;
+  // @ApiProperty({
+  //   example:
+  //     'https://lh3.googleusercontent.com/a/ACg8ocJ-OcEr6cr50Ak6Sz7LGMK6MXRH44O0ULhXbAtpn6lMa0OGlgQ=s96-c',
+  // })
+  // @IsString()
+  // picture: string;
 }
 
 export class AuthUserResponse {
   @ApiProperty()
   user: UserResponse;
   @ApiProperty()
-  @Expose()
   @IsString()
   token: IToken;
 }
