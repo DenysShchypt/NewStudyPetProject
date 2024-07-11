@@ -14,14 +14,14 @@ import { UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { JwtAuthGuard } from '../../guards/jwt-guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserResponse } from './responses';
-import { AuthUserResponse } from '../auth/responses';
-
+import { UserResponse } from '../auth/responses';
+@ApiTags('API')
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @ApiTags('API')
+
   @ApiResponse({ status: 200, type: UpdateUserDTO })
-  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   @Patch('update-user')
   updateUser(
@@ -31,9 +31,7 @@ export class UsersController {
     const { id } = request.user;
     return this.usersService.updateUser(id, userUpdateDTO);
   }
-  @ApiTags('API')
   @ApiResponse({ status: 200 })
-  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   @Patch('update-user-password')
   updateUserPassword(
@@ -44,18 +42,14 @@ export class UsersController {
     return this.usersService.updateUserPassword(id, UpdatePasswordDTO);
   }
 
-  @ApiTags('API')
-  @ApiResponse({ status: 200, type: AuthUserResponse })
-  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, type: UserResponse })
   @Get('user-info')
-  getUserInfo(@Req() request): Promise<AuthUserResponse> {
+  getUserInfo(@Req() request): Promise<UserResponse> {
     const { email } = request.user;
-    return this.usersService.publicUser(email);
+    return this.usersService.getUserAllInfo(email);
   }
 
-  @ApiTags('API')
   @ApiResponse({ status: 200 })
-  @UseGuards(JwtAuthGuard)
   @Delete('delete-user')
   deleteUser(@Req() request): Promise<void> {
     const { id } = request.user;

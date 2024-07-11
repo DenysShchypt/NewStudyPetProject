@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "WatchList" ALTER COLUMN "assetId" SET DATA TYPE TEXT;

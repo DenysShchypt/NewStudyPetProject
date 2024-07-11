@@ -7,11 +7,11 @@ export class WatchListResponseGetOneAsset {
   @ApiProperty()
   @Expose()
   @IsNumber()
-  id: number;
+  id: string;
   @ApiProperty()
   @Expose()
   @IsNumber()
-  user: number;
+  user: string;
   @ApiProperty()
   @Expose()
   @IsString()
@@ -27,14 +27,18 @@ export class WatchListResponseGetOneAsset {
   @ApiProperty()
   @Expose()
   @IsNumber()
-  assetId: number;
+  assetId: string;
 }
 @Exclude()
 export class WatchListResponse {
   @ApiProperty()
   @Expose()
   @IsNumber()
-  user: number;
+  id: string;
+  @ApiProperty()
+  @Expose()
+  @IsNumber()
+  userId: string;
   @ApiProperty()
   @Expose()
   @IsString()
@@ -42,5 +46,5 @@ export class WatchListResponse {
   @ApiProperty()
   @Expose()
   @IsNumber()
-  assetId: number;
+  assetId: string;
 }

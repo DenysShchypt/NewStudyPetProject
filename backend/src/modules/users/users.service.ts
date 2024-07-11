@@ -8,8 +8,7 @@ import { Role } from '@prisma/client';
 import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
-import { AuthUserResponse, UserResponse } from '../auth/responses';
-import { TokenService } from '../token/token.service';
+import { UserResponse } from '../auth/responses';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   USER_ALL_INFO,
@@ -21,7 +20,6 @@ import { convertToSecondsUtil } from '../../../libs/common/utils/convert-to-seco
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly tokenService: TokenService,
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -91,29 +89,50 @@ export class UsersService {
     id: string,
     dto: UpdateUserDTO,
   ): Promise<UpdateUserResponse> {
-    const user = await this.userRepository.findByPk(id);
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
 
     try {
-      await this.userRepository.update(dto, {
+      await this.prismaService.user.update({
         where: { id },
+        data: {
+          firstName: dto.firstName || user.firstName,
+          lastName: dto.lastName || user.lastName,
+          email: dto.email || user.email,
+        },
       });
       return plainToInstance(UpdateUserResponse, dto);
     } catch (error) {
       throw new Error(error);
     }
   }
-  async updateUserPassword(id: number, dto: UpdatePasswordDTO): Promise<any> {
-    const user = await this.userRepository.findByPk(id);
+  async updateUserPassword(id: string, dto: UpdatePasswordDTO): Promise<any> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
     try {
-      const { password } = await this.findById(id);
+      const { password } = await this.prismaService.user.findUnique({
+        where: {
+          id,
+        },
+      });
       const currentPassword = await bcrypt.compare(dto.password, password);
       if (!currentPassword) throw new BadRequestException(AppError.WRONG_DATA);
-
-      const data = { password: await this.hashPassword(dto.newPassword) };
-      return await this.userRepository.update(data, {
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await this.hashPassword(dto.newPassword, salt);
+      return await this.prismaService.user.update({
         where: { id },
+        data: {
+          password: hashPassword,
+          passwordRepeat: hashPassword,
+        },
       });
     } catch (error) {
       throw new Error(error);
@@ -121,10 +140,17 @@ export class UsersService {
   }
 
   async deleteUser(id: string): Promise<void> {
-    const user = await this.userRepository.findByPk(id);
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
     try {
-      await this.userRepository.destroy({ where: { id } });
+      await this.prismaService.user.delete({
+        where: { id },
+        select: { id: true },
+      });
     } catch (error) {
       throw new Error(error);
     }
