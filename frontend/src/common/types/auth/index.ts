@@ -28,7 +28,7 @@ export interface IAuthState {
 
 export interface IPublicUser {
   user: {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -46,5 +46,5 @@ export interface IFormData extends FieldValues {
 export interface IFormDataRegister extends IFormData {
   firstName: string;
   lastName: string;
-  repeatPassword: string;
+  passwordRepeat: string;
 }

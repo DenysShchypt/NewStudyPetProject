@@ -5,7 +5,9 @@ import { add } from 'date-fns';
 import { v4 } from 'uuid';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
-import { IAccessToken, IToken, IUserJWT } from '../../interfaces/auth';
+import { IUserJWT } from '../../interfaces/auth';
+import { AuthUserResponse } from '../auth/responses';
+import { IRefreshToken, ITokenResponse } from './responses';
 
 @Injectable()
 export class TokenService {
@@ -16,7 +18,10 @@ export class TokenService {
     private readonly usersService: UsersService,
   ) {}
 
-  private async generateToken(user: IUserJWT, agent: string): Promise<IToken> {
+  private async generateToken(
+    user: IUserJWT,
+    agent: string,
+  ): Promise<ITokenResponse> {
     const payload = { user };
     const token =
       'Bearer ' +
@@ -31,7 +36,7 @@ export class TokenService {
   private async generateRefreshToken(
     id: string,
     agent: string,
-  ): Promise<IAccessToken> {
+  ): Promise<IRefreshToken> {
     const _token = await this.prismaService.token.findFirst({
       where: {
         userId: id,
@@ -54,14 +59,14 @@ export class TokenService {
   public async generateJwtToken(
     user: IUserJWT,
     agent: string,
-  ): Promise<IToken> {
+  ): Promise<ITokenResponse> {
     return await this.generateToken(user, agent);
   }
 
   public async refreshTokens(
     refreshToken: string,
     agent: string,
-  ): Promise<IToken> {
+  ): Promise<AuthUserResponse> {
     const token = await this.prismaService.token.delete({
       where: { token: refreshToken },
     });
@@ -69,6 +74,7 @@ export class TokenService {
       throw new UnauthorizedException();
 
     const user = await this.usersService.getUserAllInfo(token.userId, true);
-    return await this.generateToken(user, agent);
+    const tokens = await this.generateToken(user, agent);
+    return { ...user, token: tokens };
   }
 }

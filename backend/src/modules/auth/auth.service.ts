@@ -18,10 +18,8 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  public async registerUsers(
-    dto: CreateUserDTO,
-    agent: string,
-  ): Promise<AuthUserResponse | BadRequestException> {
+  public async registerUsers(dto: CreateUserDTO, agent: string) {
+    // : Promise<AuthUserResponse>
     const newUser = await this.userService.createUser(dto).catch(error => {
       this.logger.error(`${AppError.ERROR_REGISTRATION}:${error.message}`);
       return null;
@@ -40,7 +38,10 @@ export class AuthService {
     );
     return { ...newUser, token };
   }
-  public async loginUsers(dto: LoginUserDTO, agent: string): Promise<IToken> {
+  public async loginUsers(
+    dto: LoginUserDTO,
+    agent: string,
+  ): Promise<AuthUserResponse> {
     const existUser = await this.userService
       .getUserAllInfo(dto.email, true)
       .catch(error => {
@@ -61,7 +62,11 @@ export class AuthService {
       id: existUser.id,
       roles: existUser.roles,
     };
-    return await this.tokenService.generateJwtToken(payload, agent);
+    const token: IToken = await this.tokenService.generateJwtToken(
+      payload,
+      agent,
+    );
+    return { ...existUser, token };
   }
   public async deleteRefreshToken(token: string) {
     return await this.prismaService.token.delete({ where: { token } });

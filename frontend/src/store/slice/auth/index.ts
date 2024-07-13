@@ -5,7 +5,7 @@ import { loginUsers, registerUsers } from '../../thunks/auth';
 const initialState: IAuthState = {
   user: {
     user: {
-      id: 0,
+      id: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -43,6 +43,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUsers.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.user = action.payload;
         state.isLoggedIn = true;
         state.isLoading = false;

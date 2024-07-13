@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -16,7 +15,7 @@ import { AuthUserResponse } from './responses';
 import { ConfigService } from '@nestjs/config';
 import { UserAgent } from '../../../libs/common/decorators/user-agent.decorator';
 import { Response } from 'express';
-import { IToken } from '../../interfaces/auth';
+import { ITokenAndUser } from '../../interfaces/auth';
 import { Cookie } from '../../../libs/common/decorators/cookies.decorator';
 
 @ApiTags('API')
@@ -35,8 +34,10 @@ export class AuthController {
   async register(
     @Body() dto: CreateUserDTO,
     @UserAgent() agent: string,
-  ): Promise<AuthUserResponse | BadRequestException> {
-    return await this.authService.registerUsers(dto, agent);
+    @Res() res: Response,
+  ): Promise<void> {
+    const tokensAndUser = await this.authService.registerUsers(dto, agent);
+    this.setRefreshTokenToCookies(tokensAndUser, res);
   }
   @ApiResponse({ status: 200, type: AuthUserResponse })
   @Post('login')
@@ -45,8 +46,8 @@ export class AuthController {
     @UserAgent() agent: string,
     @Res() res: Response,
   ): Promise<void> {
-    const tokens = await this.authService.loginUsers(dto, agent);
-    this.setRefreshTokenToCookies(tokens, res);
+    const tokensAndUser = await this.authService.loginUsers(dto, agent);
+    this.setRefreshTokenToCookies(tokensAndUser, res);
   }
 
   @ApiResponse({ status: 200 })
@@ -84,21 +85,24 @@ export class AuthController {
     );
     this.setRefreshTokenToCookies(newTokens, res);
   }
-  private setRefreshTokenToCookies(tokens: IToken, res: Response) {
-    if (!tokens) throw new UnauthorizedException();
+  private setRefreshTokenToCookies(
+    tokensAndUser: ITokenAndUser,
+    res: Response,
+  ) {
+    if (!tokensAndUser) throw new UnauthorizedException();
 
     res.cookie(
       this.REFRESH_TOKEN_COOKIE,
-      tokens.refreshToken.token, // Значення рефреш-токена
+      tokensAndUser.token.refreshToken.token, // Значення рефреш-токена
       {
         httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript
         sameSite: 'lax', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
-        expires: new Date(tokens.refreshToken.exp), // Дата закінчення дії куки
+        expires: new Date(tokensAndUser.token.refreshToken.exp), // Дата закінчення дії куки
         secure:
           this.configService.get('NODE_ENV', 'development') === 'production', // Кука буде передаватись тільки по HTTPS, якщо середовище - production
         path: '/', // Шлях, де кука буде доступна
       },
     );
-    res.status(HttpStatus.CREATED).json({ token: tokens.token });
+    res.status(HttpStatus.CREATED).json({ ...tokensAndUser });
   }
 }

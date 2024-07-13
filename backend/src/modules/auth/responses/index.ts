@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, IsEnum, IsNumber } from 'class-validator';
-import { IToken } from '../../../interfaces/auth';
+import { ITokenResponse } from '../../token/responses';
 @Exclude()
 export class UserResponse {
   @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
@@ -28,6 +28,10 @@ export class UserResponse {
   @IsEnum(Role, { each: true })
   roles: Role[];
 
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  wallet: number;
+
   // @ApiProperty({ enum: Provider, enumName: 'GOOGLE' })
   // @IsEnum(Provider)
   // provider: Provider;
@@ -35,10 +39,6 @@ export class UserResponse {
   // @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
   // @IsString()
   // providerId: string;
-
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  wallet: number;
 
   // @ApiProperty({ example: '2024-07-08 18:26:46.855' })
   // @IsDate()
@@ -57,9 +57,33 @@ export class UserResponse {
 }
 
 export class AuthUserResponse {
-  @ApiProperty()
-  user: UserResponse;
-  @ApiProperty()
+  @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
   @IsString()
-  token: IToken;
+  id: string;
+
+  @ApiProperty({ example: 'John' })
+  @Expose()
+  @IsString()
+  firstName: string;
+
+  @ApiProperty({ example: 'Joshua' })
+  @Expose()
+  @IsString()
+  lastName: string;
+
+  @ApiProperty({ example: 'john@example.com' })
+  @Expose()
+  @IsString()
+  email: string;
+
+  @ApiProperty({ enum: Role, enumName: 'USER' })
+  @IsEnum(Role, { each: true })
+  roles: Role[];
+
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  wallet: number;
+
+  @ApiProperty({ type: ITokenResponse })
+  token: ITokenResponse;
 }

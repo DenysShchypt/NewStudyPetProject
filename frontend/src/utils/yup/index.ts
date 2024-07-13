@@ -29,7 +29,7 @@ export const RegisterSchema = yup.object().shape({
       /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!@#$%&?]{6,20}$/,
       AppError.Wrong_password,
     ),
-  repeatPassword: yup
+  passwordRepeat: yup
     .string()
     .oneOf(
       [yup.ref('password'), undefined],
