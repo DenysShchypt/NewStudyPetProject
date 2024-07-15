@@ -46,10 +46,10 @@ export class TokenService {
     const token = _token?.token ?? '';
     return this.prismaService.token.upsert({
       where: { token },
-      update: { token: v4(), exp: add(new Date(), { weeks: 1 }) },
+      update: { token: v4(), exp: add(new Date(), { months: 1 }) },
       create: {
         token: v4(),
-        exp: add(new Date(), { weeks: 1 }),
+        exp: add(new Date(), { months: 1 }),
         userId: id,
         userAgent: agent,
       },
@@ -67,7 +67,7 @@ export class TokenService {
     refreshToken: string,
     agent: string,
   ): Promise<AuthUserResponse> {
-    const token = await this.prismaService.token.delete({
+    const token = await this.prismaService.token.findUnique({
       where: { token: refreshToken },
     });
     if (!token || new Date(token.exp) < new Date())

@@ -18,13 +18,13 @@ export interface IInfoUserState {
 }
 
 export interface ICurrentUser {
-  createdAt?: string;
+  wallet: number;
   email: string;
   firstName: string;
-  id?: number;
   lastName: string;
-  updatedAt?: string;
-  watchList?: IWatchList[];
+  id: number | undefined;
+  roles: never[];
+  password: string;
 }
 export interface IUpdateUserPassword {
   password: string;

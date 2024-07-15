@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IFormData, IFormDataRegister } from '../../../common/types/auth';
-import { instance } from '../../../utils/axios';
+import { instance, instanceAuth } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
+import axios from 'axios';
 
 export const loginUsers = createAsyncThunk<
   any,
@@ -10,8 +11,7 @@ export const loginUsers = createAsyncThunk<
 >('auth/login', async (data: IFormData, { rejectWithValue }) => {
   try {
     const user = await instance.post('auth/login', data);
-    console.log(user.data);
-    sessionStorage.setItem('token', user.data.token);
+    sessionStorage.setItem('token', user.data.token.token);
     return user.data;
   } catch (error) {
     const typedError = error as IError;
@@ -40,3 +40,4 @@ export const registerUsers = createAsyncThunk<
     }
   }
 });
+

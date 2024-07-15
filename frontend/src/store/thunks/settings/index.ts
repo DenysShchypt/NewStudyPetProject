@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IError } from '../../../common/types/errors';
-import { instanceAuth } from '../../../utils/axios';
+import { instance, instanceAuth } from '../../../utils/axios';
 import {
   IInfoUserState,
   IUpdateUser,
@@ -8,7 +8,8 @@ import {
 } from '../../../common/types/tabs';
 
 export const infoUser = createAsyncThunk<
-  IInfoUserState,
+  any,
+  // IInfoUserState,
   void,
   { rejectValue: string }
 >('users/info', async (_, { rejectWithValue }) => {

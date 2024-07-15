@@ -1,4 +1,3 @@
-
 // Функція convertToSecondsUtil перетворює рядок, що представляє час у різних одиницях (секунди, хвилини, години, дні, місяці, роки), у кількість секунд.
 export function convertToSecondsUtil(timeStr: string) {
   if (!isNaN(timeStr as any)) {

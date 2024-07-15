@@ -17,7 +17,7 @@ import { UserAgent } from '../../../libs/common/decorators/user-agent.decorator'
 import { Response } from 'express';
 import { ITokenAndUser } from '../../interfaces/auth';
 import { Cookie } from '../../../libs/common/decorators/cookies.decorator';
-
+const REFRESH_TOKEN = 'fresh';
 @ApiTags('API')
 @Controller('auth')
 export class AuthController {
@@ -25,9 +25,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
-  ) {
-    this.REFRESH_TOKEN_COOKIE = 'refresh_token';
-  }
+  ) {}
 
   @ApiResponse({ status: 201, type: AuthUserResponse })
   @Post('register')
@@ -53,7 +51,7 @@ export class AuthController {
   @ApiResponse({ status: 200 })
   @Get('logout')
   async logout(
-    @Cookie('refresh_token') refreshToken: string,
+    @Cookie(REFRESH_TOKEN) refreshToken: string,
     @Res() res: Response,
   ) {
     if (!refreshToken) {
@@ -71,10 +69,9 @@ export class AuthController {
     });
     res.sendStatus(HttpStatus.OK);
   }
-
   @Get('refresh-tokens')
   async refreshTokens(
-    @Cookie('refresh_token') refreshToken: string,
+    @Cookie(REFRESH_TOKEN) refreshToken: string,
     @Res() res: Response,
     @UserAgent() agent: string,
   ) {
@@ -85,14 +82,11 @@ export class AuthController {
     );
     this.setRefreshTokenToCookies(newTokens, res);
   }
-  private setRefreshTokenToCookies(
-    tokensAndUser: ITokenAndUser,
-    res: Response,
-  ) {
+  public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {
     if (!tokensAndUser) throw new UnauthorizedException();
 
     res.cookie(
-      this.REFRESH_TOKEN_COOKIE,
+      REFRESH_TOKEN,
       tokensAndUser.token.refreshToken.token, // Значення рефреш-токена
       {
         httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript

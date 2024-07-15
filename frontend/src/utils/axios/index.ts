@@ -1,27 +1,82 @@
-import axios from 'axios';
-
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
+let isRefreshing = false;
+let refreshSubscribers: Array<(token: string) => void> = [];
 export const instance = axios.create({
   baseURL: 'http://localhost:4000/api',
-  timeout: 1000,
-  headers: { 'X-Custom-Header': 'foobar' },
+  timeout: 2000,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 export const instanceAuth = axios.create({
   baseURL: 'http://localhost:4000/api',
-  withCredentials: true,
 });
+
 instanceAuth.interceptors.request.use(
-  config => {
+  (config: InternalAxiosRequestConfig) => {
     const token = sessionStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = token;
+      if (!config.headers) {
+        config.headers = new AxiosHeaders();
+      }
+      config.headers.set('Authorization', token);
     }
-    config.headers['Content-Type'] = 'application/json';
     return config;
   },
-  error => {
+  (error: AxiosError) => Promise.reject(error),
+);
+
+instanceAuth.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const newAccessToken = await instance.get('/auth/refresh-tokens', {
+            withCredentials: true,
+          });
+          sessionStorage.setItem('token', newAccessToken.data.token.token);
+          onRefreshed(newAccessToken.data.token.token);
+        } catch (e) {
+          refreshSubscribers = [];
+          return Promise.reject(e);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+
+      return new Promise(resolve => {
+        subscribeTokenRefresh((token: string) => {
+          if (!originalRequest.headers) {
+            originalRequest.headers = new AxiosHeaders();
+          }
+          originalRequest.headers.set('Authorization', token);
+          resolve(instanceAuth(originalRequest));
+        });
+      });
+    }
     return Promise.reject(error);
   },
 );
+
+function subscribeTokenRefresh(cb: (token: string) => void) {
+  refreshSubscribers.push(cb);
+}
+
+function onRefreshed(token: string) {
+  refreshSubscribers.map(cb => cb(token));
+  refreshSubscribers = [];
+}
+
 export const instanceAssets = axios.create({
   baseURL: 'https://data-api.cryptocompare.com',
   timeout: 5000,

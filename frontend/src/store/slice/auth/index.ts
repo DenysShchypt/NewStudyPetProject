@@ -2,31 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IAuthState } from '../../../common/types/auth';
 import { loginUsers, registerUsers } from '../../thunks/auth';
 
-const initialState: IAuthState = {
-  user: {
+const initialState =
+  // : IAuthState
+  {
     user: {
-      id: '',
+      wallet: 0,
+      email: '',
       firstName: '',
       lastName: '',
-      email: '',
-      createdAt: '',
-      updatedAt: '',
-      watchList: [
-        {
-          id: 0,
-          user: 0,
-          name: '',
-          assetId: 0,
-          createdAt: '',
-          updatedAt: '',
-        },
-      ],
+      id: '',
+      roles: [],
+      token: sessionStorage.getItem('token') || null,
     },
-    token: '',
-  },
-  isLoggedIn: false,
-  isLoading: false,
-};
+    // status: 'idle',
+    isLoggedIn: false,
+    isLoading: false,
+  };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -43,7 +34,6 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUsers.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.user = action.payload;
         state.isLoggedIn = true;
         state.isLoading = false;
@@ -64,6 +54,16 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.isLoading = false;
       });
+    // .addCase(refreshAccessToken.pending, state => {
+    //   state.status = 'loading';
+    // })
+    // .addCase(refreshAccessToken.fulfilled, (state, action) => {
+    //   state.status = 'succeeded';
+    //   state.user.token = action.payload.accessToken;
+    // })
+    // .addCase(refreshAccessToken.rejected, (state, action) => {
+    //   state.status = 'failed';
+    // });
   },
 });
 export const { setLoading } = authSlice.actions;
