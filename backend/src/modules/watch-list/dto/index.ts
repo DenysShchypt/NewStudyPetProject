@@ -9,5 +9,5 @@ export class WatchListDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  assetId: string;
+  assetId: number;
 }

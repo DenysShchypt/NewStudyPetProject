@@ -19,15 +19,15 @@ export class WatchListResponseGetOneAsset {
   @ApiProperty()
   @Expose()
   @IsString()
-  createdAt: string;
+  createdAt: Date;
   @ApiProperty()
   @Expose()
   @IsString()
-  updatedAt: string;
+  updatedAt: Date;
   @ApiProperty()
   @Expose()
   @IsNumber()
-  assetId: string;
+  assetId: number;
 }
 @Exclude()
 export class WatchListResponse {
@@ -46,5 +46,5 @@ export class WatchListResponse {
   @ApiProperty()
   @Expose()
   @IsNumber()
-  assetId: string;
+  assetId: number;
 }

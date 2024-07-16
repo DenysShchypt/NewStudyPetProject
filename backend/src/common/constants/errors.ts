@@ -10,4 +10,5 @@ export const AppError = {
   ERROR_JWT: 'Error during validate JWT',
   ERROR_REGISTRATION: 'Error during register user',
   ADMIN_DELETE_USER: 'Remove user forbidden for your account',
+  ASSET_ALREADY_EXISTS: 'Asset already exists',
 };
