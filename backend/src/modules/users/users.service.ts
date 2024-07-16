@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import validator from 'validator';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { Role } from '@prisma/client';
@@ -14,8 +15,8 @@ import {
   USER_ALL_INFO,
   USER_SELECT_FIELDS,
 } from '../../common/constants/select-return';
-import { ConfigService } from '@nestjs/config';
 import { convertToSecondsUtil } from '../../../libs/common/utils/convert-to-seconds.util';
+import { ICurrentUser } from '../../interfaces/auth';
 
 @Injectable()
 export class UsersService {
@@ -52,9 +53,13 @@ export class UsersService {
           : USER_ALL_INFO,
       });
       if (!userFromBD) throw new BadRequestException(AppError.USER_NOT_FOUND);
+      const userWithoutPassword = {
+        ...userFromBD,
+        password: undefined,
+      };
       await this.cacheManager.set(
         idOrEmail,
-        userFromBD,
+        userWithoutPassword,
         convertToSecondsUtil(this.configService.get('expire_jwt')),
       );
       return userFromBD;
@@ -69,20 +74,24 @@ export class UsersService {
     if (user) return;
     const salt = await bcrypt.genSalt();
     dto.password = await this.hashPassword(dto.password, salt);
-    const createNewUser = await this.prismaService.user.create({
-      data: {
-        email: dto.email,
-        firstName: dto.firstName,
-        lastName: dto.lastName,
-        password: dto.password,
-        passwordRepeat: dto.passwordRepeat,
-        roles: [Role.USER],
-      },
-      select: USER_SELECT_FIELDS,
-    });
-    await this.cacheManager.set(createNewUser.id, createNewUser);
-    await this.cacheManager.set(createNewUser.email, createNewUser);
-    return createNewUser;
+    try {
+      const createNewUser = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          password: dto.password,
+          passwordRepeat: dto.passwordRepeat,
+          roles: [Role.USER],
+        },
+        select: USER_SELECT_FIELDS,
+      });
+      await this.cacheManager.set(createNewUser.id, createNewUser);
+      await this.cacheManager.set(createNewUser.email, createNewUser);
+      return createNewUser;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async updateUser(
@@ -139,16 +148,20 @@ export class UsersService {
     }
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string, currentUser: ICurrentUser): Promise<void> {
+    if (currentUser.id !== id && currentUser.roles.includes(Role.ADMIN))
+      throw new BadRequestException(AppError.ADMIN_DELETE_USER);
+
     const user = await this.prismaService.user.findUnique({
       where: {
         id,
       },
     });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    await this.cacheManager.del(id);
     try {
       await this.prismaService.user.delete({
-        where: { id },
+        where: { id: user.id },
         select: { id: true },
       });
     } catch (error) {

@@ -14,7 +14,6 @@ export interface IUpdateUser {
 
 export interface IInfoUserState {
   user: ICurrentUser;
-  token: string;
 }
 
 export interface ICurrentUser {
@@ -22,9 +21,8 @@ export interface ICurrentUser {
   email: string;
   firstName: string;
   lastName: string;
-  id: number | undefined;
+  id: string;
   roles: never[];
-  password: string;
 }
 export interface IUpdateUserPassword {
   password: string;

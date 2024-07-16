@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useAppDispatch } from '../../utils/hook';
+import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import {
   Box,
   Checkbox,
@@ -22,9 +22,10 @@ const RemoveUser: FC = (): JSX.Element => {
   const colors = tokens(theme.palette.mode as 'light' | 'dark');
   const dispatch = useAppDispatch();
   const navigate: NavigateFunction = useNavigate();
+  const userId: string = useAppSelector(state => state.settings.user.id);
 
   const handleDelete = async (): Promise<void> => {
-    await dispatch(removeUserAccount());
+    await dispatch(removeUserAccount(userId));
     sessionStorage.removeItem('token');
     dispatch(setLoading(false));
     navigate('/login');

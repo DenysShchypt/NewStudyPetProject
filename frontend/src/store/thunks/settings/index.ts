@@ -1,15 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IError } from '../../../common/types/errors';
-import { instance, instanceAuth } from '../../../utils/axios';
+import { instanceAuth } from '../../../utils/axios';
 import {
-  IInfoUserState,
+  ICurrentUser,
   IUpdateUser,
   IUpdateUserPassword,
 } from '../../../common/types/tabs';
 
 export const infoUser = createAsyncThunk<
-  any,
-  // IInfoUserState,
+  ICurrentUser,
   void,
   { rejectValue: string }
 >('users/info', async (_, { rejectWithValue }) => {
@@ -63,11 +62,11 @@ export const updateUserPassword = createAsyncThunk<
 );
 export const removeUserAccount = createAsyncThunk<
   void,
-  void,
+  string,
   { rejectValue: string }
->('users/removeUser', async (_, { rejectWithValue }) => {
+>('users/removeUser', async (id: string, { rejectWithValue }) => {
   try {
-    return instanceAuth.delete('users/delete-user');
+    return instanceAuth.delete(`users/delete-user/${id}`);
   } catch (error) {
     const typedError = error as IError;
     if (typedError.response && typedError.response.data?.message) {

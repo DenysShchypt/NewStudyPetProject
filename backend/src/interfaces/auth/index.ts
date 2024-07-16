@@ -35,3 +35,10 @@ export interface ITokenAndUser {
   roles: $Enums.Role[];
   token: IBearerToken;
 }
+export interface ICurrentUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  roles: $Enums.Role[];
+}

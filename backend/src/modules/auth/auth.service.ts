@@ -18,8 +18,10 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  public async registerUsers(dto: CreateUserDTO, agent: string) {
-    // : Promise<AuthUserResponse>
+  public async registerUsers(
+    dto: CreateUserDTO,
+    agent: string,
+  ): Promise<AuthUserResponse> {
     const newUser = await this.userService.createUser(dto).catch(error => {
       this.logger.error(`${AppError.ERROR_REGISTRATION}:${error.message}`);
       return null;

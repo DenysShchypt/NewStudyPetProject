@@ -1,8 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IFormData, IFormDataRegister } from '../../../common/types/auth';
-import { instance, instanceAuth } from '../../../utils/axios';
+import { instance } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
-import axios from 'axios';
 
 export const loginUsers = createAsyncThunk<
   any,
@@ -40,4 +39,3 @@ export const registerUsers = createAsyncThunk<
     }
   }
 });
-
