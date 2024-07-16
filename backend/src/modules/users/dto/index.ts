@@ -39,6 +39,12 @@ export class CreateUserDTO {
   @Length(10, 20)
   @Matches(/^.*$/, { message: 'Field must contain any characters' })
   password: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @Length(10, 20)
+  @Matches(/^.*$/, { message: 'Field must contain any characters' })
+  passwordRepeat: string;
 }
 
 export class UpdateUserDTO {

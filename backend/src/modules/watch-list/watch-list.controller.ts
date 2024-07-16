@@ -5,7 +5,6 @@ import {
   Get,
   Post,
   Query,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { WatchListService } from './watch-list.service';
@@ -13,47 +12,45 @@ import { WatchListDTO } from './dto';
 import { JwtAuthGuard } from '../../guards/jwt-guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { WatchListResponse, WatchListResponseGetOneAsset } from './responses';
-import { WatchList } from './models/watchList.model';
+import { WatchList } from '@prisma/client';
+import { CurrentUser } from '../../../libs/common/decorators/current-use.decorator';
+import { ICurrentUser } from '../../interfaces/auth';
 
+@ApiTags('API')
+@UseGuards(JwtAuthGuard)
 @Controller('watch-list')
 export class WatchListController {
   constructor(private readonly watchListService: WatchListService) {}
-  @ApiTags('API')
+
   @ApiResponse({ status: 201, type: WatchListResponse })
-  @UseGuards(JwtAuthGuard)
   @Post('create-asset')
-  createAsset(
+  async createAsset(
     @Body() assetDto: WatchListDTO,
-    @Req() request,
+    @CurrentUser() user: ICurrentUser,
   ): Promise<WatchListResponse> {
-    const { id } = request.user;
-    return this.watchListService.createAsset(id, assetDto);
+    return await this.watchListService.createAsset(user.id, assetDto);
   }
-  @ApiTags('API')
+
   @ApiResponse({ status: 200, type: [WatchListResponseGetOneAsset] })
-  @UseGuards(JwtAuthGuard)
   @Get('getAll-assets')
-  getAllAssets(@Req() request): Promise<WatchList[]> {
-    const { id } = request.user;
-    return this.watchListService.getAllAssets(id);
+  async getAllAssets(@CurrentUser() user: ICurrentUser): Promise<WatchList[]> {
+    return await this.watchListService.getAllAssets(user);
   }
-  @ApiTags('API')
   @ApiResponse({ status: 200, type: WatchListResponseGetOneAsset })
-  @UseGuards(JwtAuthGuard)
   @Get('getOne-asset')
-  getOneAsset(
+  async getOneAsset(
     @Query('id') assetId: string,
-    @Req() request,
+    @CurrentUser() user: ICurrentUser,
   ): Promise<WatchListResponseGetOneAsset> {
-    const { id } = request.user;
-    return this.watchListService.getAsset(id, assetId);
+    return await this.watchListService.getAsset(user.id, assetId);
   }
-  @ApiTags('API')
+
   @ApiResponse({ status: 200 })
-  @UseGuards(JwtAuthGuard)
   @Delete('delete-asset')
-  deleteAsset(@Query('id') assetId: string, @Req() request): Promise<void> {
-    const { id } = request.user;
-    return this.watchListService.deleteAsset(id, assetId);
+  async deleteAsset(
+    @Query('id') assetId: string,
+    @CurrentUser() user: ICurrentUser,
+  ): Promise<void> {
+    return await this.watchListService.deleteAsset(user.id, assetId);
   }
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Req,
   UseGuards,
@@ -14,51 +15,49 @@ import { UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { JwtAuthGuard } from '../../guards/jwt-guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserResponse } from './responses';
-import { AuthUserResponse } from '../auth/responses';
-
+import { UserResponse } from '../auth/responses';
+import { CurrentUser } from '../../../libs/common/decorators/current-use.decorator';
+import { ICurrentUser } from '../../interfaces/auth';
+@ApiTags('API')
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @ApiTags('API')
+
   @ApiResponse({ status: 200, type: UpdateUserDTO })
-  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   @Patch('update-user')
-  updateUser(
+  public async updateUser(
     @Body() userUpdateDTO: UpdateUserDTO,
     @Req() request,
   ): Promise<UpdateUserResponse> {
     const { id } = request.user;
-    return this.usersService.updateUser(id, userUpdateDTO);
+    return await this.usersService.updateUser(id, userUpdateDTO);
   }
-  @ApiTags('API')
   @ApiResponse({ status: 200 })
-  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   @Patch('update-user-password')
-  updateUserPassword(
+  public async updateUserPassword(
     @Body() UpdatePasswordDTO: UpdatePasswordDTO,
     @Req() request,
   ): Promise<any> {
     const { id } = request.user;
-    return this.usersService.updateUserPassword(id, UpdatePasswordDTO);
+    return await this.usersService.updateUserPassword(id, UpdatePasswordDTO);
   }
 
-  @ApiTags('API')
-  @ApiResponse({ status: 200, type: AuthUserResponse })
-  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, type: UserResponse })
   @Get('user-info')
-  getUserInfo(@Req() request): Promise<AuthUserResponse> {
+  public async getUserInfo(@Req() request): Promise<UserResponse> {
     const { email } = request.user;
-    return this.usersService.publicUser(email);
+    return await this.usersService.getUserAllInfo(email);
   }
 
-  @ApiTags('API')
   @ApiResponse({ status: 200 })
-  @UseGuards(JwtAuthGuard)
-  @Delete('delete-user')
-  deleteUser(@Req() request): Promise<void> {
-    const { id } = request.user;
-    return this.usersService.deleteUser(id);
+  @Delete('delete-user/:id')
+  public async deleteUser(
+    @Param('id') id: string,
+    @CurrentUser() user: ICurrentUser,
+  ): Promise<void> {
+    return await this.usersService.deleteUser(id, user);
   }
 }

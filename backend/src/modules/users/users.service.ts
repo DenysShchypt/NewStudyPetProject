@@ -1,82 +1,94 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import validator from 'validator';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { User } from './models/user.model';
+import { Role } from '@prisma/client';
 import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
-import { WatchList } from '../watch-list/models/watchList.model';
-import { AuthUserResponse, UserResponse } from '../auth/responses';
-import { TokenService } from '../token/token.service';
+import { UserResponse } from '../auth/responses';
+import { PrismaService } from '../prisma/prisma.service';
+import {
+  USER_ALL_INFO,
+  USER_SELECT_FIELDS,
+} from '../../common/constants/select-return';
+import { convertToSecondsUtil } from '../../../libs/common/utils/convert-to-seconds.util';
+import { ICurrentUser } from '../../interfaces/auth';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User) private readonly userRepository: typeof User,
-    private readonly tokenService: TokenService,
+    private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async hashPassword(password: string): Promise<string> {
-    try {
-      return await bcrypt.hash(password, 10);
-    } catch (error) {
-      throw new Error(error);
-    }
+  private async hashPassword(
+    password: string | Buffer,
+    salt: string,
+  ): Promise<string> {
+    return bcrypt.hashSync(password, salt);
   }
-  async findByEmail(email: string): Promise<User> {
-    try {
-      return await this.userRepository.findOne({
-        where: { email },
-        include: {
-          model: WatchList,
-          required: false,
-        },
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
+  private async isValidUuid(val: string): Promise<boolean> {
+    return validator.isUUID(val);
   }
-  async findById(id: number): Promise<User> {
-    try {
-      return await this.userRepository.findOne({
-        where: { id },
-        include: {
-          model: WatchList,
-          required: false,
-        },
-      });
-    } catch (error) {
-      throw new Error(error);
+  public async getUserAllInfo(
+    idOrEmail: string,
+    isReset: boolean = false,
+  ): Promise<UserResponse> {
+    if (isReset) {
+      await this.cacheManager.del(idOrEmail);
     }
-  }
-  async createUser(dto: CreateUserDTO): Promise<UserResponse> {
-    const hashPassword = await this.hashPassword(dto.password);
-    try {
-      await this.userRepository.create({
-        firstName: dto.firstName,
-        lastName: dto.lastName,
-        email: dto.email,
-        password: hashPassword,
+    const user = await this.cacheManager.get<UserResponse>(idOrEmail);
+    if (!user) {
+      const userFromBD = await this.prismaService.user.findFirst({
+        where: (await this.isValidUuid(idOrEmail))
+          ? { id: idOrEmail }
+          : { email: idOrEmail },
+        select: (await this.isValidUuid(idOrEmail))
+          ? USER_SELECT_FIELDS
+          : USER_ALL_INFO,
       });
-      return plainToInstance(UserResponse, dto);
-    } catch (error) {
-      throw new Error(error);
+      if (!userFromBD) throw new BadRequestException(AppError.USER_NOT_FOUND);
+      const userWithoutPassword = {
+        ...userFromBD,
+        password: undefined,
+      };
+      await this.cacheManager.set(
+        idOrEmail,
+        userWithoutPassword,
+        convertToSecondsUtil(this.configService.get('expire_jwt')),
+      );
+      return userFromBD;
     }
+    return user;
   }
 
-  async publicUser(email: string): Promise<AuthUserResponse> {
+  public async createUser(dto: CreateUserDTO): Promise<UserResponse> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (user) return;
+    const salt = await bcrypt.genSalt();
+    dto.password = await this.hashPassword(dto.password, salt);
     try {
-      const user = await this.userRepository.findOne({
-        where: { email },
-        attributes: { exclude: ['password'] },
-        include: {
-          model: WatchList,
-          required: false,
+      const createNewUser = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          password: dto.password,
+          passwordRepeat: dto.passwordRepeat,
+          roles: [Role.USER],
         },
+        select: USER_SELECT_FIELDS,
       });
-      const token = this.tokenService.generateJwtToken(user);
-      return { user, token };
+      await this.cacheManager.set(createNewUser.id, createNewUser);
+      await this.cacheManager.set(createNewUser.email, createNewUser);
+      return createNewUser;
     } catch (error) {
       throw new Error(error);
     }
@@ -86,40 +98,72 @@ export class UsersService {
     id: string,
     dto: UpdateUserDTO,
   ): Promise<UpdateUserResponse> {
-    const user = await this.userRepository.findByPk(id);
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
 
     try {
-      await this.userRepository.update(dto, {
+      await this.prismaService.user.update({
         where: { id },
+        data: {
+          firstName: dto.firstName || user.firstName,
+          lastName: dto.lastName || user.lastName,
+          email: dto.email || user.email,
+        },
       });
       return plainToInstance(UpdateUserResponse, dto);
     } catch (error) {
       throw new Error(error);
     }
   }
-  async updateUserPassword(id: number, dto: UpdatePasswordDTO): Promise<any> {
-    const user = await this.userRepository.findByPk(id);
+  async updateUserPassword(id: string, dto: UpdatePasswordDTO): Promise<any> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
     try {
-      const { password } = await this.findById(id);
+      const { password } = await this.prismaService.user.findUnique({
+        where: {
+          id,
+        },
+      });
       const currentPassword = await bcrypt.compare(dto.password, password);
       if (!currentPassword) throw new BadRequestException(AppError.WRONG_DATA);
-
-      const data = { password: await this.hashPassword(dto.newPassword) };
-      return await this.userRepository.update(data, {
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await this.hashPassword(dto.newPassword, salt);
+      return await this.prismaService.user.update({
         where: { id },
+        data: {
+          password: hashPassword,
+          passwordRepeat: hashPassword,
+        },
       });
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async deleteUser(id: string): Promise<void> {
-    const user = await this.userRepository.findByPk(id);
+  async deleteUser(id: string, currentUser: ICurrentUser): Promise<void> {
+    if (currentUser.id !== id && currentUser.roles.includes(Role.ADMIN))
+      throw new BadRequestException(AppError.ADMIN_DELETE_USER);
+
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
     if (!user) throw new BadRequestException(AppError.USER_NOT_EXIST);
+    await this.cacheManager.del(id);
     try {
-      await this.userRepository.destroy({ where: { id } });
+      await this.prismaService.user.delete({
+        where: { id: user.id },
+        select: { id: true },
+      });
     } catch (error) {
       throw new Error(error);
     }

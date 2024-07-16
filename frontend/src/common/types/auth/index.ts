@@ -1,6 +1,9 @@
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import { IWatchList } from '../watchList';
-
+enum Role {
+  'ADMIN',
+  'USER',
+}
 export interface IPropsLogin<
   TFieldValues extends IFormData = IFormData,
   TContext = any,
@@ -27,15 +30,13 @@ export interface IAuthState {
 }
 
 export interface IPublicUser {
-  user: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
-    watchList: [IWatchList];
-  };
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  wallet: number;
+  roles: Role[];
+  watchList?: [IWatchList];
   token: string;
 }
 
@@ -46,5 +47,5 @@ export interface IFormData extends FieldValues {
 export interface IFormDataRegister extends IFormData {
   firstName: string;
   lastName: string;
-  repeatPassword: string;
+  passwordRepeat: string;
 }

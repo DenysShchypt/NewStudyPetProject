@@ -14,17 +14,15 @@ export interface IUpdateUser {
 
 export interface IInfoUserState {
   user: ICurrentUser;
-  token: string;
 }
 
 export interface ICurrentUser {
-  createdAt?: string;
+  wallet: number;
   email: string;
   firstName: string;
-  id?: number;
   lastName: string;
-  updatedAt?: string;
-  watchList?: IWatchList[];
+  id: string;
+  roles: never[];
 }
 export interface IUpdateUserPassword {
   password: string;

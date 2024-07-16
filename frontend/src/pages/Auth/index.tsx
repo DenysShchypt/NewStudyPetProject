@@ -42,14 +42,14 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
         return error;
       }
     } else {
-      if (data.password === data.repeatPassword) {
+      if (data.password === data.passwordRepeat) {
         try {
           const userData = {
             firstName: (data as IFormDataRegister).firstName,
             lastName: (data as IFormDataRegister).lastName,
             email: (data as IFormDataRegister).email,
             password: (data as IFormDataRegister).password,
-            repeatPassword: (data as IFormDataRegister).repeatPassword,
+            passwordRepeat: (data as IFormDataRegister).passwordRepeat,
           };
 
           await dispatch(registerUsers(userData));

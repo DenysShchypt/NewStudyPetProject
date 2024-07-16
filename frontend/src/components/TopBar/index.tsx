@@ -17,14 +17,14 @@ const TopBarComponent: FC<ITopBarProps> = (
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const firstNameUserAuth: string = useAppSelector(
-    state => state.auth.user.user.firstName,
+    state => state.auth.user.firstName,
   );
   const firstNameUserInfo: string = useAppSelector(
     state => state.settings.user.firstName,
   );
   useEffect(() => {
     dispatch(infoUser());
-  }, [firstNameUserInfo, dispatch]);
+  }, [dispatch]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">

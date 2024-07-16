@@ -1,18 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IInfoUserState } from '../../../common/types/tabs';
-import { infoUser, updateUser } from '../../thunks/settings';
+import { infoUser } from '../../thunks/settings';
 
 const initialState: IInfoUserState = {
   user: {
-    createdAt: '',
+    wallet: 0,
     email: '',
     firstName: '',
-    id: 0,
     lastName: '',
-    updatedAt: '',
-    watchList: [],
+    id: '',
+    roles: [],
   },
-  token: '',
 };
 
 const settingsSlice = createSlice({
@@ -20,14 +18,9 @@ const settingsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder
-      .addCase(infoUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      });
+    builder.addCase(infoUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 

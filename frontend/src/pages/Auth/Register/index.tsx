@@ -70,7 +70,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
           })}
         />
         <TextField
-          error={!!errors.repeatPassword}
+          error={!!errors.passwordRepeat}
           type="password"
           fullWidth={true}
           margin="normal"
@@ -78,9 +78,9 @@ const RegisterPage: React.FC<IPropsRegister> = (
           variant="outlined"
           placeholder="Input your password"
           helperText={
-            errors.repeatPassword ? `${errors.repeatPassword.message}` : ''
+            errors.passwordRepeat ? `${errors.passwordRepeat.message}` : ''
           }
-          {...register('repeatPassword', {
+          {...register('passwordRepeat', {
             required: 'Enter your repeat password',
           })}
         />

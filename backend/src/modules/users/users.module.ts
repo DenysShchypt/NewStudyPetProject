@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { User } from './models/user.model';
-import { WatchList } from '../watch-list/models/watchList.model';
-import { TokenModule } from '../token/token.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, WatchList]), TokenModule],
+  imports: [
+    CacheModule.register({
+      isGlobal: true,
+    }),
+  ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, PrismaService],
   exports: [UsersService],
 })
 export class UsersModule {}

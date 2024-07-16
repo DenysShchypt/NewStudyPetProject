@@ -4,25 +4,13 @@ import { loginUsers, registerUsers } from '../../thunks/auth';
 
 const initialState: IAuthState = {
   user: {
-    user: {
-      id: 0,
-      firstName: '',
-      lastName: '',
-      email: '',
-      createdAt: '',
-      updatedAt: '',
-      watchList: [
-        {
-          id: 0,
-          user: 0,
-          name: '',
-          assetId: 0,
-          createdAt: '',
-          updatedAt: '',
-        },
-      ],
-    },
-    token: '',
+    wallet: 0,
+    email: '',
+    firstName: '',
+    lastName: '',
+    id: '',
+    roles: [],
+    token: sessionStorage.getItem('token') || '',
   },
   isLoggedIn: false,
   isLoading: false,

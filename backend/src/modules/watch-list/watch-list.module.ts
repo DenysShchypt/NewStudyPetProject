@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 import { WatchListController } from './watch-list.controller';
 import { WatchListService } from './watch-list.service';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { WatchList } from './models/watchList.model';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([WatchList])],
   controllers: [WatchListController],
-  providers: [WatchListService],
+  providers: [WatchListService, PrismaService],
 })
 export class WatchListModule {}
