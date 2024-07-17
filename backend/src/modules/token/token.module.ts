@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TokenService } from './token.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
-import { UsersModule } from '../users/users.module';
 
 //     defaultStrategy: 'jwt' — Вказує, що за замовчуванням буде використовуватись стратегія JWT для аутентифікації.
 // session: false — Відключає використання сесій, аутентифікація буде відбуватись за допомогою токенів.

@@ -7,7 +7,9 @@ import {
   IsString,
   Length,
   Matches,
+  Validate,
 } from 'class-validator';
+import { IsPasswordsMatching } from '../../../../libs/common/decorators/isPasswordMatchingConstraint.decorator';
 
 //Перевірка входящих даних
 export class CreateUserDTO {
@@ -44,6 +46,7 @@ export class CreateUserDTO {
   @IsString()
   @Length(10, 20)
   @Matches(/^.*$/, { message: 'Field must contain any characters' })
+  @Validate(IsPasswordsMatching)
   passwordRepeat: string;
 }
 

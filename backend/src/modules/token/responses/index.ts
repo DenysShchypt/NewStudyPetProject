@@ -23,7 +23,10 @@ export class IRefreshToken {
 }
 
 export class ITokenResponse {
-  @ApiProperty({ example: '2a75219e-1d14-4497-ab63-b80d91e9410e' })
+  @ApiProperty({
+    example:
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZGVueXNzb3JAZGVuLmNvbSIsImZpcnN0TmFtZSI6IkRlcnNuIiwibGFzdE5hbWUiOiJEcmVmc2doanIiLCJpZCI6ImFlZTM3ZTA0LWQzODQtNDMyYi04M2ExLWE0YzRiODM0YWJiMiIsInJvbGVzIjpbIlVTRVIiXX0sImlhdCI6MTcyMTI0MDU5OCwiZXhwIjoxNzIxMjQxMTk4fQ.2NOCXEailgy_dhP5iWU-EusidgjlWCf6FgCme_m11cM',
+  })
   @IsString()
   token: string;
   @ApiProperty({ type: IRefreshToken })

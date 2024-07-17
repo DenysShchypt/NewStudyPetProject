@@ -149,7 +149,7 @@ export class UsersService {
   }
 
   async deleteUser(id: string, currentUser: ICurrentUser): Promise<void> {
-    if (currentUser.id !== id && currentUser.roles.includes(Role.ADMIN))
+    if (currentUser.id !== id && !currentUser.roles.includes(Role.ADMIN))
       throw new BadRequestException(AppError.ADMIN_DELETE_USER);
 
     const user = await this.prismaService.user.findUnique({
