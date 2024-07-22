@@ -4,19 +4,23 @@ import {
   Get,
   HttpStatus,
   Post,
+  Req,
   Res,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from '../users/dto';
-import { LoginUserDTO } from './dto';
+import { GoogleUserDTO, LoginUserDTO } from './dto';
 import { AuthUserResponse } from './responses';
 import { ConfigService } from '@nestjs/config';
 import { UserAgent } from '../../../libs/common/decorators/user-agent.decorator';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { ITokenAndUser } from '../../interfaces/auth';
 import { Cookie } from '../../../libs/common/decorators/cookies.decorator';
+import { GoogleGuard } from '../../guards/google-guard';
+
 const REFRESH_TOKEN = 'fresh';
 @ApiTags('API')
 @Controller('auth')
@@ -81,6 +85,28 @@ export class AuthController {
       agent,
     );
     this.setRefreshTokenToCookies(newTokens, res);
+  }
+  @UseGuards(GoogleGuard)
+  @Get('google')
+  async googleAuth(@Body('token') token: string, @Res() res: Response) {
+    // Обробіть токен, отриманий від Google
+    // Успішна відповідь
+    return res.status(HttpStatus.OK).json({ message: 'Token received', token });
+  }
+
+  @UseGuards(GoogleGuard)
+  @Get('google/callback')
+  async googleAuthRedirect(
+    @Req() req: Request,
+    @Res() res: Response,
+    @UserAgent() agent: string,
+  ) {
+    console.log(req.user);
+    // const token = await this.authService.enterGoogleAuth(
+    //   req.user as GoogleUserDTO,
+    //   agent,
+    // );
+    // this.setRefreshTokenToCookies(token, res);
   }
   public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {
     if (!tokensAndUser) throw new UnauthorizedException();

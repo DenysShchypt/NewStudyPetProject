@@ -1,22 +1,71 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { OAuth2Client } from 'google-auth-library';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDTO } from '../users/dto';
 import { AppError } from '../../common/constants/errors';
-import { LoginUserDTO } from './dto';
+import { GoogleUserDTO, LoginUserDTO } from './dto';
 import { AuthUserResponse } from './responses';
 import { TokenService } from '../token/token.service';
 import { IToken } from '../../interfaces/auth';
 import { PrismaService } from '../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
+import { Provider, Role } from '@prisma/client';
+import { USER_SELECT_FIELDS } from '../../common/constants/select-return';
 
 @Injectable()
 export class AuthService {
+  private client: OAuth2Client;
   private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly userService: UsersService,
     private readonly tokenService: TokenService,
     private readonly prismaService: PrismaService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.client = new OAuth2Client(
+      this.configService.get<string>('google_client_id'),
+    );
+  }
+
+  public async enterGoogleAuth(dto: GoogleUserDTO, agent: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    if (!user) {
+      const newUser = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          roles: [Role.USER],
+          picture: dto.picture,
+          provider: Provider.GOOGLE,
+          providerId: dto.providerId,
+        },
+        select: USER_SELECT_FIELDS,
+      });
+      const payload = {
+        email: dto.email,
+        id: newUser.id,
+        firstName: dto.firstName,
+        lastName: dto.lastName,
+        roles: newUser.roles,
+      };
+      const token = await this.tokenService.generateJwtToken(payload, agent);
+      return { ...newUser, token };
+    }
+    const payload = {
+      email: user.email,
+      id: user.id,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      roles: user.roles,
+    };
+    const token = await this.tokenService.generateJwtToken(payload, agent);
+    return { ...user, token };
+  }
 
   public async registerUsers(
     dto: CreateUserDTO,

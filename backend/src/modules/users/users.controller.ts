@@ -18,6 +18,9 @@ import { UpdateUserResponse } from './responses';
 import { UserResponse } from '../auth/responses';
 import { CurrentUser } from '../../../libs/common/decorators/current-use.decorator';
 import { ICurrentUser } from '../../interfaces/auth';
+import { RolesGuard } from '../../guards/roles-guard';
+import { Roles } from '../../../libs/common/decorators/roles.decorator';
+import { Role } from '@prisma/client';
 @ApiTags('API')
 @UseGuards(JwtAuthGuard)
 @Controller('users')
@@ -48,8 +51,16 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserResponse })
   @Get('user-info')
   public async getUserInfo(@Req() request): Promise<UserResponse> {
-    const { email } = request.user;
-    return await this.usersService.getUserAllInfo(email);
+    const { id } = request.user;
+    return await this.usersService.getUserAllInfo(id);
+  }
+
+  // example for use role
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get()
+  me(@CurrentUser() user: ICurrentUser) {
+    return user;
   }
 
   @ApiResponse({ status: 200 })

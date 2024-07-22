@@ -5,6 +5,7 @@ import {
   LoadingButtonStyled,
 } from '../../../components/GeneralComponentsStyles';
 import { RootStylesRegister } from './styles';
+import GoogleLoginComponent from '../../../components/GoogleLoginComponent';
 
 const RegisterPage: React.FC<IPropsRegister> = (
   props: IPropsRegister,
@@ -94,6 +95,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
           </LoadingButtonStyled>
         </Box>
         <Box className="redirection">
+          <GoogleLoginComponent />
           <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
             If you have an account?{' '}
             <ButtonAuthNavStyled onClick={() => navigate('/login')}>

@@ -8,6 +8,8 @@ export default (): {
   secret_jwt: string | undefined;
   expire_jwt: string | undefined;
   refresh_token: string | undefined;
+  google_client_id: string | undefined;
+  google_client_secret: string | undefined;
 } => ({
   port: process.env.PORT,
   db_port: parseInt(process.env.POSTGRES_PORT, 10),
@@ -18,4 +20,6 @@ export default (): {
   secret_jwt: process.env.SECRET_KEY,
   expire_jwt: process.env.EXPIRE_JWT,
   refresh_token: process.env.REFRESH_TOKEN,
+  google_client_id: process.env.GOOGLE_CLIENT_ID,
+  google_client_secret: process.env.GOOGLE_CLIENT_SECRET,
 });

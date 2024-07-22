@@ -53,13 +53,13 @@ export class UsersService {
           : USER_ALL_INFO,
       });
       if (!userFromBD) throw new BadRequestException(AppError.USER_NOT_FOUND);
-      const userWithoutPassword = {
-        ...userFromBD,
-        password: undefined,
-      };
+      // const userWithoutPassword = {
+      //   ...userFromBD,
+      //   password: undefined,
+      // };
       await this.cacheManager.set(
         idOrEmail,
-        userWithoutPassword,
+        userFromBD,
         convertToSecondsUtil(this.configService.get('expire_jwt')),
       );
       return userFromBD;
