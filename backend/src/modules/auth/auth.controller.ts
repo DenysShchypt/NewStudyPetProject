@@ -42,7 +42,6 @@ export class AuthController {
     @UserAgent() agent: string,
     @Res() res: Response,
   ): Promise<void> {
-    console.log('hello');
     const tokensAndUser = await this.authService.registerUsers(dto, agent);
     this.setRefreshTokenToCookies(tokensAndUser, res);
   }

@@ -13,7 +13,7 @@ export const LoadingButtonStyled = styled(LoadingButton)({
   background: '#1900D5 !important',
   padding: '10px 20px !important',
   marginTop: 12,
-  width: '30%',
+  width: '44%',
   color: 'white',
 });
 export const ButtonAuthNavStyled = styled.span`
