@@ -1,5 +1,7 @@
-{
-  "extends": [
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
     "react-app",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -8,14 +10,14 @@
     "plugin:prettier/recommended",
     "prettier"
   ],
-  "parser": "@typescript-eslint/parser",
-  "plugins": [
+  parser: "@typescript-eslint/parser",
+  plugins: [
     "@typescript-eslint/eslint-plugin",
     "react",
     "react-hooks",
     "react-refresh"
   ],
-  "parserOptions": {
+  parserOptions: {
     "ecmaVersion": 12,
     "sourceType": "module",
     "project": [
@@ -23,7 +25,7 @@
       "${workspaceFolder}/frontend/tsconfig.node.json"
     ]
   },
-  "rules": {
+  rules: {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/interface-name-prefix": "off",
@@ -40,12 +42,12 @@
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "no-var": "error"
   },
-  "settings": {
+  settings: {
     "react": {
       "version": "detect"
     }
   },
-  "overrides": [
+  overrides: [
     {
       "files": ["src/**/*.js", "src/**/*.jsx"],
       "extends": ["eslint-config-react-app"]

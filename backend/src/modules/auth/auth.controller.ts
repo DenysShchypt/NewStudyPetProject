@@ -4,22 +4,26 @@ import {
   Get,
   HttpStatus,
   Post,
-  Req,
   Res,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from '../users/dto';
-import { GoogleUserDTO, LoginUserDTO } from './dto';
+import { LoginUserDTO } from './dto';
 import { AuthUserResponse } from './responses';
 import { ConfigService } from '@nestjs/config';
 import { UserAgent } from '../../../libs/common/decorators/user-agent.decorator';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { ITokenAndUser } from '../../interfaces/auth';
 import { Cookie } from '../../../libs/common/decorators/cookies.decorator';
-import { GoogleGuard } from '../../guards/google-guard';
+import { OAuth2Client } from 'google-auth-library';
+import { Provider } from '@prisma/client';
+
+const oauth2Client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_SECRET,
+);
 
 const REFRESH_TOKEN = 'fresh';
 @ApiTags('API')
@@ -38,6 +42,7 @@ export class AuthController {
     @UserAgent() agent: string,
     @Res() res: Response,
   ): Promise<void> {
+    console.log('hello');
     const tokensAndUser = await this.authService.registerUsers(dto, agent);
     this.setRefreshTokenToCookies(tokensAndUser, res);
   }
@@ -86,28 +91,46 @@ export class AuthController {
     );
     this.setRefreshTokenToCookies(newTokens, res);
   }
-  @UseGuards(GoogleGuard)
-  @Get('google')
-  async googleAuth(@Body('token') token: string, @Res() res: Response) {
-    // Обробіть токен, отриманий від Google
-    // Успішна відповідь
-    return res.status(HttpStatus.OK).json({ message: 'Token received', token });
+
+  @Post('google')
+  async googleAuth(
+    @Body('token') token,
+    @UserAgent() agent: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const ticket = await oauth2Client.verifyIdToken({
+      idToken: token,
+      audience: this.configService.get('google_client_id'),
+    });
+    const payload = ticket.getPayload();
+    const dateUser = {
+      id: payload.sub,
+      email: payload.email,
+      lastName: payload.family_name,
+      firstName: payload.given_name,
+      picture: payload.picture,
+      providerId: payload.sub,
+      provider: Provider.GOOGLE,
+    };
+    const tokensAndUser = await this.authService.registerUsers(dateUser, agent);
+
+    this.setRefreshTokenToCookies(tokensAndUser, res);
   }
 
-  @UseGuards(GoogleGuard)
-  @Get('google/callback')
-  async googleAuthRedirect(
-    @Req() req: Request,
-    @Res() res: Response,
-    @UserAgent() agent: string,
-  ) {
-    console.log(req.user);
-    // const token = await this.authService.enterGoogleAuth(
-    //   req.user as GoogleUserDTO,
-    //   agent,
-    // );
-    // this.setRefreshTokenToCookies(token, res);
-  }
+  // @UseGuards(GoogleGuard)
+  // @Get('google/callback')
+  // async googleAuthRedirect(
+  //   @Req() req: Request,
+  //   @Res() res: Response,
+  //   @UserAgent() agent: string,
+  // ) {
+  //   console.log(req.user);
+  //   const token = await this.authService.enterGoogleAuth(
+  //     req.user as GoogleUserDTO,
+  //     agent,
+  //   );
+  //   this.setRefreshTokenToCookies(token, res);
+  // }
   public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {
     if (!tokensAndUser) throw new UnauthorizedException();
 
@@ -123,6 +146,6 @@ export class AuthController {
         path: '/', // Шлях, де кука буде доступна
       },
     );
-    res.status(HttpStatus.CREATED).json({ ...tokensAndUser });
+    res.status(HttpStatus.OK).json({ ...tokensAndUser });
   }
 }

@@ -49,3 +49,16 @@ export interface IFormDataRegister extends IFormData {
   lastName: string;
   passwordRepeat: string;
 }
+
+export interface AuthGoogleData {
+  token: string;
+}
+// export interface AuthGoogleData {
+//   email: string;
+//   firstName: string;
+//   lastName: string;
+//   picture: string;
+//   providerId: string;
+//   provider: 'GOOGLE';
+// }
+

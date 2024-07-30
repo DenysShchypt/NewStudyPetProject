@@ -72,8 +72,11 @@ export class UsersService {
       where: { email: dto.email },
     });
     if (user) return;
-    const salt = await bcrypt.genSalt();
-    dto.password = await this.hashPassword(dto.password, salt);
+    if (dto.password) {
+      const salt = await bcrypt.genSalt();
+      dto.password = await this.hashPassword(dto.password, salt);
+      dto.passwordRepeat = await this.hashPassword(dto.passwordRepeat, salt);
+    }
     try {
       const createNewUser = await this.prismaService.user.create({
         data: {
@@ -83,6 +86,9 @@ export class UsersService {
           password: dto.password,
           passwordRepeat: dto.passwordRepeat,
           roles: [Role.USER],
+          picture: dto?.picture,
+          provider: dto?.provider,
+          providerId: dto?.providerId,
         },
         select: USER_SELECT_FIELDS,
       });
