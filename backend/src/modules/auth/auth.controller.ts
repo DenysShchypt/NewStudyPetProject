@@ -29,7 +29,6 @@ const REFRESH_TOKEN = 'fresh';
 @ApiTags('API')
 @Controller('auth')
 export class AuthController {
-  private readonly REFRESH_TOKEN_COOKIE: string;
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
@@ -70,10 +69,12 @@ export class AuthController {
     //     httpOnly: true: Вказує, що cookie буде доступна тільки через HTTP(S), і її не можна отримати або змінити через JavaScript. Це забезпечує додаткову безпеку, захищаючи від атак XSS (Cross-Site Scripting).
     // secure: true: Вказує, що cookie буде передаватися тільки через HTTPS. Це забезпечує додаткову безпеку, запобігаючи передачі cookie через незашифровані HTTP-з'єднання.
     // expires: new Date(): Вказує, що cookie має негайно закінчити свою дію. Передача поточної дати та часу вказує, що cookie вже не дійсна, тому браузер видалить її.
-    res.cookie(this.REFRESH_TOKEN_COOKIE, '', {
+    res.cookie(REFRESH_TOKEN, '', {
       httpOnly: true,
-      secure: true,
-      expires: new Date(),
+      secure:
+        this.configService.get('NODE_ENV', 'development') === 'production',
+      expires: new Date(0),
+      path: '/',
     });
     res.sendStatus(HttpStatus.OK);
   }
@@ -116,20 +117,6 @@ export class AuthController {
     this.setRefreshTokenToCookies(tokensAndUser, res);
   }
 
-  // @UseGuards(GoogleGuard)
-  // @Get('google/callback')
-  // async googleAuthRedirect(
-  //   @Req() req: Request,
-  //   @Res() res: Response,
-  //   @UserAgent() agent: string,
-  // ) {
-  //   console.log(req.user);
-  //   const token = await this.authService.enterGoogleAuth(
-  //     req.user as GoogleUserDTO,
-  //     agent,
-  //   );
-  //   this.setRefreshTokenToCookies(token, res);
-  // }
   public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {
     if (!tokensAndUser) throw new UnauthorizedException();
 

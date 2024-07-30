@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthGoogleData, IFormData, IFormDataRegister } from '../../../common/types/auth';
-import { instance } from '../../../utils/axios';
+import { instance, instanceAuth } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 
 export const loginUsers = createAsyncThunk<
@@ -12,6 +12,25 @@ export const loginUsers = createAsyncThunk<
     const user = await instance.post('auth/login', data);
     sessionStorage.setItem('token', user.data.token.token);
     return user.data;
+  } catch (error) {
+    const typedError = error as IError;
+    if (typedError.response && typedError.response.data?.message) {
+      return rejectWithValue(typedError.response.data.message);
+    } else {
+      return rejectWithValue(typedError.message);
+    }
+  }
+});
+export const logoutUsers = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    await instanceAuth.get('auth/logout', {
+      withCredentials: true,
+    });
+    sessionStorage.removeItem('token');
   } catch (error) {
     const typedError = error as IError;
     if (typedError.response && typedError.response.data?.message) {
