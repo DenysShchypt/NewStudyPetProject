@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
+import { Provider, Role } from '@prisma/client';
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, IsEnum, IsNumber } from 'class-validator';
 import { ITokenResponse } from '../../token/responses';
@@ -32,13 +32,13 @@ export class UserResponse {
   @IsNumber()
   wallet: number;
 
-  // @ApiProperty({ enum: Provider, enumName: 'GOOGLE' })
-  // @IsEnum(Provider)
-  // provider: Provider;
+  @ApiProperty({ enum: Provider, enumName: 'GOOGLE' })
+  @IsEnum(Provider)
+  provider?: Provider;
 
-  // @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
-  // @IsString()
-  // providerId: string;
+  @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
+  @IsString()
+  providerId?: string;
 
   // @ApiProperty({ example: '2024-07-08 18:26:46.855' })
   // @IsDate()
@@ -48,12 +48,12 @@ export class UserResponse {
   // @IsDate()
   // updateAt: Date;
 
-  // @ApiProperty({
-  //   example:
-  //     'https://lh3.googleusercontent.com/a/ACg8ocJ-OcEr6cr50Ak6Sz7LGMK6MXRH44O0ULhXbAtpn6lMa0OGlgQ=s96-c',
-  // })
-  // @IsString()
-  // picture: string;
+  @ApiProperty({
+    example:
+      'https://lh3.googleusercontent.com/a/ACg8ocJ-OcEr6cr50Ak6Sz7LGMK6MXRH44O0ULhXbAtpn6lMa0OGlgQ=s96-c',
+  })
+  @IsString()
+  picture?: string;
 }
 
 export class AuthUserResponse {

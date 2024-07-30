@@ -29,6 +29,8 @@ import { ISideBarProps } from '../../common/types/sideBar';
 import { FlexBetween } from '../GeneralComponentsStyles';
 import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
+import { useAppDispatch } from '../../utils/hook';
+import { setLoading } from '../../store/slice/auth';
 
 const SideBarComponent: FC<ISideBarProps> = (
   props: ISideBarProps,
@@ -36,6 +38,7 @@ const SideBarComponent: FC<ISideBarProps> = (
   const [active, setActive] = useState<string>('');
   const { isNonMobile, drawerWidth, isOpen, setIsOpen } = props;
   const location: Location = useLocation();
+  const dispatch = useAppDispatch();
   const { pathname } = location;
   const navigate: NavigateFunction = useNavigate();
   const theme = useTheme();
@@ -112,8 +115,9 @@ const SideBarComponent: FC<ISideBarProps> = (
               <ListItem>
                 <ListItemButton
                   onClick={() => {
-                    navigate('/login');
                     sessionStorage.removeItem('token');
+                    dispatch(setLoading(false));
+                    navigate('/login');
                   }}
                   className="navItem"
                 >

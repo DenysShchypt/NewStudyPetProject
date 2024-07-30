@@ -25,7 +25,7 @@ export class LoginUserDTO {
   password: string;
 }
 
-export class GoogleUserDTO {
+export class CreateGoogleUserDTO {
   @ApiProperty({ example: 'john@example.com' })
   @IsEmail()
   email: string;
