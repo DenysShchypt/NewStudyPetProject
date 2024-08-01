@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthGoogleData, IFormData, IFormDataRegister } from '../../../common/types/auth';
-import { instance } from '../../../utils/axios';
+import { instance, instanceAuth } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 
 export const loginUsers = createAsyncThunk<
@@ -10,8 +10,27 @@ export const loginUsers = createAsyncThunk<
 >('auth/login', async (data: IFormData, { rejectWithValue }) => {
   try {
     const user = await instance.post('auth/login', data);
-    sessionStorage.setItem('token', user.data.token.token);
+    localStorage.setItem('token', user.data.token.token);
     return user.data;
+  } catch (error) {
+    const typedError = error as IError;
+    if (typedError.response && typedError.response.data?.message) {
+      return rejectWithValue(typedError.response.data.message);
+    } else {
+      return rejectWithValue(typedError.message);
+    }
+  }
+});
+export const logoutUsers = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    await instanceAuth.get('auth/logout', {
+      withCredentials: true,
+    });
+    localStorage.removeItem('token');
   } catch (error) {
     const typedError = error as IError;
     if (typedError.response && typedError.response.data?.message) {
@@ -28,7 +47,27 @@ export const registerUsers = createAsyncThunk<
 >('auth/register', async (data: IFormDataRegister, { rejectWithValue }) => {
   try {
     const newUser = await instance.post('auth/register', data);
-    sessionStorage.setItem('token', newUser.data.token.token);
+    localStorage.setItem('token', newUser.data.token.token);
+    return newUser.data;
+  } catch (error) {
+    const typedError = error as IError;
+    if (typedError.response && typedError.response.data?.message) {
+      return rejectWithValue(typedError.response.data.message);
+    } else {
+      return rejectWithValue(typedError.message);
+    }
+  }
+});
+export const refreshUsers = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: string }
+>('auth/refresh-tokens', async (_, { rejectWithValue }) => {
+  try {
+    const newUser = await instance.get('auth/refresh-tokens', {
+      withCredentials: true,
+    });
+    localStorage.setItem('token', newUser.data.token.token);
     return newUser.data;
   } catch (error) {
     const typedError = error as IError;
@@ -46,7 +85,7 @@ export const registerAuthGoogleUsers = createAsyncThunk<
 >('auth/google', async (data: AuthGoogleData, { rejectWithValue }) => {
   try {
     const newUser = await instance.post('auth/google', data);
-    sessionStorage.setItem('token',newUser.data.token.token);
+    localStorage.setItem('token',newUser.data.token.token);
     return newUser.data;
   } catch (error) {
     const typedError = error as IError;

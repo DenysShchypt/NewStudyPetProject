@@ -71,6 +71,12 @@ export class UsersService {
     const user = await this.prismaService.user.findUnique({
       where: { email: dto.email },
     });
+
+    if (user && dto.providerId) {
+      await this.cacheManager.set(user.id, user);
+      await this.cacheManager.set(user.email, user);
+      return user;
+    }
     if (user) return;
     if (dto.password) {
       const salt = await bcrypt.genSalt();

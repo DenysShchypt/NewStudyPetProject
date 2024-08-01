@@ -94,8 +94,11 @@ const RegisterPage: React.FC<IPropsRegister> = (
             Registration
           </LoadingButtonStyled>
         </Box>
+        <Box className="google">
+        <GoogleLoginComponent />
+        </Box>
+
         <Box className="redirection">
-          <GoogleLoginComponent />
           <Typography variant="body1" sx={{ fontFamily: 'Poppins' }}>
             If you have an account?{' '}
             <ButtonAuthNavStyled onClick={() => navigate('/login')}>

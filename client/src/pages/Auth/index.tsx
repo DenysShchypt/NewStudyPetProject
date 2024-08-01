@@ -1,5 +1,6 @@
 import {
   Location,
+  Navigate,
   NavigateFunction,
   useLocation,
   useNavigate,
@@ -13,14 +14,23 @@ import { AppError } from '../../common/errors';
 import { IFormData, IFormDataRegister } from '../../common/types/auth';
 import { LoginSchema, RegisterSchema } from '../../utils/yup';
 import { BoxFormStyled, RootStyled } from './styles';
-import { loginUsers, registerUsers } from '../../store/thunks/auth';
+import {
+  loginUsers,
+  refreshUsers,
+  registerUsers,
+} from '../../store/thunks/auth';
+import { useEffect } from 'react';
 
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location: Location = useLocation();
   const dispatch = useAppDispatch();
   const navigate: NavigateFunction = useNavigate();
   const loading: boolean = useAppSelector(state => state.auth.isLoading);
-
+  // useEffect(() => {dispatch(refreshUsers())}, []);
+  // const firstNameUserAuth: string = useAppSelector(
+  //   state => state.auth.user.firstName,
+  // );
+  // console.log(firstNameUserAuth);
   const {
     register,
     handleSubmit,
@@ -62,7 +72,6 @@ const AuthRootComponent: React.FC = (): JSX.Element => {
       }
     }
   };
-
   return (
     <RootStyled>
       <form className="form" onSubmit={handleSubmit(handleSubmitForm)}>

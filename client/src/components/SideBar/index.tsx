@@ -30,7 +30,7 @@ import { FlexBetween } from '../GeneralComponentsStyles';
 import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
 import { useAppDispatch } from '../../utils/hook';
-import { setLoading } from '../../store/slice/auth';
+import { logoutUsers } from '../../store/thunks/auth';
 
 const SideBarComponent: FC<ISideBarProps> = (
   props: ISideBarProps,
@@ -115,8 +115,7 @@ const SideBarComponent: FC<ISideBarProps> = (
               <ListItem>
                 <ListItemButton
                   onClick={() => {
-                    sessionStorage.removeItem('token');
-                    dispatch(setLoading(false));
+                    dispatch(logoutUsers());
                     navigate('/login');
                   }}
                   className="navItem"

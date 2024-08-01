@@ -6,9 +6,10 @@ import SideBarComponent from '../SideBar';
 import { MainSection, RootBox } from './styles';
 
 const LayoutComponent: FC = (): JSX.Element => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const location: Location = useLocation();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const isNonMobile = useMediaQuery('(min-width:760px)');
+
   return location.pathname === '/login' || location.pathname === '/register' ? (
     <>
       <Outlet />

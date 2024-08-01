@@ -60,8 +60,6 @@ export class WatchListService {
       const watchList = await this.prismaService.watchList.findMany({
         where: { userId: user.id },
       });
-      if (watchList.length === 0)
-        throw new BadRequestException(AppError.ASSETS_NOT_FOUND);
       return watchList;
     } catch (error) {
       throw new Error(error);

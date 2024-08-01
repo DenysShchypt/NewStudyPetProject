@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import PrivateRoute from '../utils/router/privateRoute';
 import { ColorModeContext, useMode } from '../theme';
@@ -12,7 +12,7 @@ import SingleAssetPage from '../pages/SingleAsset';
 
 function App() {
   const [theme, colorMode] = useMode();
-
+  
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

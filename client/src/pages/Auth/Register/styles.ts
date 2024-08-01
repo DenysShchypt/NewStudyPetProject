@@ -20,6 +20,12 @@ export const RootStylesRegister = styled(Grid)<StyledProps>(({ theme }) => {
         }`,
       },
     },
+    '& .google': {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '8px',
+    },
     '& .redirection': {
       textAlign: 'center',
       marginTop: '8px',
