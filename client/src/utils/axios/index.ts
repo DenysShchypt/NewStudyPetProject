@@ -18,7 +18,7 @@ export const instanceAuth = axios.create({
 
 instanceAuth.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       if (!config.headers) {
         config.headers = new AxiosHeaders();
@@ -44,7 +44,7 @@ instanceAuth.interceptors.response.use(
           const newAccessToken = await instance.get('/auth/refresh-tokens', {
             withCredentials: true,
           });
-          sessionStorage.setItem('token', newAccessToken.data.token.token);
+          localStorage.setItem('token', newAccessToken.data.token.token);
           onRefreshed(newAccessToken.data.token.token);
         } catch (e) {
           refreshSubscribers = [];

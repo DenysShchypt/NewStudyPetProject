@@ -73,7 +73,7 @@ export class AuthController {
       httpOnly: true,
       secure:
         this.configService.get('NODE_ENV', 'development') === 'production',
-      expires: new Date(0),
+      expires: new Date(),
       path: '/',
     });
     res.sendStatus(HttpStatus.OK);

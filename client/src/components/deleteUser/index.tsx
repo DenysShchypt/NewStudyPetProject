@@ -26,7 +26,7 @@ const RemoveUser: FC = (): JSX.Element => {
 
   const handleDelete = async (): Promise<void> => {
     await dispatch(removeUserAccount(userId));
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     dispatch(setLoading(false));
     navigate('/login');
   };

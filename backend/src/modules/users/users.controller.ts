@@ -50,8 +50,10 @@ export class UsersController {
 
   @ApiResponse({ status: 200, type: UserResponse })
   @Get('user-info')
-  public async getUserInfo(@Req() request): Promise<UserResponse> {
-    const { id } = request.user;
+  public async getUserInfo(
+    @CurrentUser() user: ICurrentUser,
+  ): Promise<UserResponse> {
+    const { id } = user;
     return await this.usersService.getUserAllInfo(id);
   }
 
