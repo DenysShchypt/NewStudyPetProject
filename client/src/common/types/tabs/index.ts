@@ -1,5 +1,3 @@
-import { IWatchList } from '../watchList';
-
 export interface ITabPanelProps {
   children?: React.ReactNode;
   index: number;

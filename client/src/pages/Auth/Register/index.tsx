@@ -95,7 +95,7 @@ const RegisterPage: React.FC<IPropsRegister> = (
           </LoadingButtonStyled>
         </Box>
         <Box className="google">
-        <GoogleLoginComponent />
+          <GoogleLoginComponent />
         </Box>
 
         <Box className="redirection">

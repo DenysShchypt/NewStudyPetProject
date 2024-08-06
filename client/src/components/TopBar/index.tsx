@@ -10,7 +10,6 @@ import SearchBar from '../SearchBar';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { refreshUsers } from '../../store/thunks/auth';
 
-
 const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
 ): JSX.Element => {
@@ -20,10 +19,13 @@ const TopBarComponent: FC<ITopBarProps> = (
   const firstNameUserAuth: string = useAppSelector(
     state => state.auth.user.firstName,
   );
+  const userVerify: string = useAppSelector(
+    state => state.auth.user.verifyLink,
+  );
   const effectRan = useRef(false);
 
   useEffect(() => {
-    if (effectRan.current === false) {
+    if (!effectRan.current) {
       if (!firstNameUserAuth) {
         dispatch(refreshUsers());
       }
@@ -34,20 +36,25 @@ const TopBarComponent: FC<ITopBarProps> = (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
         <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item sm={3} lg={3}>
+          <Grid item sm={6} lg={6}>
             <FlexBetween>
               <MenuOutlined
                 className="menuIcon"
                 onClick={() => setIsOpen(!isOpen)}
               />
-              <Typography variant="h3">
-                Welcome{' '}
-                {firstNameUserAuth}
-              </Typography>
+              {userVerify === 'active' ? (
+                <Typography variant="h3">
+                  Welcome {firstNameUserAuth}
+                </Typography>
+              ) : (
+                <Typography variant="h3" className="menuIcon">
+                  You need to verify your account via email
+                </Typography>
+              )}
             </FlexBetween>
           </Grid>
           {isNonMobile && (
-            <Grid item display="flex" sm={9} lg={9} justifyContent="flex-end">
+            <Grid item display="flex" sm={5} lg={5} justifyContent="flex-end">
               <ThemeSwitcher />
               <SearchBar />
             </Grid>

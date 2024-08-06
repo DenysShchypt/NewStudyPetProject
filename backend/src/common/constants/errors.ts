@@ -11,4 +11,5 @@ export const AppError = {
   ERROR_REGISTRATION: 'Error during register user',
   ADMIN_DELETE_USER: 'Remove user forbidden for your account',
   ASSET_ALREADY_EXISTS: 'Asset already exists',
+  VERIFY_TOKEN_NOT_FOUND: 'Verify token not found',
 };

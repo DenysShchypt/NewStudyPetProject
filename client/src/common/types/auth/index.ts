@@ -38,6 +38,7 @@ export interface IPublicUser {
   roles: Role[];
   watchList?: [IWatchList];
   token: string;
+  verifyLink: string;
 }
 
 export interface IFormData extends FieldValues {
@@ -61,4 +62,3 @@ export interface AuthGoogleData {
 //   providerId: string;
 //   provider: 'GOOGLE';
 // }
-

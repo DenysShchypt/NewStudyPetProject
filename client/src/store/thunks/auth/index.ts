@@ -1,5 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AuthGoogleData, IFormData, IFormDataRegister } from '../../../common/types/auth';
+import {
+  AuthGoogleData,
+  IFormData,
+  IFormDataRegister,
+} from '../../../common/types/auth';
 import { instance, instanceAuth } from '../../../utils/axios';
 import { IError } from '../../../common/types/errors';
 
@@ -64,7 +68,7 @@ export const refreshUsers = createAsyncThunk<
   { rejectValue: string }
 >('auth/refresh-tokens', async (_, { rejectWithValue }) => {
   try {
-    const newUser = await instance.get('auth/refresh-tokens', {
+    const newUser = await instanceAuth.get('auth/refresh-tokens', {
       withCredentials: true,
     });
     localStorage.setItem('token', newUser.data.token.token);
@@ -85,7 +89,7 @@ export const registerAuthGoogleUsers = createAsyncThunk<
 >('auth/google', async (data: AuthGoogleData, { rejectWithValue }) => {
   try {
     const newUser = await instance.post('auth/google', data);
-    localStorage.setItem('token',newUser.data.token.token);
+    localStorage.setItem('token', newUser.data.token.token);
     return newUser.data;
   } catch (error) {
     const typedError = error as IError;
