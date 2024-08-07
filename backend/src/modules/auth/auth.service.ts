@@ -46,7 +46,35 @@ export class AuthService {
       payload,
       agent,
     );
+    delete token.refreshToken;
     return { ...newUser, token };
+  }
+
+  public async verifyRegisterUser(verifyLink: string, agent: string) {
+    const existUser = await this.prismaService.user.findFirst({
+      where: { verifyLink },
+    });
+    if (!existUser)
+      throw new BadRequestException(AppError.VERIFY_TOKEN_NOT_FOUND);
+    const updateVerifyUser = await this.prismaService.user.update({
+      where: { id: existUser.id },
+      data: { verifyLink: 'active' },
+    });
+    const payload = {
+      email: updateVerifyUser.email,
+      firstName: updateVerifyUser.firstName,
+      lastName: updateVerifyUser.lastName,
+      id: updateVerifyUser.id,
+      roles: updateVerifyUser.roles,
+    };
+    const token: IToken = await this.tokenService.generateJwtToken(
+      payload,
+      agent,
+    );
+    return {
+      ...updateVerifyUser,
+      token,
+    };
   }
 
   public async loginUsers(

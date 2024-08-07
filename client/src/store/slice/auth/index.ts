@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IAuthState } from '../../../common/types/auth';
-import { loginUsers, logoutUsers, refreshUsers, registerAuthGoogleUsers, registerUsers } from '../../thunks/auth';
+import {
+  loginUsers,
+  logoutUsers,
+  refreshUsers,
+  registerAuthGoogleUsers,
+  registerUsers,
+} from '../../thunks/auth';
 
 const initialState: IAuthState = {
   user: {
@@ -11,6 +17,7 @@ const initialState: IAuthState = {
     id: '',
     roles: [],
     token: localStorage.getItem('token') || '',
+    verifyLink: '',
   },
   isLoggedIn: false,
   isLoading: false,
@@ -35,7 +42,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isLoading = false;
       })
-      .addCase(loginUsers.rejected, (state) => {
+      .addCase(loginUsers.rejected, state => {
         state.isLoggedIn = false;
         state.isLoading = false;
       })
@@ -47,7 +54,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(registerUsers.rejected, (state) => {
+      .addCase(registerUsers.rejected, state => {
         state.isLoggedIn = false;
         state.isLoading = false;
       })
@@ -59,7 +66,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(registerAuthGoogleUsers.rejected, (state) => {
+      .addCase(registerAuthGoogleUsers.rejected, state => {
         state.isLoggedIn = false;
         state.isLoading = false;
       })
@@ -71,7 +78,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(refreshUsers.rejected, (state) => {
+      .addCase(refreshUsers.rejected, state => {
         state.isLoggedIn = false;
         state.isLoading = false;
       })

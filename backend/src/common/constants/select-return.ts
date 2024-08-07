@@ -8,6 +8,7 @@ export const USER_SELECT_FIELDS = {
   provider: true,
   providerId: true,
   picture: true,
+  verifyLink: true,
   // createAt: true,
   // updateAt: true,
 };

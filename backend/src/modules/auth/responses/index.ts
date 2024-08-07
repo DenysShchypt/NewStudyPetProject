@@ -40,6 +40,10 @@ export class UserResponse {
   @IsString()
   providerId?: string;
 
+  @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
+  @IsString()
+  verifyLink?: string;
+
   // @ApiProperty({ example: '2024-07-08 18:26:46.855' })
   // @IsDate()
   // createAt: Date;

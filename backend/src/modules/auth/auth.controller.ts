@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Res,
   UnauthorizedException,
@@ -42,7 +43,20 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const tokensAndUser = await this.authService.registerUsers(dto, agent);
-    this.setRefreshTokenToCookies(tokensAndUser, res);
+    res.status(HttpStatus.OK).json({ ...tokensAndUser });
+  }
+  @ApiResponse({ status: 201, type: AuthUserResponse })
+  @Get('verify/:token')
+  async verificationToken(
+    @Param('token') token: string,
+    @UserAgent() agent: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const tokensAndUser = await this.authService.verifyRegisterUser(
+      token,
+      agent,
+    );
+    this.setRefreshTokenToCookiesAfterVerify(tokensAndUser, res);
   }
   @ApiResponse({ status: 200, type: AuthUserResponse })
   @Post('login')
@@ -117,6 +131,26 @@ export class AuthController {
     this.setRefreshTokenToCookies(tokensAndUser, res);
   }
 
+  public setRefreshTokenToCookiesAfterVerify(
+    tokensAndUser: ITokenAndUser,
+    res: Response,
+  ) {
+    if (!tokensAndUser) throw new UnauthorizedException();
+
+    res.cookie(
+      REFRESH_TOKEN,
+      tokensAndUser.token.refreshToken.token, // Значення рефреш-токена
+      {
+        httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript
+        sameSite: 'lax', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
+        expires: new Date(tokensAndUser.token.refreshToken.exp), // Дата закінчення дії куки
+        secure:
+          this.configService.get('NODE_ENV', 'development') === 'production', // Кука буде передаватись тільки по HTTPS, якщо середовище - production
+        path: '/', // Шлях, де кука буде доступна
+      },
+    );
+    res.redirect(this.configService.get('base_url_client'));
+  }
   public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {
     if (!tokensAndUser) throw new UnauthorizedException();
 

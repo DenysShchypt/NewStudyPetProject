@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { Role } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO } from './dto';
 import { UpdateUserResponse } from './responses';
 import { AppError } from '../../common/constants/errors';
@@ -17,6 +18,7 @@ import {
 } from '../../common/constants/select-return';
 import { convertToSecondsUtil } from '../../../libs/common/utils/convert-to-seconds.util';
 import { ICurrentUser } from '../../interfaces/auth';
+import sendEmail from '../../../libs/helpers/nodemailer';
 
 @Injectable()
 export class UsersService {
@@ -95,9 +97,20 @@ export class UsersService {
           picture: dto?.picture,
           provider: dto?.provider,
           providerId: dto?.providerId,
+          verifyLink: uuidv4(),
         },
         select: USER_SELECT_FIELDS,
       });
+      const verifyEmail = {
+        from: {
+          name: 'PetProject',
+          address: this.configService.get('mail_from'),
+        },
+        to: createNewUser.email,
+        subject: 'Verify email',
+        html: `<p><strong>Hello ${createNewUser.firstName} ${createNewUser.lastName}</strong>, you need to confirm your email<a target="_blank" href="${this.configService.get('base_url')}/auth/verify/${createNewUser.verifyLink}">Click verify here</a></p>`,
+      };
+      await sendEmail(verifyEmail);
       await this.cacheManager.set(createNewUser.id, createNewUser);
       await this.cacheManager.set(createNewUser.email, createNewUser);
       return createNewUser;

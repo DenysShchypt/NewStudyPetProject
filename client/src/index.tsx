@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
@@ -9,7 +9,7 @@ import store from './store';
 import { useMode } from './theme';
 
 const container = document.getElementById('root') as HTMLElement;
-const root = ReactDOM.createRoot(container);
+const root = createRoot(container);
 export const Main: React.FC = () => {
   const [theme, colorMode] = useMode(); // Використовуємо хук useMode для отримання теми та функції зміни кольорової схеми
 
