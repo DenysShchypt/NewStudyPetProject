@@ -52,7 +52,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUsers.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isLoggedIn = true;
+        state.isLoggedIn = false;
       })
       .addCase(registerUsers.rejected, state => {
         state.isLoggedIn = false;
@@ -82,15 +82,15 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.isLoading = false;
       })
-      .addCase(logoutUsers.pending, state => {
-        state.isLoading = true;
-      })
+      // .addCase(logoutUsers.pending, state => {
+      //   state.isLoading = true;
+      // })
       .addCase(logoutUsers.fulfilled, _state => {
-        return { ...initialState, isLoading: false };
+        return { ...initialState };
       })
-      .addCase(logoutUsers.rejected, state => {
-        state.isLoading = false;
-      });
+      // .addCase(logoutUsers.rejected, state => {
+      //   state.isLoading = false;
+      // });
   },
 });
 export const { setLoading } = authSlice.actions;
