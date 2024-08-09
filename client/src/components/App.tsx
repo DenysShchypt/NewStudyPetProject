@@ -9,10 +9,30 @@ import NewsPage from '../pages/News';
 import SettingsPage from '../pages/Settings';
 import AuthRootComponent from '../pages/Auth';
 import SingleAssetPage from '../pages/SingleAsset';
+import { useAppDispatch, useAppSelector } from '../utils/hook';
+import { useEffect } from 'react';
+import { logoutUsers } from '../store/thunks/auth';
 
 function App() {
   const [theme, colorMode] = useMode();
+  const dispatch = useAppDispatch();
+  const activeUser: string = useAppSelector(
+    state => state.auth.user.verifyLink,
+  );
+  const timeCheckVerify:number = 15*60*1000
+  useEffect(() => {
+    const handleLogout = () => {
+      dispatch(logoutUsers());
+    };
+    const timer = setTimeout(()=>{
+      if (activeUser!=="active") {
+        handleLogout()
+      }
+    }
+  , timeCheckVerify);
 
+    return () => clearTimeout(timer); 
+  }, [dispatch, activeUser]);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
