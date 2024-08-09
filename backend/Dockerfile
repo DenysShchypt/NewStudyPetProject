@@ -7,7 +7,7 @@ FROM node:16-alpine
 WORKDIR /app
 
 # Install dependencies
-COPY backend/package.json backend/package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 # Copy all files
 COPY . .
