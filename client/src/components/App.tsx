@@ -19,6 +19,7 @@ function App() {
   const activeUser: string = useAppSelector(
     state => state.auth.user.verifyLink,
   );
+  const timeCheckVerify:number = 15*60*1000
   useEffect(() => {
     const handleLogout = () => {
       dispatch(logoutUsers());
@@ -28,7 +29,7 @@ function App() {
         handleLogout()
       }
     }
-  , 30000);
+  , timeCheckVerify);
 
     return () => clearTimeout(timer); 
   }, [dispatch, activeUser]);
