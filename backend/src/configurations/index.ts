@@ -14,6 +14,7 @@ export default (): {
   mail_from: string | undefined;
   mail_api_key: string | undefined;
   base_url_client: string | undefined;
+  base_url_client_google: string | undefined;
 } => ({
   port: process.env.PORT,
   db_port: parseInt(process.env.POSTGRES_PORT, 10),
@@ -30,4 +31,5 @@ export default (): {
   mail_from: process.env.MAIL_UKRNET_FROM,
   mail_api_key: process.env.UKRNET_API_KEY,
   base_url_client: process.env.BASE_URL_CLIENT,
+  base_url_client_google: process.env.BASE_URL_CLIENT_GOOGLE,
 });

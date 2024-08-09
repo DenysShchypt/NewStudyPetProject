@@ -81,7 +81,7 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
             label="firstName"
             variant="outlined"
           />
-          <TextField
+          {userData.lastName&&<TextField
             className="inputField"
             value={userData.lastName}
             onChange={handleChange}
@@ -89,7 +89,7 @@ const SettingsPersonalInfoComponent: FC = (): JSX.Element => {
             type="text"
             label="lastName"
             variant="outlined"
-          />
+          />}
           <TextField
             className="inputField"
             value={userData.email}

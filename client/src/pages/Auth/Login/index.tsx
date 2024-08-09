@@ -5,6 +5,7 @@ import {
   LoadingButtonStyled,
 } from '../../../components/GeneralComponentsStyles';
 import { RootStylesLogin } from './styles';
+import GoogleLoginComponent from '../../../components/GoogleLoginComponent';
 
 const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
   const { navigate, register, errors, loading } = props;
@@ -51,6 +52,9 @@ const LoginPage: React.FC<IPropsLogin> = (props: IPropsLogin): JSX.Element => {
           >
             Enter
           </LoadingButtonStyled>
+        </Box>
+        <Box className="google">
+          <GoogleLoginComponent />
         </Box>
         <Box className="redirection">
           <Typography variant="body1">

@@ -128,7 +128,7 @@ export class AuthController {
     };
     const tokensAndUser = await this.authService.registerUsers(dateUser, agent);
 
-    this.setRefreshTokenToCookies(tokensAndUser, res);
+    res.status(HttpStatus.OK).json({ ...tokensAndUser });
   }
 
   public setRefreshTokenToCookiesAfterVerify(
@@ -149,6 +149,7 @@ export class AuthController {
         path: '/', // Шлях, де кука буде доступна
       },
     );
+
     res.redirect(this.configService.get('base_url_client'));
   }
   public setRefreshTokenToCookies(tokensAndUser: ITokenAndUser, res: Response) {

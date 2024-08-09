@@ -37,7 +37,7 @@ export class AuthService {
     if (!newUser) throw new BadRequestException(AppError.USER_EXIST);
     const payload = {
       email: dto.email,
-      firstName: dto.firstName,
+      firstName: dto?.firstName,
       lastName: dto.lastName,
       id: newUser.id,
       roles: newUser.roles,
@@ -66,6 +66,7 @@ export class AuthService {
       lastName: updateVerifyUser.lastName,
       id: updateVerifyUser.id,
       roles: updateVerifyUser.roles,
+      provider: updateVerifyUser.provider,
     };
     const token: IToken = await this.tokenService.generateJwtToken(
       payload,

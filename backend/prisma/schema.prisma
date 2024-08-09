@@ -20,7 +20,7 @@ model User {
   id             String         @id @default(uuid())
   email          String         @unique @db.VarChar(45)
   firstName      String
-  lastName       String
+  lastName       String?
   password       String?
   passwordRepeat String?
   provider       Provider?

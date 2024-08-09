@@ -6,7 +6,7 @@ export interface ITabPanelProps {
 
 export interface IUpdateUser {
   firstName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
 }
 
@@ -18,7 +18,7 @@ export interface ICurrentUser {
   wallet: number;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   id: string;
   roles: never[];
 }

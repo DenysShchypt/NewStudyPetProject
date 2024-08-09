@@ -1,4 +1,4 @@
-import { $Enums } from '@prisma/client';
+import { $Enums, Provider } from '@prisma/client';
 
 export interface IJwtPlayLoad {
   user: IUserJWT;
@@ -9,7 +9,7 @@ export interface IUserJWT {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   roles: $Enums.Role[];
 }
 export interface IAccessToken {
@@ -31,9 +31,10 @@ export interface ITokenAndUser {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   roles: $Enums.Role[];
   token: IBearerToken;
+  provider?: Provider;
 }
 export interface ICurrentUser {
   id: string;

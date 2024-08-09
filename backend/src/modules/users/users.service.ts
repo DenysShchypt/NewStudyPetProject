@@ -64,8 +64,10 @@ export class UsersService {
         userFromBD,
         convertToSecondsUtil(this.configService.get('expire_jwt')),
       );
+      console.log('1');
       return userFromBD;
     }
+    console.log('2');
     return user;
   }
 
@@ -90,9 +92,9 @@ export class UsersService {
         data: {
           email: dto.email,
           firstName: dto.firstName,
-          lastName: dto.lastName,
-          password: dto.password,
-          passwordRepeat: dto.passwordRepeat,
+          lastName: dto?.lastName,
+          password: dto?.password,
+          passwordRepeat: dto?.passwordRepeat,
           roles: [Role.USER],
           picture: dto?.picture,
           provider: dto?.provider,

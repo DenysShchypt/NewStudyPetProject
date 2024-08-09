@@ -24,6 +24,12 @@ export const RootStylesLogin = styled(Grid)<StyledProps>(({ theme }) => {
       textAlign: 'center',
       marginTop: '8px',
     },
+    '& .google': {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '8px',
+    },
     '& .buttonBlock': {
       width: '100%',
       display: 'flex',

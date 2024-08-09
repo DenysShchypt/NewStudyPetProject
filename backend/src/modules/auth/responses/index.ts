@@ -17,7 +17,7 @@ export class UserResponse {
   @ApiProperty({ example: 'Joshua' })
   @Expose()
   @IsString()
-  lastName: string;
+  lastName?: string;
 
   @ApiProperty({ example: 'john@example.com' })
   @Expose()
@@ -73,7 +73,7 @@ export class AuthUserResponse {
   @ApiProperty({ example: 'Joshua' })
   @Expose()
   @IsString()
-  lastName: string;
+  lastName?: string;
 
   @ApiProperty({ example: 'john@example.com' })
   @Expose()
