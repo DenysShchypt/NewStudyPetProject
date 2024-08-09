@@ -90,4 +90,8 @@ export class AuthUserResponse {
 
   @ApiProperty({ type: ITokenResponse })
   token: ITokenResponse;
+
+  @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
+  @IsString()
+  verifyLink?: string;
 }

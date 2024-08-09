@@ -64,10 +64,8 @@ export class UsersService {
         userFromBD,
         convertToSecondsUtil(this.configService.get('expire_jwt')),
       );
-      console.log('1');
       return userFromBD;
     }
-    console.log('2');
     return user;
   }
 
