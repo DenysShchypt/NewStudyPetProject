@@ -3,19 +3,20 @@ FROM node:16-alpine
 
 
 
-# Set working directory
+# Встановити робочу директорію
 WORKDIR /app
 
-# Install dependencies
-COPY package.json package-lock.json ./
+# Скопіювати файли з піддиректорії backend
+COPY backend/package.json backend/package-lock.json ./
 RUN npm install
-# Copy all files
-COPY . .
 
-# Expose the port the app runs on
+# Скопіювати всі файли з піддиректорії backend
+COPY backend/. .
+
+# Відкрити порт
 EXPOSE 4000
 
-# Start the application
+# Запустити додаток
 CMD ["npm", "run", "start:dev"]
 
 
