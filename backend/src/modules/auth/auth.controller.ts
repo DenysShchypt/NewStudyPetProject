@@ -43,6 +43,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const tokensAndUser = await this.authService.registerUsers(dto, agent);
+    delete tokensAndUser.token.refreshToken;
     res.status(HttpStatus.OK).json({ ...tokensAndUser });
   }
   @ApiResponse({ status: 201, type: AuthUserResponse })
@@ -66,7 +67,12 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const tokensAndUser = await this.authService.loginUsers(dto, agent);
-    this.setRefreshTokenToCookies(tokensAndUser, res);
+    if (tokensAndUser.verifyLink === 'active') {
+      this.setRefreshTokenToCookies(tokensAndUser, res);
+    } else {
+      delete tokensAndUser.token.refreshToken;
+      res.status(HttpStatus.OK).json({ ...tokensAndUser });
+    }
   }
 
   @ApiResponse({ status: 200 })
@@ -127,8 +133,11 @@ export class AuthController {
       provider: Provider.GOOGLE,
     };
     const tokensAndUser = await this.authService.registerUsers(dateUser, agent);
-
-    res.status(HttpStatus.OK).json({ ...tokensAndUser });
+    if (tokensAndUser.verifyLink === 'active') {
+      this.setRefreshTokenToCookies(tokensAndUser, res);
+    } else {
+      res.status(HttpStatus.OK).json({ ...tokensAndUser });
+    }
   }
 
   public setRefreshTokenToCookiesAfterVerify(
