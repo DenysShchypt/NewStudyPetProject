@@ -1,22 +1,22 @@
 Authorization with SSH on GitHub
-git init
-git remote add origin "your link HSS"
-git remote -v
-git add .
-git commit -m "
-git push origin master
+1. git init
+2. git remote add origin "your link HSS"
+3. git remote -v
+4. git add .
+5. git commit -m "
+6. git push origin master
 
-create new branch
-git checkout -b feat/newBranches
-git checkout -b bugFix/newBranches
+Create new branch
+1. git checkout -b feat/newBranches
+2. git checkout -b bugFix/newBranches
 
 NestJS new modules
-nest g module name-module
-nest g controller name-controller --no-spec
-nest g service name-service --no-spec
+1. nest g module name-module
+2. nest g controller name-controller --no-spec
+3. nest g service name-service --no-spec
 
 Docker
-docker-compose up
+1. docker-compose up
 
 Prisma
 
