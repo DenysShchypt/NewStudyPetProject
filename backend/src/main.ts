@@ -16,7 +16,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
-  const port = configService.get('port') || 4000;
+  // const port = configService.get('port') || 4000;
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('My pet project')
@@ -26,6 +26,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-doc', app, document);
   app.use(new CorsMiddleware().use);
-  await app.listen(port);
+  await app.listen(4000);
 }
 bootstrap();
