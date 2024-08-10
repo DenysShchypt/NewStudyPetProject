@@ -16,7 +16,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
-  const port = configService.get('port');
+  const port = configService.get('port') || 4000;
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('My pet project')
