@@ -1,18 +1,23 @@
-# Use Node.js base image
-FROM node:16-alpine
+# Base image
+FROM node:18
 
-# Set working directory
+# Create app directory
 WORKDIR /usr/src/app
 
-# Install dependencies
-COPY package.json package-lock.json ./
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Install app dependencies
 RUN npm install
 
-# Copy all files
+# Bundle app source
 COPY . .
+
+# Creates a "dist" folder with the production build
+RUN npm run build
 
 # Expose the port the app runs on
 EXPOSE 4000
 
-# Start the application
+# Start the server using the production build
 CMD ["npm", "run", "start:dev"]

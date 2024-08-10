@@ -10,7 +10,7 @@ services:
     build: ./backend
     restart: always
     ports:
-      - "4001:${PORT}"
+      - "4000:${PORT}"
     depends_on:
       - postgres
 
