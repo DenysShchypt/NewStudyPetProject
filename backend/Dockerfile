@@ -5,13 +5,13 @@ FROM node:16-alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package.json package-lock.json ./
+COPY ./backend/package.json ./backend/package-lock.json ./backend/
 
 # Install dependencies
 RUN npm install
 
 # Copy all files
-COPY . .
+COPY backend/. .
 
 # Expose the port the app runs on
 EXPOSE 4000
