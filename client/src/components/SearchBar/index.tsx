@@ -14,7 +14,7 @@ const SearchBarComponent: FC = (): JSX.Element => {
     <Stack spacing={2} sx={{ width: '300px' }}>
       <Autocomplete
         freeSolo
-        onChange={(e: any, value: string | null) => navigate(`single/${value}`)}
+        onChange={(_: any, value: string | null) => navigate(`single/${value}`)}
         renderInput={element => (
           <TextField
             {...element}

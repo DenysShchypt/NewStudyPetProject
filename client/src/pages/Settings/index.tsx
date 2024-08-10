@@ -15,7 +15,7 @@ const SettingsPage: FC = (): JSX.Element => {
   const [value, setValue] = React.useState<number>(0);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode as 'light' | 'dark');
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   useEffect(() => {

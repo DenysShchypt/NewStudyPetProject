@@ -1,16 +1,14 @@
-# Base image
+# Use Node.js base image
 FROM node:16-alpine
 
 # Set working directory
-WORKDIR /app
-
-# Copy package.json and package-lock.json from backend folder
-COPY package*.json ./
+WORKDIR /usr/src/app
 
 # Install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy all files from backend folder to working directory
+# Copy all files
 COPY . .
 
 # Expose the port the app runs on
@@ -18,5 +16,3 @@ EXPOSE 4000
 
 # Start the application
 CMD ["npm", "run", "start:dev"]
-
-

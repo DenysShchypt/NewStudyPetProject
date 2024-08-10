@@ -6,7 +6,6 @@ enum Role {
 }
 export interface IPropsLogin<
   TFieldValues extends IFormData = IFormData,
-  TContext = any,
 > {
   navigate: (to: string) => void;
   register: UseFormRegister<IFormData>;
@@ -15,7 +14,6 @@ export interface IPropsLogin<
 }
 export interface IPropsRegister<
   TFieldValues extends IFormDataRegister = IFormDataRegister,
-  TContext = any,
 > {
   register: UseFormRegister<IFormDataRegister | IFormData>;
   navigate: (to: string) => void;

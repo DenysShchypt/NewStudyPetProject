@@ -11,7 +11,7 @@ import { useMode } from './theme';
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 export const Main: React.FC = () => {
-  const [theme, colorMode] = useMode(); // Використовуємо хук useMode для отримання теми та функції зміни кольорової схеми
+  const [theme] = useMode(); // Використовуємо хук useMode для отримання теми та функції зміни кольорової схеми
 
   return (
     <React.StrictMode>

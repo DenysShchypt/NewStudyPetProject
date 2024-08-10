@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import {
-  Box,
   Checkbox,
   FormControlLabel,
   FormGroup,

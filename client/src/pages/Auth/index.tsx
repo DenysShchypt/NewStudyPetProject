@@ -1,6 +1,5 @@
 import {
   Location,
-  Navigate,
   NavigateFunction,
   useLocation,
   useNavigate,
