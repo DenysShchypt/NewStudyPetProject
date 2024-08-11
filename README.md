@@ -1,3 +1,5 @@
+new project
+yarn create vite
 Authorization with SSH on GitHub
 1. git init
 2. git remote add origin "your link HSS"
