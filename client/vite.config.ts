@@ -7,4 +7,9 @@ export default defineConfig({
   define: {
     'process.env': {},
   },
+  build: {
+    rollupOptions: {
+      external: ['@emotion/react','@emotion/styled']
+    },
+  },
 });
