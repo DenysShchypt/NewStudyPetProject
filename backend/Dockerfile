@@ -11,6 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Bundle app source
+COPY node_modules ./node_modules
 COPY . .
 
 # Creates a "dist" folder with the production build

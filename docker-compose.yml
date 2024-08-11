@@ -5,17 +5,19 @@ services:
     restart: always
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+      - backend
 
   backend:
     build: ./backend
     restart: always
     ports:
-      - "4000:${PORT}"
+      - "4001:${PORT}"
     depends_on:
       - postgres
 
   postgres:
-    image: postgres
+    image: postgres:latest
     container_name: petProjectBD
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
