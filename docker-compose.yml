@@ -17,7 +17,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:latest
+    image: postgres
     container_name: petProjectBD
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
