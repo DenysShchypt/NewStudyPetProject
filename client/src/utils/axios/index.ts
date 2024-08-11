@@ -7,13 +7,13 @@ import axios, {
 let isRefreshing = false;
 let refreshSubscribers: Array<(token: string) => void> = [];
 export const instance = axios.create({
-  baseURL: 'http://localhost:4000/api',
+  baseURL: 'http://localhost:4001/api',
   timeout: 2000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
 export const instanceAuth = axios.create({
-  baseURL: 'http://localhost:4000/api',
+  baseURL: 'http://localhost:4001/api',
 });
 
 instanceAuth.interceptors.request.use(

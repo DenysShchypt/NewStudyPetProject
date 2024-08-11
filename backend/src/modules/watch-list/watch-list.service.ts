@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { WatchList } from '@prisma/client';
 import { WatchListResponse, WatchListResponseGetOneAsset } from './responses';
 import { WatchListDTO } from './dto';
 import { AppError } from '../../common/constants/errors';
-import { WatchList } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ICurrentUser } from '../../interfaces/auth';
 
