@@ -55,10 +55,6 @@ export class UsersService {
           : USER_ALL_INFO,
       });
       if (!userFromBD) throw new BadRequestException(AppError.USER_NOT_FOUND);
-      // const userWithoutPassword = {
-      //   ...userFromBD,
-      //   password: undefined,
-      // };
       await this.cacheManager.set(
         idOrEmail,
         userFromBD,
@@ -115,7 +111,7 @@ export class UsersService {
       await this.cacheManager.set(createNewUser.email, createNewUser);
       return createNewUser;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 
@@ -141,7 +137,7 @@ export class UsersService {
       });
       return plainToInstance(UpdateUserResponse, dto);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
   async updateUserPassword(id: string, dto: UpdatePasswordDTO): Promise<any> {
@@ -169,7 +165,7 @@ export class UsersService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 
@@ -190,7 +186,7 @@ export class UsersService {
         select: { id: true },
       });
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 }

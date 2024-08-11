@@ -29,7 +29,7 @@ export class WatchListService {
       });
       return newAsset;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 
@@ -52,7 +52,7 @@ export class WatchListService {
         createdAt: asset.createdAt,
       };
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
   async getAllAssets(user: ICurrentUser): Promise<WatchList[]> {
@@ -62,7 +62,7 @@ export class WatchListService {
       });
       return watchList;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 
@@ -77,7 +77,7 @@ export class WatchListService {
       });
       return;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   }
 }
