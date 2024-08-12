@@ -1,18 +1,13 @@
 version: "3.8"
 services:
-  frontend:
-    build: ./client
-    restart: always
-    ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
-    depends_on:
-      - backend
 
   backend:
-    build: ./backend
+    build: .
     restart: always
     ports:
       - "4001:${PORT}"
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
     depends_on:
       - postgres
 
@@ -20,7 +15,7 @@ services:
     image: postgres
     container_name: petProjectBD
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - "5432:5432"
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

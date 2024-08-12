@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { CreateUserDTO } from '../users/dto';
 import { AppError } from '../../common/constants/errors';
@@ -89,7 +89,7 @@ export class AuthService {
         return null;
       });
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
-    const validatePassword = await bcrypt.compare(
+    const validatePassword = await bcryptjs.compare(
       dto.password,
       existUser.password,
     );
