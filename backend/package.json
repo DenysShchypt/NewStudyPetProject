@@ -8,9 +8,10 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest  generate:prisma && start",
+    "start": "npm run prisma:generate && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
+    "prisma:generate": "prisma generate",
     "generate:prisma": "npx prisma migrate dev --name init",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
