@@ -8,6 +8,9 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "migrate:dev": "cross-env POSTGRES_HOST=localhost prisma migrate dev --skip-seed",
+    "migrate:prod": "prisma generate && prisma migrate deploy",
+    "migrate:reset": "cross-env POSTGRES_HOST=localhost prisma migrate reset --skip-seed",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
