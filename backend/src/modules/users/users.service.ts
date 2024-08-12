@@ -3,7 +3,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import validator from 'validator';
 import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { plainToInstance } from 'class-transformer';
 import { Role } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,11 +28,8 @@ export class UsersService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  private async hashPassword(
-    password: string | Buffer,
-    salt: string,
-  ): Promise<string> {
-    return bcrypt.hashSync(password, salt);
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcryptjs.hashSync(password, salt);
   }
   private async isValidUuid(val: string): Promise<boolean> {
     return validator.isUUID(val);
@@ -77,7 +74,7 @@ export class UsersService {
     }
     if (user) return;
     if (dto.password) {
-      const salt = await bcrypt.genSalt();
+      const salt = await bcryptjs.genSalt();
       dto.password = await this.hashPassword(dto.password, salt);
       dto.passwordRepeat = await this.hashPassword(dto.passwordRepeat, salt);
     }
@@ -153,9 +150,9 @@ export class UsersService {
           id,
         },
       });
-      const currentPassword = await bcrypt.compare(dto.password, password);
+      const currentPassword = await bcryptjs.compare(dto.password, password);
       if (!currentPassword) throw new BadRequestException(AppError.WRONG_DATA);
-      const salt = await bcrypt.genSalt();
+      const salt = await bcryptjs.genSalt();
       const hashPassword = await this.hashPassword(dto.newPassword, salt);
       return await this.prismaService.user.update({
         where: { id },
