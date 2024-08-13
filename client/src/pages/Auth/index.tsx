@@ -15,6 +15,7 @@ import { LoginSchema, RegisterSchema } from '../../utils/yup';
 import { BoxFormStyled, RootStyled } from './styles';
 import { loginUsers, registerUsers } from '../../store/thunks/auth';
 
+
 const AuthRootComponent: React.FC = (): JSX.Element => {
   const location: Location = useLocation();
   const dispatch = useAppDispatch();
