@@ -65,9 +65,9 @@ const authSlice = createSlice({
       .addCase(registerAuthGoogleUsers.rejected, state => {
         state.isLoading = false;
       })
-      .addCase(refreshUsers.pending, state => {
-        state.isLoading = true;
-      })
+      // .addCase(refreshUsers.pending, state => {
+      //   state.isLoading = true;
+      // })
       .addCase(refreshUsers.fulfilled, (state, action) => {
         state.user = action.payload;
 
@@ -79,8 +79,9 @@ const authSlice = createSlice({
       .addCase(logoutUsers.pending, state => {
         state.isLoading = true;
       })
-      .addCase(logoutUsers.fulfilled, _state => {
-        return { ...initialState };
+      .addCase(logoutUsers.fulfilled, state => {
+        Object.assign(state, initialState); // Copy values initialState in current state
+        state.user.token = '';
       })
       .addCase(logoutUsers.rejected, state => {
         state.isLoading = false;

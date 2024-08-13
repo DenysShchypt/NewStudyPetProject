@@ -9,11 +9,12 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" VARCHAR(45) NOT NULL,
     "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "lastName" TEXT,
     "password" TEXT,
     "passwordRepeat" TEXT,
     "provider" "Provider",
     "providerId" TEXT,
+    "verifyLink" TEXT,
     "wallet" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -32,18 +33,13 @@ CREATE TABLE "tokens" (
 );
 
 -- CreateTable
-CREATE TABLE "RefreshTokin" (
-    "token" TEXT NOT NULL,
-    "exp" TIMESTAMP(3) NOT NULL,
-    "userId" TEXT NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "WatchList" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "assetId" INTEGER NOT NULL,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "WatchList_pkey" PRIMARY KEY ("id")
 );
@@ -54,14 +50,8 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "tokens_token_key" ON "tokens"("token");
 
--- CreateIndex
-CREATE UNIQUE INDEX "RefreshTokin_token_key" ON "RefreshTokin"("token");
-
 -- AddForeignKey
 ALTER TABLE "tokens" ADD CONSTRAINT "tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "RefreshTokin" ADD CONSTRAINT "RefreshTokin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WatchList" ADD CONSTRAINT "WatchList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

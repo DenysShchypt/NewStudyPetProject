@@ -1,22 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import history from 'connect-history-api-fallback';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    // {
-    //   name: 'vite-plugin-history',
-    //   configureServer(server) {
-    //     server.middlewares.use(
-    //       history({
-    //         rewrites: [{ from: /\/(.*)/, to: '/' }],
-    //       }) as any // Потрібно використати any для обходу типів
-    //     );
-    //   },
-    // },
   ],
+  server: {
+    open: '/register',
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   define: {
     'process.env': {},
   },

@@ -33,7 +33,6 @@ model User {
   picture        String?
   roles          Role[]
   Token          Token[]
-  RefreshTokin   RefreshTokin[]
   WatchList      WatchList[]
 
   @@map("users")
@@ -47,13 +46,6 @@ model Token {
   userAgent String   @map("user_agent")
 
   @@map("tokens")
-}
-
-model RefreshTokin {
-  token  String   @unique
-  exp    DateTime
-  userId String
-  User   User     @relation(fields: [userId], references: [id])
 }
 
 model WatchList {

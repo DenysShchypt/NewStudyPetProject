@@ -46,7 +46,6 @@ export class AuthService {
       payload,
       agent,
     );
-    // delete token.refreshToken;
     return { ...newUser, token };
   }
 
