@@ -154,8 +154,7 @@ export class AuthController {
         httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript
         sameSite: 'lax', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
         expires: new Date(tokensAndUser.token.refreshToken.exp), // Дата закінчення дії куки
-        secure:
-          this.configService.get('NODE_ENV', 'development') === 'production', // Кука буде передаватись тільки по HTTPS, якщо середовище - production
+        secure: true, // Кука буде передаватись тільки по HTTPS, якщо середовище - production
         path: '/', // Шлях, де кука буде доступна
       },
     );
@@ -172,8 +171,7 @@ export class AuthController {
         httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript
         sameSite: 'lax', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
         expires: new Date(tokensAndUser.token.refreshToken.exp), // Дата закінчення дії куки
-        secure:
-          this.configService.get('NODE_ENV', 'development') === 'production', // Кука буде передаватись тільки по HTTPS, якщо середовище - production
+        secure: true, // Кука буде передаватись тільки по HTTPS, якщо середовище - production
         path: '/', // Шлях, де кука буде доступна
       },
     );
