@@ -8,12 +8,17 @@ let isRefreshing = false;
 let refreshSubscribers: Array<(token: string) => void> = [];
 export const instance = axios.create({
   baseURL: 'https://newstudypetproject-1.onrender.com/api',
+  // baseURL: 'http://localhost:4000/api',
   timeout: 2000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
 export const instanceAuth = axios.create({
   baseURL: 'https://newstudypetproject-1.onrender.com/api',
+  // baseURL: 'http://localhost:4000/api',
+  timeout: 2000,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 instanceAuth.interceptors.request.use(

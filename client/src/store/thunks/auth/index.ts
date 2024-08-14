@@ -35,6 +35,7 @@ export const logoutUsers = createAsyncThunk<
       withCredentials: true,
     });
     localStorage.removeItem('token');
+    return;
   } catch (error) {
     const typedError = error as IError;
     if (typedError.response && typedError.response.data?.message) {
@@ -68,9 +69,11 @@ export const refreshUsers = createAsyncThunk<
   { rejectValue: string }
 >('auth/refresh-tokens', async (_, { rejectWithValue }) => {
   try {
+
     const newUser = await instanceAuth.get('auth/refresh-tokens', {
       withCredentials: true,
     });
+    console.log(newUser);
     localStorage.setItem('token', newUser.data.token.token);
     return newUser.data;
   } catch (error) {

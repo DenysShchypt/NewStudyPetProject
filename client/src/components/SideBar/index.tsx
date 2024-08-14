@@ -42,7 +42,6 @@ const SideBarComponent: FC<ISideBarProps> = (
   const { pathname } = location;
   const navigate: NavigateFunction = useNavigate();
   const theme = useTheme();
-
   useEffect(() => {
     setActive(pathname);
   }, [pathname]);
