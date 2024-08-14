@@ -8,7 +8,6 @@ import { FlexBetween } from '../GeneralComponentsStyles';
 import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
-import { infoUser } from '../../store/thunks/settings';
 import { refreshUsers } from '../../store/thunks/auth';
 
 const TopBarComponent: FC<ITopBarProps> = (
@@ -17,16 +16,21 @@ const TopBarComponent: FC<ITopBarProps> = (
   const { isOpen, setIsOpen, isNonMobile } = props;
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const firstNameUser: string = useAppSelector(
-    state => state.settings.user.firstName,
+  const firstNameUserAuth: string = useAppSelector(
+    state => state.auth.user.firstName,
   );
   const userVerify: string = useAppSelector(
     state => state.auth.user.verifyLink,
   );
-
+  const effectRan = useRef(false);
   useEffect(() => {
+    if (effectRan.current) {
+      if (userVerify==='') {
         dispatch(refreshUsers());
-  }, [dispatch]);
+      }
+    }
+    effectRan.current = true;
+  }, [firstNameUserAuth,dispatch]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
@@ -39,7 +43,7 @@ const TopBarComponent: FC<ITopBarProps> = (
               />
               {userVerify === 'active' ? (
                 <Typography variant="h3">
-                  Welcome {firstNameUser}
+                  Welcome {firstNameUserAuth}
                 </Typography>
               ) : (
                 <Typography variant="h3" className="menuIcon">

@@ -104,6 +104,7 @@ export class AuthController {
     @Res() res: Response,
     @UserAgent() agent: string,
   ) {
+    console.log(refreshToken);
     if (!refreshToken) throw new UnauthorizedException();
     const newTokens = await this.authService.getRefreshTokens(
       refreshToken,

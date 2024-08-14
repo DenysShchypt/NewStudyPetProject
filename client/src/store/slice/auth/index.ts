@@ -76,12 +76,12 @@ const authSlice = createSlice({
       .addCase(refreshUsers.rejected, state => {
         state.isLoading = false;
       })
-      .addCase(logoutUsers.pending, state => {
-        state.isLoading = true;
-      })
+      // .addCase(logoutUsers.pending, state => {
+      //   state.isLoading = true;
+      // })
       .addCase(logoutUsers.fulfilled, state => {
-        Object.assign(state, initialState); // Copy values initialState in current state
-        state.user.token = '';
+        state.user = { ...initialState.user, token: '' };
+        state.isLoading = false;
       })
       .addCase(logoutUsers.rejected, state => {
         state.isLoading = false;
