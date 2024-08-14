@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@emotion/styled': '@emotion/styled',
     },
   },
   define: {
@@ -22,6 +22,9 @@ export default defineConfig({
     rollupOptions: {
       external: ['@emotion/react', '@emotion/styled'],
     },
+  },
+  optimizeDeps: {
+    include: ['@emotion/styled'],
   },
   
 });

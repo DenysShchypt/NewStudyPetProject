@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { useEffect } from 'react';
 import PrivateRoute from '../utils/router/privateRoute';
 import { ColorModeContext, useMode } from '../theme';
 import LayoutComponent from './Layout';
@@ -10,7 +11,6 @@ import SettingsPage from '../pages/Settings';
 import AuthRootComponent from '../pages/Auth';
 import SingleAssetPage from '../pages/SingleAsset';
 import { useAppDispatch, useAppSelector } from '../utils/hook';
-import { useEffect } from 'react';
 import { logoutUsers } from '../store/thunks/auth';
 
 function App() {
