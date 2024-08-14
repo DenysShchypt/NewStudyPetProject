@@ -10,8 +10,8 @@ import {
   Filler,
   Legend,
 } from 'chart.js';
-import type { ChartData, ChartOptions, ScriptableContext } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import type { ChartData, ChartOptions, ScriptableContext } from 'chart.js';
 import { IAssetPriceData } from '../../../common/types/assets';
 
 ChartJS.register(

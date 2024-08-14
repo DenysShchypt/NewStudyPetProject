@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Location, Outlet, useLocation } from 'react-router-dom';
-import TopBarComponent from '../TopBar';
 import { useMediaQuery } from '@mui/material';
+import TopBarComponent from '../TopBar';
 import SideBarComponent from '../SideBar';
 import { MainSection, RootBox } from './styles';
 
