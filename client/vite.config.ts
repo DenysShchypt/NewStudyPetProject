@@ -11,7 +11,8 @@ export default defineConfig({
     open: '/register',
   },
   define: {
-    'process.env': {},
+    'process.env.VITE_GOOGLE_CLIENT_ID': JSON.stringify(process.env.VITE_GOOGLE_CLIENT_ID),
+    'process.env.VITE_GOOGLE_CLIENT_SECRET': JSON.stringify(process.env.VITE_GOOGLE_CLIENT_SECRET),
   },
   optimizeDeps: {
     include: ['@emotion/styled'],
