@@ -1,7 +1,8 @@
-import styled from '@emotion/styled';
+
 import { Grid } from '@mui/material';
 import { StyledProps } from '../../common/types/theme';
 import { tokens } from '../../theme';
+import styled from '@emotion/styled';
 
 export const RootStylesChangePassword = styled(Grid)<StyledProps>(({
   theme,

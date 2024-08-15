@@ -10,18 +10,8 @@ export default defineConfig({
   server: {
     open: '/register',
   },
-  resolve: {
-    alias: {
-      '@emotion/styled': '@emotion/styled',
-    },
-  },
   define: {
     'process.env': {},
-  },
-  build: {
-    rollupOptions: {
-      external: ['@emotion/react', '@emotion/styled'],
-    },
   },
   optimizeDeps: {
     include: ['@emotion/styled'],
