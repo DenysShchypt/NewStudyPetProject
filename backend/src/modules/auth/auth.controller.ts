@@ -169,7 +169,7 @@ export class AuthController {
       tokensAndUser.token.refreshToken.token, // Значення рефреш-токена
       {
         httpOnly: true, // Кука доступна тільки через HTTP, і не доступна через JavaScript
-        sameSite: 'lax', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
+        sameSite: 'none', // Захист від CSRF атак, дозволяє куки відправляти з того ж самого або частково того ж сайту
         expires: new Date(tokensAndUser.token.refreshToken.exp), // Дата закінчення дії куки
         secure: true, // Кука буде передаватись тільки по HTTPS, якщо середовище - production
         path: '/', // Шлях, де кука буде доступна
