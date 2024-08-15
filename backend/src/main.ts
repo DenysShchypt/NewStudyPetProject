@@ -10,7 +10,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
       credentials: true,
-      origin: ['http://localhost:5173'],
+      origin: [
+        'http://localhost:5173',
+        'https://new-study-pet-project.vercel.app/',
+      ],
     },
   });
   app.use(cookieParser());
