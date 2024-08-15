@@ -1,7 +1,6 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect} from 'react';
 import { Grid, Toolbar, Typography, useTheme } from '@mui/material';
 import { MenuOutlined } from '@mui/icons-material';
-
 import { AppBarStyled } from './styles';
 import { ITopBarProps } from '../../common/types/topBar';
 import { FlexBetween } from '../GeneralComponentsStyles';
@@ -22,14 +21,14 @@ const TopBarComponent: FC<ITopBarProps> = (
   const userVerify: string = useAppSelector(
     state => state.auth.user.verifyLink,
   );
-  const effectRan = useRef(false);
+  // const effectRan = useRef(false);
   useEffect(() => {
-    if (effectRan.current) {
+    // if (effectRan.current) {
       if (userVerify==='') {
         dispatch(refreshUsers());
       }
-    }
-    effectRan.current = true;
+    // }
+    // effectRan.current = true;
   }, [firstNameUserAuth,dispatch]);
   return (
     <AppBarStyled theme={theme}>
