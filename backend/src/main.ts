@@ -12,7 +12,7 @@ async function bootstrap() {
       credentials: true,
       origin: [
         'http://localhost:5173',
-        'https://new-study-pet-project.vercel.app/',
+        'https://new-study-pet-project.vercel.app',
       ],
     },
   });
