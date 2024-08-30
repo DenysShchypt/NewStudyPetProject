@@ -101,7 +101,7 @@ export class UsersService {
         },
         to: createNewUser.email,
         subject: 'Verify email',
-        html: `<p><strong>Hello ${createNewUser.firstName} ${createNewUser.lastName}</strong>, you need to confirm your email<a target="_blank" href="${this.configService.get('base_url')}/auth/verify/${createNewUser.verifyLink}">Click verify here</a></p>`,
+        html: `<p><strong>Hello ${createNewUser.firstName} ${createNewUser?.lastName}</strong>, you need to confirm your email<a target="_blank" href="${this.configService.get('base_url')}/auth/verify/${createNewUser.verifyLink}">Click verify here</a></p>`,
       };
       await sendEmail(verifyEmail);
       await this.cacheManager.set(createNewUser.id, createNewUser);

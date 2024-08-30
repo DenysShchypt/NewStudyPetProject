@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
+    "lib": ["dom", "dom.iterable", "esnext","WebWorker"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,12 +17,7 @@
     "isolatedModules": false,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"],
-    "baseUrl": "./src",
-    "paths": {
-      "@prisma": ["src/components/*"],
-      "@prisma/*": ["src/store/*"]
-    },
+    "types": ["vite/client","node"]
   },
   "include": [
     "src/**/*",

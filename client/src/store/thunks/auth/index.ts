@@ -73,7 +73,6 @@ export const refreshUsers = createAsyncThunk<
     const newUser = await instanceAuth.get('auth/refresh-tokens', {
       withCredentials: true,
     });
-    console.log(newUser);
     localStorage.setItem('token', newUser.data.token.token);
     return newUser.data;
   } catch (error) {

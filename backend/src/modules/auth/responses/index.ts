@@ -1,26 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Provider, Role } from '@prisma/client';
-import { Exclude, Expose } from 'class-transformer';
+// import { Exclude, Expose } from 'class-transformer';
 import { IsString, IsEnum, IsNumber } from 'class-validator';
 import { ITokenResponse } from '../../token/responses';
-@Exclude()
+// @Exclude()
 export class UserResponse {
   @ApiProperty({ example: 'sdg5468gfh68f4dsh8642526' })
   @IsString()
   id: string;
 
   @ApiProperty({ example: 'John' })
-  @Expose()
+  // @Expose()
   @IsString()
   firstName: string;
 
   @ApiProperty({ example: 'Joshua' })
-  @Expose()
+  // @Expose()
   @IsString()
   lastName?: string;
 
   @ApiProperty({ example: 'john@example.com' })
-  @Expose()
+  // @Expose()
   @IsString()
   email: string;
 
@@ -66,17 +66,17 @@ export class AuthUserResponse {
   id: string;
 
   @ApiProperty({ example: 'John' })
-  @Expose()
+  // @Expose()
   @IsString()
   firstName: string;
 
   @ApiProperty({ example: 'Joshua' })
-  @Expose()
+  // @Expose()
   @IsString()
   lastName?: string;
 
   @ApiProperty({ example: 'john@example.com' })
-  @Expose()
+  // @Expose()
   @IsString()
   email: string;
 

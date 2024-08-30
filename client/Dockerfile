@@ -1,11 +1,11 @@
 # Base image
-FROM node:18
+FROM node:16-alpine
 
 # Set working directory
 WORKDIR /app
 
 # Install dependencies
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy all files
@@ -15,7 +15,7 @@ COPY . .
 EXPOSE 5173
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
 
 
 
