@@ -62,10 +62,10 @@ export class AuthService {
     const payload = {
       email: updateVerifyUser.email,
       firstName: updateVerifyUser.firstName,
-      lastName: updateVerifyUser.lastName,
+      lastName: updateVerifyUser?.lastName,
       id: updateVerifyUser.id,
       roles: updateVerifyUser.roles,
-      provider: updateVerifyUser.provider,
+      provider: updateVerifyUser?.provider,
     };
     const token: IToken = await this.tokenService.generateJwtToken(
       payload,
@@ -108,7 +108,8 @@ export class AuthService {
     return { ...existUser, token };
   }
   public async deleteRefreshToken(token: string) {
-    return await this.prismaService.token.delete({ where: { token } });
+    await this.prismaService.token.delete({ where: { token } });
+    return;
   }
 
   public async getRefreshTokens(refreshToken: string, agent: string) {

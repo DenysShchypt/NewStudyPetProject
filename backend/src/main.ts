@@ -4,7 +4,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './modules/app/app.module';
-import { CorsMiddleware } from '../libs/common/middleware/cors.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -28,7 +27,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-doc', app, document);
-  app.use(new CorsMiddleware().use);
+  // app.use(new CorsMiddleware().use);
   await app.listen(port);
 }
 bootstrap();

@@ -7,7 +7,7 @@ services:
     ports:
       - "4001:${PORT}"
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@ep-billowing-glade-a2a79qgv.eu-central-1.aws.neon.tech/postgresql?sslmode=require"
     depends_on:
       - postgres
 

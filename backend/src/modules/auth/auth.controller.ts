@@ -91,8 +91,7 @@ export class AuthController {
     // expires: new Date(): Вказує, що cookie має негайно закінчити свою дію. Передача поточної дати та часу вказує, що cookie вже не дійсна, тому браузер видалить її.
     res.cookie(REFRESH_TOKEN, '', {
       httpOnly: true,
-      secure:
-        this.configService.get('NODE_ENV', 'development') === 'production',
+      secure: true,
       expires: new Date(),
       path: '/',
     });
@@ -104,7 +103,6 @@ export class AuthController {
     @Res() res: Response,
     @UserAgent() agent: string,
   ) {
-    console.log(refreshToken);
     if (!refreshToken) throw new UnauthorizedException();
     const newTokens = await this.authService.getRefreshTokens(
       refreshToken,
@@ -137,6 +135,7 @@ export class AuthController {
     if (tokensAndUser.verifyLink === 'active') {
       this.setRefreshTokenToCookies(tokensAndUser, res);
     } else {
+      delete tokensAndUser.token.refreshToken;
       res.status(HttpStatus.OK).json({ ...tokensAndUser });
     }
   }
@@ -176,6 +175,11 @@ export class AuthController {
       },
     );
     res.status(HttpStatus.OK).json({ ...tokensAndUser });
+  }
+
+  @Get('check-server')
+  async checkServer(): Promise<string> {
+    return 'Server is running!';
   }
 }
 
