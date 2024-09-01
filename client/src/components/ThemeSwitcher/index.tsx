@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 import { IconButton, useTheme } from '@mui/material';
-import { DarkMode, LightMode, NotificationsNone } from '@mui/icons-material';
+import { DarkMode, LightMode} from '@mui/icons-material';
 import { ColorModeContext } from '../../theme';
 import { ThemeStyles } from './styles';
 
@@ -12,9 +12,9 @@ const ThemeSwitcherComponent: FC = (): JSX.Element => {
       <IconButton>
         {theme.palette.mode === 'dark' ? <DarkMode /> : <LightMode />}
       </IconButton>
-      <IconButton>
+      {/* <IconButton>
         <NotificationsNone />
-      </IconButton>
+      </IconButton> */}
     </ThemeStyles>
   );
 };

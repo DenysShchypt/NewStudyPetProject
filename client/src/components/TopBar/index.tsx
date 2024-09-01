@@ -1,4 +1,4 @@
-import { FC, useEffect} from 'react';
+import { FC, useEffect, useRef} from 'react';
 import { Grid, Toolbar, Typography, useTheme } from '@mui/material';
 import { MenuOutlined } from '@mui/icons-material';
 import { AppBarStyled } from './styles';
@@ -8,6 +8,7 @@ import ThemeSwitcher from '../ThemeSwitcher';
 import SearchBar from '../SearchBar';
 import { useAppDispatch, useAppSelector } from '../../utils/hook';
 import { refreshUsers } from '../../store/thunks/auth';
+import DateTopBar from '../DataForTop';
 
 const TopBarComponent: FC<ITopBarProps> = (
   props: ITopBarProps,
@@ -21,15 +22,24 @@ const TopBarComponent: FC<ITopBarProps> = (
   const userVerify: string = useAppSelector(
     state => state.auth.user.verifyLink,
   );
-  // const effectRan = useRef(false);
+  // *****For Dev
+  const effectRan = useRef(false);
   useEffect(() => {
-    // if (effectRan.current) {
+    if (effectRan.current) {
       if (userVerify==='') {
         dispatch(refreshUsers());
       }
-    // }
-    // effectRan.current = true;
+    }
+    effectRan.current = true;
   }, [firstNameUserAuth,dispatch]);
+
+// *****For product
+
+// useEffect(() => {
+//     if (userVerify==='') {
+//       dispatch(refreshUsers());
+//     }
+// }, [firstNameUserAuth,dispatch]);
   return (
     <AppBarStyled theme={theme}>
       <Toolbar className="toolbar">
@@ -43,11 +53,14 @@ const TopBarComponent: FC<ITopBarProps> = (
               {userVerify === 'active' ? (
                 <Typography variant="h3">
                   Welcome {firstNameUserAuth}
+                  <DateTopBar/>
                 </Typography>
               ) : (
                 <Typography variant="h3" className="menuIcon">
                   You need to verify your account via email
+                
                 </Typography>
+                
               )}
             </FlexBetween>
           </Grid>
